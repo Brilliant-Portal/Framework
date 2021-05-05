@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace BrilliantPortal\Framework\Tests;
 
 class ExampleTest extends TestCase
 {

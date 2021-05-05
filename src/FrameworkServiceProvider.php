@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace BrilliantPortal\Framework;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Commands\SkeletonCommand;
+use BrilliantPortal\Framework\Commands\FrameworkCommand;
 
-class SkeletonServiceProvider extends PackageServiceProvider
+class FrameworkServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
@@ -16,10 +16,10 @@ class SkeletonServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('skeleton')
+            ->name('framework')
             ->hasConfigFile()
             ->hasViews()
-            ->hasMigration('create_skeleton_table')
-            ->hasCommand(SkeletonCommand::class);
+            ->hasMigration('create_framework_table')
+            ->hasCommand(FrameworkCommand::class);
     }
 }
