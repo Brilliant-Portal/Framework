@@ -7,7 +7,12 @@ BrilliantPortal is an opinionated Laravel preset.
 You can install the package via composer:
 
 ```bash
+# Require the framework.
 composer require brilliant-portal/framework
+
+# Run installation steps.
+php artisan brilliant-portal-framework:install
+# Options: --stack=livewire|inertia; --teams
 ```
 
 You can publish and run the migrations with:
@@ -30,6 +35,20 @@ return [
 ```
 
 ## Usage
+
+### Teams
+
+Add the `EnsureHasTeam` middleware to any routes that require a team.
+
+```php
+use BrilliantPortal\Framework\Http\Middleware\EnsureHasTeam;
+
+Route::get('/profile', function () {
+    //
+})->middleware(EnsureHasTeam::class);
+```
+
+An `EnsureHasNoTeam` middleware is also available if useful.
 
 ## Testing
 

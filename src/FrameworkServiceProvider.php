@@ -4,7 +4,8 @@ namespace BrilliantPortal\Framework;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use BrilliantPortal\Framework\Commands\FrameworkCommand;
+use BrilliantPortal\Framework\Commands\InstallCommand;
+use Illuminate\Console\Scheduling\Schedule;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
@@ -16,10 +17,25 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package
-            ->name('framework')
+            ->name('brilliant-portal-framework')
             ->hasConfigFile()
+            ->hasRoutes([
+                'teams',
+            ])
             ->hasViews()
-            ->hasMigration('create_framework_table')
-            ->hasCommand(FrameworkCommand::class);
+            ->hasCommand(InstallCommand::class);
+    }
+
+    /**
+     * Schedule commands.
+     *
+     * @return void
+     * @since 1.0.0
+     */
+    public function packageBooted()
+    {
+        $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
+            $schedule->command('telescope:prune --hours='.config('telescope.prune.hours'))->daily();
+        });
     }
 }
