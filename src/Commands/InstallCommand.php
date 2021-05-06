@@ -29,9 +29,16 @@ class InstallCommand extends Command
         $this->callSilent('jetstream:install', $jetstreamArgs);
 
         if ($this->option('teams')) {
+            // Actions.
             copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
+
+            // Models.
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
 
+            // Tests.
+            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.php', app_path('Feature/EnsureHasNoTeam.php'));
+
+            // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
         }
 
