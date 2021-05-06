@@ -47,6 +47,16 @@ class InstallCommand extends Command
          */
         $this->callSilent('telescope:install');
 
+        $this->replaceInFile('        Gate::define(\'viewTelescope\', function ($user) {
+            return in_array($user->email, [
+                //
+            ]);
+        });
+', '        Gate::define(\'viewTelescope\', function ($user) {
+            return \Illuminate\Support\Str::of($user->email)->endsWith(\'@luminfire.com\');
+        });
+', app_path('Providers/TelescopeServiceProvider.php'));
+
         /**
          * Migrations.
          */
