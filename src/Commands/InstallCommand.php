@@ -36,7 +36,7 @@ class InstallCommand extends Command
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
 
             // Tests.
-            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.php', app_path('Feature/EnsureHasNoTeam.php'));
+            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.php', base_path('tests/Feature/EnsureHasNoTeam.php'));
 
             // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
