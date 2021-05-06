@@ -25,7 +25,6 @@ class EnsureHasTeam
             return;
         }
 
-        $firstTeamId = Auth::user()->allTeams()->first()->id;
-        Auth::user()->update(['current_team_id' => $firstTeamId]);
+        Auth::user()->switchTeam(Auth::user()->allTeams()->first());
     }
 }
