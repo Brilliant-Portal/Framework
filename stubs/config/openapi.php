@@ -16,7 +16,7 @@ return [
 
             'servers' => [
                 [
-                    'url' => env('APP_URL'),
+                    'url' => config('app.url'),
                 ],
             ],
 
