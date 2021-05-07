@@ -35,7 +35,7 @@ class InstallCommand extends Command
             copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
-            copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.php', app_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
+            copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
             copy(__DIR__.'/../../stubs/app/Models/Team.php', app_path('Models/Team.php'));
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
 

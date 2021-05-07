@@ -14,7 +14,7 @@ class AddSuperAdmins extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('super_admin')->default(false);
+            $table->boolean('is_super_admin')->default(false);
         });
     }
 
@@ -26,7 +26,7 @@ class AddSuperAdmins extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('super_admin');
+            $table->dropColumn('is_super_admin');
         });
     }
 }
