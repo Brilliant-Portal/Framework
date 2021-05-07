@@ -1,6 +1,6 @@
 <?php
 
-use BrilliantPortal\Framework\Http\Controllers\TeamController;
+use BrilliantPortal\Framework\Http\Controllers\Web\TeamController;
 use BrilliantPortal\Framework\Http\Middleware\EnsureHasNoTeam;
 use Illuminate\Support\Facades\Route;
 

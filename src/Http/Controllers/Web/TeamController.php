@@ -1,6 +1,6 @@
 <?php
 
-namespace BrilliantPortal\Framework\Http\Controllers;
+namespace BrilliantPortal\Framework\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Team;
