@@ -3,6 +3,7 @@
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\TeamController;
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use Vyuldashev\LaravelOpenApi\Generator;
 
 /**
  * API routes.
@@ -21,3 +22,12 @@ Route::name('api.')
                 'show' => 'teams.api.show',
             ]);
     });
+
+/**
+ * OpenAPI documentation.
+ */
+Route::middleware(['web', 'can:see-api-docs'])
+    ->get('/api-documentation', function (Generator $generator) {
+        return view('brilliant-portal-framework::api.documentation', ['spec' => $generator->generate()]);
+    })
+    ->name('api.documentation');

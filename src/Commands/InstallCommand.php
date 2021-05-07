@@ -81,6 +81,16 @@ class InstallCommand extends Command
             $dev->run();
             $this->info($dev->getOutput());
         }
+
+        /**
+         * OpenAPI docs.
+         */
+        if ($this->option('api')) {
+            copy(__DIR__.'/../../stubs/config/openapi.php', config_path('openapi.php'));
+
+            $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
+            \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
+        }
     }
 
     /**

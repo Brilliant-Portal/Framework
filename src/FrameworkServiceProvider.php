@@ -2,10 +2,12 @@
 
 namespace BrilliantPortal\Framework;
 
+use App\Models\User;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use BrilliantPortal\Framework\Commands\InstallCommand;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Gate;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
@@ -35,6 +37,16 @@ class FrameworkServiceProvider extends PackageServiceProvider
      */
     public function packageBooted()
     {
+        /**
+         * API.
+         */
+        Gate::define('see-api-docs', function (User $user) {
+            return $user->hasTeamRole($user->currentTeam, 'admin');
+        });
+
+        /**
+         * Telescope.
+         */
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
             $schedule->command('telescope:prune --hours='.config('telescope.prune.hours'))->daily();
         });
