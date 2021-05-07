@@ -16,7 +16,7 @@ use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
 /**
  * Team controller.
  *
- * @since 0.0.1
+ * @since 0.1.0
  *
  * @OpenApi\PathItem()
  */
@@ -25,7 +25,7 @@ class TeamController extends Controller
     /**
      * Model name.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      *
      * @var string
      */
@@ -34,7 +34,7 @@ class TeamController extends Controller
     /**
      * Ability.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      *
      * @var string
      */

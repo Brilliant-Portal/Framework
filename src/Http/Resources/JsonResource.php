@@ -9,7 +9,7 @@ class JsonResource extends LaravelJsonResource
     /**
      * Transform the resource into an array.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
