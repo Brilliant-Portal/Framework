@@ -6,6 +6,7 @@ use App\Models\User;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use BrilliantPortal\Framework\Commands\InstallCommand;
+use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 
@@ -43,6 +44,8 @@ class FrameworkServiceProvider extends PackageServiceProvider
         Gate::define('see-api-docs', function (User $user) {
             return $user->hasTeamRole($user->currentTeam, 'admin');
         });
+
+        config(['openapi.collections.default.security' => [SecurityRequirement::create()->securityScheme('apiKey')]]);
 
         /**
          * Telescope.

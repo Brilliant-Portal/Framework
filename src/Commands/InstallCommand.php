@@ -92,20 +92,6 @@ class InstallCommand extends Command
             $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
             \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
 
-            try {
-                mkdir(app_path('OpenApi'), 0755);
-            } catch (ErrorException $e) {
-                // Directory already exists; do nothing.
-            }
-            copy(__DIR__.'/../../stubs/app/OpenApi/OpenApi.php', app_path('OpenApi/OpenApi.php'));
-
-            $this->replaceInFile('"Database\\\Seeders\\\": "database/seeders/"', '"Database\\\Seeders\\\": "database/seeders/",
-            "GoldSpecDigital\\\ObjectOrientedOAS\\\": "app/OpenApi/"', base_path('composer.json'));
-
-            $composer = new Process(['composer', 'dump-autoload']);
-            $composer->run();
-            $this->info($composer->getOutput());
-
             copy(__DIR__.'/../../stubs/tests/ApiDocumentationTest.php', base_path('tests/Feature/ApiDocumentationTest.php'));
         }
     }
