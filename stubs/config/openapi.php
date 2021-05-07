@@ -32,6 +32,11 @@ return [
                     'description' => 'Users can belong to zero or more teams. A user may have different roles in different teams determining what capabilities they should have.',
                 ],
 
+                [
+                    'name' => 'Generic Object',
+                    'description' => 'A general-purpose API endpoint for models in this app.',
+                ],
+
             ],
 
             'security' => [

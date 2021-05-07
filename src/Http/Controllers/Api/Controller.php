@@ -3,7 +3,6 @@
 namespace BrilliantPortal\Framework\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller as AppController;
-use App\Models\Team;
 use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
 
 /**

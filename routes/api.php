@@ -2,6 +2,7 @@
 
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\TeamController;
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\UserController;
+use BrilliantPortal\Framework\Http\Controllers\Api\GenericController;
 use Illuminate\Support\Facades\Route;
 use Vyuldashev\LaravelOpenApi\Generator;
 
@@ -13,6 +14,9 @@ Route::name('api.')
     ->prefix('api/'.config('brilliant-portal-framework.api.version'))
     ->group(function () {
 
+        /**
+         * Admin routes.
+         */
         Route::name('admin.')
             ->prefix('admin/')
             ->group(function () {
@@ -27,6 +31,11 @@ Route::name('api.')
                         'show' => 'teams.api.show',
                     ]);
             });
+
+        /**
+         * Generic routes.
+         */
+        Route::apiResource('generic-object', GenericController::class);
     });
 
 /**
