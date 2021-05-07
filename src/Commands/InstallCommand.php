@@ -104,6 +104,7 @@ class InstallCommand extends Command
 
             $composer = new Process(['composer', 'dump-autoload']);
             $composer->run();
+            $this->info($composer->getOutput());
         }
     }
 
