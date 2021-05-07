@@ -41,6 +41,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
+        'is_super_admin',
         'password',
         'remember_token',
         'two_factor_recovery_codes',
@@ -54,6 +55,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_super_admin' => 'boolean',
     ];
 
     /**
