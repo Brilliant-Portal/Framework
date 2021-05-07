@@ -97,7 +97,16 @@ class InstallCommand extends Command
             $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
             \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
 
-            copy(__DIR__.'/../../stubs/tests/ApiDocumentationTest.php', base_path('tests/Feature/ApiDocumentationTest.php'));
+            try {
+                mkdir(base_path('tests/Feature/Api'), 0755);
+            } catch (ErrorException $e) {
+                if ('mkdir(): File exists' !== $e->getMessage()) {
+                    throw $e;
+                }
+            }
+            copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.php', base_path('tests/Feature/Api/DocumentationTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/V1UsersTest.php', base_path('tests/Feature/Api/V1UsersTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/V1TeamsTest.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
         }
     }
 

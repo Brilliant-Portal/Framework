@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Api;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
-class ApiDocumentationTest extends TestCase
+class DocumentationTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,7 +20,7 @@ class ApiDocumentationTest extends TestCase
 
         $this
             ->get('/dashboard/api-documentation')
-            ->assertForbidden();
+            ->assertRedirect('/login');
     }
 
     public function test_non_admin_users_cant_see_api_docs()
