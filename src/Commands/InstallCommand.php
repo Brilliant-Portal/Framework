@@ -34,8 +34,12 @@ class InstallCommand extends Command
             // Actions.
             copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
-            // Models.
+            // Migrations and Models.
+            copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.php', app_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
+
+            // Providers.
+            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Tests.
             copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.php', base_path('tests/Feature/EnsureHasNoTeam.php'));
@@ -59,7 +63,7 @@ class InstallCommand extends Command
             ]);
         });
 ', '        Gate::define(\'viewTelescope\', function ($user) {
-            return \Illuminate\Support\Str::of($user->email)->endsWith(\'@luminfire.com\');
+            return $user->can(\'super-admin\');
         });
 ', app_path('Providers/TelescopeServiceProvider.php'));
 
