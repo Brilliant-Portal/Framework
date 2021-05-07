@@ -21,6 +21,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasRoutes([
                 'teams',
+                'api',
             ])
             ->hasViews()
             ->hasCommand(InstallCommand::class);

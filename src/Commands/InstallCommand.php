@@ -9,6 +9,7 @@ class InstallCommand extends Command
 {
     public $signature = 'brilliant-portal:install
                                         {--stack=livewire : The development stack that should be installed}
+                                        {--api : Indicates if API support should be installed};
                                         {--teams : Indicates if team support should be installed}';
 
     public $description = 'Install all of the resources and components';
@@ -40,6 +41,10 @@ class InstallCommand extends Command
 
             // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
+        }
+
+        if ($this->option('api')) {
+            $this->replaceInFile('// Features::api(),', 'Features::api(),', config_path('jetstream.php'));
         }
 
         /**
