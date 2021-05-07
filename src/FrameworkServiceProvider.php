@@ -9,6 +9,7 @@ use BrilliantPortal\Framework\Commands\InstallCommand;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Jetstream\Features;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
@@ -31,10 +32,11 @@ class FrameworkServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * Schedule commands.
+     * Run after package has booted.
+     *
+     * @since 0.1.0
      *
      * @return void
-     * @since 1.0.0
      */
     public function packageBooted()
     {
@@ -51,11 +53,13 @@ class FrameworkServiceProvider extends PackageServiceProvider
         /**
          * API.
          */
-        Gate::define('see-api-docs', function (User $user) {
-            return $user->hasTeamRole($user->currentTeam, 'admin');
-        });
+        if (Features::api()) {
+            Gate::define('see-api-docs', function (User $user) {
+                return $user->hasTeamRole($user->currentTeam, 'admin');
+            });
 
-        config(['openapi.collections.default.security' => [SecurityRequirement::create()->securityScheme('apiKey')]]);
+            config(['openapi.collections.default.security' => [SecurityRequirement::create()->securityScheme('apiKey')]]);
+        }
 
         /**
          * Telescope.
