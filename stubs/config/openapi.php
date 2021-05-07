@@ -34,7 +34,11 @@ return [
 
             ],
 
-            'security' => [],
+            'security' => [
+                [
+                    'apiKey' => [],
+                ]
+            ],
 
             // Route for exposing specification.
             // Leave uri null to disable.
