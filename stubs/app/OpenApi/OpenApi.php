@@ -139,14 +139,14 @@ class OpenApi extends BaseObject
     }
 
     /**
-     * @param \GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement[] $security
+     * @param string[] $security
      * @return static
      */
-    public function security(SecurityRequirement ...$security): self
+    public function security($security): self
     {
         $instance = clone $this;
 
-        $instance->security = $security ?: null;
+        $instance->security = [$security] ?: null;
 
         return $instance;
     }
