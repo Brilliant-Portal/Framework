@@ -24,7 +24,6 @@
         "vyuldashev/laravel-openapi": "^0.24.1"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.10",
         "brianium/paratest": "^6.2",
         "nunomaduro/collision": "^5.3",
         "orchestra/testbench": "^6.15",
