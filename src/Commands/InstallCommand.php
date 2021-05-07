@@ -105,6 +105,8 @@ class InstallCommand extends Command
             $composer = new Process(['composer', 'dump-autoload']);
             $composer->run();
             $this->info($composer->getOutput());
+
+            copy(__DIR__.'/../../stubs/tests/ApiDocumentationTest.php', base_path('tests/Feature/ApiDocumentationTest.php'));
         }
     }
 
