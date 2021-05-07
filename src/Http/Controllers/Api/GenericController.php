@@ -68,6 +68,7 @@ class GenericController extends Controller
      * Display a listing of all objects.
      *
      * @OpenApi\Operation(tags="Generic Object")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\GenericObjectTypeParameters")
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\GenericObjectsListResponse", statusCode=200)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
@@ -83,6 +84,7 @@ class GenericController extends Controller
      * Create a new object.
      *
      * @OpenApi\Operation(tags="Generic Object")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\GenericObjectTypeParameters")
      * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\GenericObjectCreateRequestBody")
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\GenericObjectCreateResponse", statusCode=201)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
@@ -109,6 +111,7 @@ class GenericController extends Controller
      * Display the specified object.
      *
      * @OpenApi\Operation(tags="Generic Object")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\GenericObjectTypeParameters")
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\GenericObjectShowResponse", statusCode=200)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
@@ -128,6 +131,7 @@ class GenericController extends Controller
      * Update a user by supplying the changed data. Any data not in the request will remain unchanged.
      *
      * @OpenApi\Operation(tags="Generic Object", method="PATCH")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\GenericObjectTypeParameters")
      * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\GenericObjectCreateRequestBody")
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\GenericObjectShowResponse", statusCode=200)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
@@ -156,6 +160,7 @@ class GenericController extends Controller
      * Delete the specified object.
      *
      * @OpenApi\Operation(tags="Generic Object")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\GenericObjectTypeParameters")
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\GenericObjectDeleteResponse", statusCode=200)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
      * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
