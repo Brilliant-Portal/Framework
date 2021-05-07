@@ -12,15 +12,21 @@ Route::name('api.')
     ->middleware(['api', 'auth:sanctum'])
     ->prefix('api/'.config('brilliant-portal-framework.api.version'))
     ->group(function () {
-        Route::apiResource('users', UserController::class);
-        Route::apiResource('teams', TeamController::class)
-            ->names([
-                'index' => 'teams.api.index',
-                'store' => 'teams.api.store',
-                'destroy' => 'teams.api.destroy',
-                'update' => 'teams.api.update',
-                'show' => 'teams.api.show',
-            ]);
+
+        Route::name('admin.')
+            ->prefix('admin/')
+            ->group(function () {
+
+                Route::apiResource('users', UserController::class);
+                Route::apiResource('teams', TeamController::class)
+                    ->names([
+                        'index' => 'teams.api.index',
+                        'store' => 'teams.api.store',
+                        'destroy' => 'teams.api.destroy',
+                        'update' => 'teams.api.update',
+                        'show' => 'teams.api.show',
+                    ]);
+            });
     });
 
 /**
