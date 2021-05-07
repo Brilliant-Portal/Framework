@@ -26,7 +26,7 @@ Route::name('api.')
 /**
  * OpenAPI documentation.
  */
-Route::middleware(['web', 'can:see-api-docs'])
+Route::middleware(['web', 'auth:sanctum', 'can:see-api-docs'])
     ->get('/dashboard/api-documentation', function (Generator $generator) {
         return view('brilliant-portal-framework::api.documentation', ['spec' => $generator->generate()]);
     })
