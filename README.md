@@ -142,6 +142,8 @@ Feel free to copy `BrilliantPortal\Framework\Http\Controllers\Api\Admin\User` an
 
 See `brilliant-portal/framework/src/OpenApi` for example OpenAPI request, response, and schema files, and https://vyuldashev.github.io/laravel-openapi for documentation.
 
+You may also use or extend `BrilliantPortal\Framework\Http\Resources\DataWrapCollection` to wrap model index responses and `BrilliantPortal\Framework\Http\Resources\JsonResource` for single model responses.
+
 ## Testing
 
 ```bash
