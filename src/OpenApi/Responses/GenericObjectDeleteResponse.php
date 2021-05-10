@@ -15,7 +15,7 @@ class GenericObjectDeleteResponse extends ResponseFactory implements Reusable
     {
 
         return Response::ok('GenericObjectDelete')
-            ->description('Displays the the deleted object.')
+            ->description('Displays the deleted object.')
             ->content(
                 MediaType::json()
                     ->schema(GenericObjectSchema::ref())

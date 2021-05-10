@@ -14,7 +14,7 @@ class TeamDeleteResponse extends ResponseFactory implements Reusable
     {
 
         return Response::ok('TeamDelete')
-            ->description('Displays the the deleted team data object.')
+            ->description('Displays the deleted team data object.')
             ->content(
                 MediaType::json()
                     ->schema(TeamSchema::ref())
