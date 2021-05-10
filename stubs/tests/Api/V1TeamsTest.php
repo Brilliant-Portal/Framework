@@ -3,17 +3,20 @@
 namespace Tests\Feature\Api;
 
 use App\Models\Team;
+use App\Models\TeamInvitation;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Jetstream\Features;
+use Laravel\Jetstream\Jetstream;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class V1TeamsTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     public function testNoAuth()
     {
@@ -601,5 +604,170 @@ class V1TeamsTest extends TestCase
         $response
             ->assertStatus(404)
             ->assertJsonPath('message', 'No query results for model [App\\Models\\Team] 10');
+    }
+
+    public function testCanInviteUsers()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+        $email = $this->faker->safeEmail;
+
+        Sanctum::actingAs($team->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $response = $this->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+            'role' => $role,
+            'email' => $email,
+        ]);
+
+        if (Features::sendsTeamInvitations()) {
+            $expectedMessage = 'Invited '.$email.' to '.$team->name.' with role '.$role;
+        } else {
+            $expectedMessage = 'Added '.$email.' to '.$team->name.' with role '.$role;
+        }
+
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'invitation_id',
+                'message',
+            ])
+            ->assertJson([
+                'message' => $expectedMessage,
+            ]);
+
+        if (Features::sendsTeamInvitations()) {
+            $this->assertDatabaseHas('team_invitations', [
+                'team_id' => $team->id,
+                'email' => $email,
+                'role' => $role,
+            ]);
+        } else {
+            $this->assertDatabaseHas('team_user', [
+                'team_id' => $team->id,
+                'user_id' => User::whereEmail($email)->first()->id,
+                'role' => $role,
+            ]);
+        }
+    }
+
+    public function testCanCancelTeamInvitation()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::sendsTeamInvitations()) {
+            return $this->markTestSkipped('Teams invitations support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+        $email = $this->faker->safeEmail;
+
+        $teamInvitation = new TeamInvitation();
+        $teamInvitation->forceFill([
+            'team_id' => $team->id,
+            'email' => $email,
+            'role' => $role,
+        ]);
+        $teamInvitation->save();
+
+        $this->assertDatabaseHas('team_invitations', [
+            'id' => $teamInvitation->id,
+        ]);
+
+        Sanctum::actingAs($team->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $response = $this->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Removed invitation',
+            ]);
+
+        $this->assertDatabaseMissing('team_invitations', [
+            'id' => $teamInvitation->id,
+        ]);
+    }
+
+    public function testCanRemoveUser()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::sendsTeamInvitations()) {
+            return $this->markTestSkipped('Teams invitations support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        /** @var \App\Models\User */
+        $user = User::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+
+        $team->users()->attach($user, [
+            'role' => $role,
+        ]);
+
+        $this->assertDatabaseHas('team_user', [
+            'team_id' => $team->id,
+            'user_id' => $user->id,
+            'role' => $role,
+        ]);
+
+        Sanctum::actingAs($team->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $response = $this->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Removed user',
+            ]);
+
+        $this->assertDatabaseMissing('team_user', [
+                'team_id' => $team->id,
+                'user_id' => $user->id,
+                'role' => $role,
+            ]);
     }
 }

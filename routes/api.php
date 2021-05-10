@@ -30,6 +30,10 @@ Route::name('api.')
                         'update' => 'teams.api.update',
                         'show' => 'teams.api.show',
                     ]);
+
+                Route::post('teams/{teamId}/invitations/', [TeamController::class, 'inviteTeamMember'])->name('teams.invitations.create');
+                Route::delete('teams/{teamId}/invitations/{invitationId}', [TeamController::class, 'cancelTeamMemberInvitation'])->name('teams.invitations.cancel');
+                Route::put('teams/{teamId}/remove/{userId}', [TeamController::class, 'removeUser'])->name('teams.invitations.remove');
             });
 
         /**
