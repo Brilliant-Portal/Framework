@@ -10,8 +10,22 @@ BrilliantPortal Framework also installs a set of tests for features it provides.
 
 ## Installation
 
-You can install the package via composer:
+Install the package via composer with a custom repository.
 
+1. Add this to your app’s `composer.json`:
+```jsonc
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://git.luminfire.net/api/v4/group/242/-/packages/composer/packages.json"
+        }
+    ],
+    // etc.
+}
+```
+
+1. Install the app:
 ```bash
 # Require the framework.
 composer require brilliant-portal/framework
