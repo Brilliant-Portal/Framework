@@ -1,3 +1,5 @@
+[[__TOC__]]
+
 # BrilliantPortal
 
 BrilliantPortal is an opinionated Laravel preset.
