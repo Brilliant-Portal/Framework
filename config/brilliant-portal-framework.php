@@ -1,9 +1,9 @@
 <?php
-// config for BrilliantPortal/Framework
+
 return [
 
     'api' => [
-        'version' => env('BPORTAL_FRAMEWORK_API_VERSION', 'v1'), //
+        'version' => env('BPORTAL_FRAMEWORK_API_VERSION', 'v1'), // API versioning.
     ],
 
     'telescope' => [
