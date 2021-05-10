@@ -7,6 +7,7 @@ use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
 use BrilliantPortal\Framework\Rules\ClassExists;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
@@ -52,14 +53,14 @@ class GenericController extends Controller
             ],
         ]);
 
-        $type = $validated['type'];
+        $type = Arr::get($validated, 'type');
         if (Str::of($type)->startsWith('\\')) {
             $this->model = $type;
         } else {
             $this->model = '\App\Models\\'.$type;
         }
 
-        $this->ability = Str::of($validated['type'])->lower()->__toString();
+        $this->ability = Str::of($type)->lower()->__toString();
 
         parent::__construct();
     }

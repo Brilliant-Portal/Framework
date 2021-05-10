@@ -1,3 +1,5 @@
+[[__TOC__]]
+
 # BrilliantPortal
 
 BrilliantPortal is an opinionated Laravel preset.
@@ -141,6 +143,8 @@ For ease of use, you can extend `BrilliantPortal\Framework\Policies\BasePolicy.p
 Feel free to copy `BrilliantPortal\Framework\Http\Controllers\Api\Admin\User` and use it as a starting point for your custom API controllers. This extends `BrilliantPortal\Framework\Http\Controllers\Api\Controller`, which provides default authorization policy. It also provides example OpenAPI route annotations.
 
 See `brilliant-portal/framework/src/OpenApi` for example OpenAPI request, response, and schema files, and https://vyuldashev.github.io/laravel-openapi for documentation.
+
+You may also use or extend `BrilliantPortal\Framework\Http\Resources\DataWrapCollection` to wrap model index responses and `BrilliantPortal\Framework\Http\Resources\JsonResource` for single model responses.
 
 ## Testing
 

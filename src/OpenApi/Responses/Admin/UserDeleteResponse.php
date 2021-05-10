@@ -18,7 +18,7 @@ class UserDeleteResponse extends ResponseFactory implements Reusable
     {
 
         return Response::ok('UserDelete')
-            ->description('Displays the the deleted user data object. Models are “soft-deleted” (see the `deleted_at` key) and can be restored if necessary.')
+            ->description('Displays the deleted user data object. Models are “soft-deleted” (see the `deleted_at` key) and can be restored if necessary.')
             ->content(
                 MediaType::json()
                     ->schema(UserSchema::ref())

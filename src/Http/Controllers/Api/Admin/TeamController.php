@@ -3,6 +3,7 @@
 namespace BrilliantPortal\Framework\Http\Controllers\Api\Admin;
 
 use App\Models\Team;
+use App\Models\TeamInvitation;
 use App\Models\User;
 use BrilliantPortal\Framework\Http\Controllers\Api\Controller;
 use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
@@ -10,7 +11,14 @@ use BrilliantPortal\Framework\Http\Resources\JsonResource;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+use Laravel\Jetstream\Contracts\AddsTeamMembers;
+use Laravel\Jetstream\Contracts\InvitesTeamMembers;
+use Laravel\Jetstream\Contracts\RemovesTeamMembers;
+use Laravel\Jetstream\Features;
+use Laravel\Jetstream\Jetstream;
 use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
 
 /**
@@ -169,5 +177,136 @@ class TeamController extends Controller
         }
 
         return response()->json(new JsonResource($team));
+    }
+
+    /**
+     * Invite or directly add user to the specified team.
+     *
+     * @since 0.2.0
+     *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamInviteUserParameters")
+     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\TeamInviteUserRequestBody")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamInviteUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $teamId
+     * @return \Illuminate\Http\Response
+     */
+    public function inviteTeamMember(Request $request, $teamId)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'role' => [
+                'required',
+                'string',
+                Rule::in(collect(Jetstream::$roles)->pluck('key')),
+            ],
+        ]);
+
+        $model = Jetstream::teamModel();
+        $team = $model::whereKey($teamId)->first();
+
+        $this->authorize('addTeamMember', $team);
+
+        if (Features::sendsTeamInvitations()) {
+            app(InvitesTeamMembers::class)->invite(Auth::user(), $team, $validated['email'], $validated['role']);
+            $message = 'Invited '.$validated['email'].' to '.$team->name.' with role '.$validated['role'];
+        } else {
+            app(AddsTeamMembers::class)->add(Auth::user(), $team, $validated['email'], $validated['role']);
+            $message = 'Added '.$validated['email'].' to '.$team->name.' with role '.$validated['role'];
+        }
+
+        $invitation = TeamInvitation::query()
+            ->where('team_id', $team->id)
+            ->where('email', $validated['email'])
+            ->limit(1)
+            ->latest()
+            ->first('id');
+
+        return response()->json([
+            'id' => $invitation->id,
+            'team_id' => $teamId,
+            'email' => $validated['email'],
+            'role' => $validated['role'],
+            'message' => $message,
+        ], 201);
+    }
+
+    /**
+     * Cancel invitation for user to the specified team.
+     *
+     * @since 0.2.0
+     *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamCancelInvitationParameters")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $teamId
+     * @param int $invitationId
+     * @return \Illuminate\Http\Response
+     */
+    public function cancelTeamMemberInvitation(Request $request, $teamId, $invitationId)
+    {
+        $teamModel = Jetstream::teamModel();
+        $team = $teamModel::whereKey($teamId)->first();
+
+        $this->authorize('removeTeamMember', $team);
+
+        $invitationModel = Jetstream::teamInvitationModel();
+        $invitationModel::whereKey($invitationId)->delete();
+
+        return response()->json([
+            'id' => $invitationId,
+            'team_id' => $teamId,
+            'message' => 'Canceled invitation',
+        ]);
+    }
+
+    /**
+     * Remove user from the specified team.
+     *
+     * @since 0.2.0
+     *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamRemoveUserParameters")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $team
+     * @param int $user
+     * @param \Laravel\Jetstream\Contracts\RemovesTeamMembers $remover
+     * @return \Illuminate\Http\Response
+     */
+    public function removeUser(Request $request, $teamId, $userId, RemovesTeamMembers $remover)
+    {
+        $teamModel = Jetstream::teamModel();
+        $team = $teamModel::whereKey($teamId)->first();
+
+        $this->authorize('removeTeamMember', $team);
+
+        $userModel = Jetstream::userModel();
+        $user = $userModel::whereKey($userId)->first();
+
+        $remover->remove(Auth::user(), $team, $user);
+
+        return response()->json([
+            'team_id' => $team->id,
+            'user_id' => $user->id,
+            'message' => 'Removed user',
+        ]);
     }
 }
