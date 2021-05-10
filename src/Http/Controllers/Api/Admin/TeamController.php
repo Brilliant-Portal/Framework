@@ -184,6 +184,15 @@ class TeamController extends Controller
      *
      * @since 0.2.0
      *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamInviteUserParameters")
+     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\TeamInviteUserRequestBody")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamInviteUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
+     *
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
      * @return \Illuminate\Http\Response
@@ -220,7 +229,10 @@ class TeamController extends Controller
             ->first('id');
 
         return response()->json([
-            'invitation_id' => $invitation->id,
+            'id' => $invitation->id,
+            'team_id' => $teamId,
+            'email' => $validated['email'],
+            'role' => $validated['role'],
             'message' => $message,
         ], 201);
     }
@@ -229,6 +241,14 @@ class TeamController extends Controller
      * Cancel invitation for user to the specified team.
      *
      * @since 0.2.0
+     *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamCancelInvitationParameters")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
      *
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
@@ -245,13 +265,25 @@ class TeamController extends Controller
         $invitationModel = Jetstream::teamInvitationModel();
         $invitationModel::whereKey($invitationId)->delete();
 
-        return response()->json(['message' => 'Removed invitation']);
+        return response()->json([
+            'id' => $invitationId,
+            'team_id' => $teamId,
+            'message' => 'Canceled invitation',
+        ]);
     }
 
     /**
      * Remove user from the specified team.
      *
      * @since 0.2.0
+     *
+     * @OpenApi\Operation(tags="Admin: Team Management")
+     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamRemoveUserParameters")
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
+     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
      *
      * @param \Illuminate\Http\Request $request
      * @param int $team
@@ -271,6 +303,10 @@ class TeamController extends Controller
 
         $remover->remove(Auth::user(), $team, $user);
 
-        return response()->json(['message' => 'Removed user']);
+        return response()->json([
+            'team_id' => $team->id,
+            'user_id' => $user->id,
+            'message' => 'Removed user',
+        ]);
     }
 }

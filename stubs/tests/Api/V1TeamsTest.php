@@ -606,6 +606,99 @@ class V1TeamsTest extends TestCase
             ->assertJsonPath('message', 'No query results for model [App\\Models\\Team] 10');
     }
 
+    public function testCanInviteUsersFailAuthorization()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        /** @var \App\Models\Team */
+        $team2 = Team::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+        $email = $this->faker->safeEmail;
+
+        $this
+            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+                'role' => $role,
+                'email' => $email,
+            ])
+            ->assertUnauthorized();
+
+        Sanctum::actingAs($team2->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $this
+            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+                'role' => $role,
+                'email' => $email,
+            ])
+            ->assertForbidden();
+
+        if (Features::sendsTeamInvitations()) {
+            $this->assertDatabaseMissing('team_invitations', [
+                'team_id' => $team->id,
+                'email' => $email,
+                'role' => $role,
+            ]);
+        } else {
+            $this->assertDatabaseMissing('team_user', [
+                'team_id' => $team->id,
+                'user_id' => User::whereEmail($email)->first()->id,
+                'role' => $role,
+            ]);
+        }
+    }
+
+    public function testCanInviteUsersFailValidation()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        Sanctum::actingAs($team->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $this
+            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [])
+            ->assertJsonValidationErrors([
+                'role' => 'The role field is required.',
+                'email' => 'The email field is required.',
+            ]);
+
+        if (Features::sendsTeamInvitations()) {
+            $this->assertDatabaseMissing('team_invitations', [
+                'team_id' => $team->id,
+            ]);
+        } else {
+            $this->assertDatabaseMissing('team_user', [
+                'team_id' => $team->id,
+            ]);
+        }
+    }
+
     public function testCanInviteUsers()
     {
         if (! Features::hasApiFeatures()) {
@@ -643,12 +736,77 @@ class V1TeamsTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonStructure([
-                'invitation_id',
+                'id',
                 'message',
             ])
             ->assertJson([
+                'team_id' => $team->id,
+                'email' => $email,
+                'role' => $role,
                 'message' => $expectedMessage,
             ]);
+
+        if (Features::sendsTeamInvitations()) {
+            $this->assertDatabaseHas('team_invitations', [
+                'team_id' => $team->id,
+                'email' => $email,
+                'role' => $role,
+            ]);
+        } else {
+            $this->assertDatabaseHas('team_user', [
+                'team_id' => $team->id,
+                'user_id' => User::whereEmail($email)->first()->id,
+                'role' => $role,
+            ]);
+        }
+    }
+
+
+    public function testCanCancelTeamInvitationFailAuthorization()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        /** @var \App\Models\Team */
+        $team2 = Team::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+        $email = $this->faker->safeEmail;
+
+        $teamInvitation = new TeamInvitation();
+        $teamInvitation->forceFill([
+            'team_id' => $team->id,
+            'email' => $email,
+            'role' => $role,
+        ]);
+        $teamInvitation->save();
+
+        $this->assertDatabaseHas('team_invitations', [
+            'id' => $teamInvitation->id,
+        ]);
+
+        $this
+            ->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id)
+            ->assertUnauthorized();
+
+        Sanctum::actingAs($team2->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $this
+            ->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id)
+            ->assertForbidden();
 
         if (Features::sendsTeamInvitations()) {
             $this->assertDatabaseHas('team_invitations', [
@@ -709,11 +867,66 @@ class V1TeamsTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
-                'message' => 'Removed invitation',
+                'team_id' => $team->id,
+                'message' => 'Canceled invitation',
             ]);
 
         $this->assertDatabaseMissing('team_invitations', [
             'id' => $teamInvitation->id,
+        ]);
+    }
+
+
+    public function testCanRemoveUsersFailAuthorization()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        /** @var \App\Models\Team */
+        $team = Team::factory()->create();
+
+        /** @var \App\Models\Team */
+        $team2 = Team::factory()->create();
+
+        /** @var \App\Models\User */
+        $user = User::factory()->create();
+
+        $role = $this->faker->randomElement(Jetstream::$roles)->key;
+
+        $team->users()->attach($user, [
+            'role' => $role,
+        ]);
+
+        $this->assertDatabaseHas('team_user', [
+            'team_id' => $team->id,
+            'user_id' => $user->id,
+            'role' => $role,
+        ]);
+
+        $this
+            ->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id)
+            ->assertUnauthorized();
+
+        Sanctum::actingAs($team2->owner, [
+            'admin:create',
+            'admin:read',
+            'admin:update',
+            'admin:delete',
+        ]);
+
+        $this
+            ->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id)
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('team_user', [
+            'team_id' => $team->id,
+            'user_id' => $user->id,
+            'role' => $role,
         ]);
     }
 
@@ -761,6 +974,8 @@ class V1TeamsTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson([
+                'team_id' => $team->id,
+                'user_id' => $user->id,
                 'message' => 'Removed user',
             ]);
 

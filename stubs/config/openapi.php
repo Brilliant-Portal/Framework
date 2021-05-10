@@ -28,6 +28,11 @@ return [
                 ],
 
                 [
+                    'name' => 'Admin: Team Management',
+                    'description' => 'Users can be invited or removed from teams.',
+                ],
+
+                [
                     'name' => 'Admin: User',
                     'description' => 'Users can belong to zero or more teams. A user may have different roles in different teams determining what capabilities they should have.',
                 ],
