@@ -5,6 +5,8 @@ All notable changes to `brilliant-portal/framework` will be documented in this f
 ## 1.0.0 — 2021-05-11
 
 - Feature: PHP 8.0 support
+- Feature: simplify OpenAPI class names
+- Feature: improve IDE handling for stubs
 
 ## 0.2.0 — 2021-05-10
 
