@@ -32,18 +32,18 @@ class InstallCommand extends Command
 
         if ($this->option('teams')) {
             // Actions.
-            copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.php', app_path('Actions/Fortify/CreateNewUser.php'));
+            copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
-            copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
-            copy(__DIR__.'/../../stubs/app/Models/Team.php', app_path('Models/Team.php'));
-            copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.php', app_path('Models/User.php'));
+            copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
+            copy(__DIR__.'/../../stubs/app/Models/Team.stub.php', app_path('Models/Team.php'));
+            copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
-            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.php', app_path('Providers/AuthServiceProvider.php'));
+            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Tests.
-            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.php', base_path('tests/Feature/EnsureHasNoTeam.php'));
+            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.stub.php', base_path('tests/Feature/EnsureHasNoTeam.php'));
 
             // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
@@ -92,7 +92,7 @@ class InstallCommand extends Command
          * OpenAPI docs.
          */
         if ($this->option('api')) {
-            copy(__DIR__.'/../../stubs/config/openapi.php', config_path('openapi.php'));
+            copy(__DIR__.'/../../stubs/config/openapi.stub.php', config_path('openapi.php'));
 
             $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
             \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
@@ -104,9 +104,9 @@ class InstallCommand extends Command
                     throw $e;
                 }
             }
-            copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.php', base_path('tests/Feature/Api/DocumentationTest.php'));
-            copy(__DIR__.'/../../stubs/tests/Api/V1UsersTest.php', base_path('tests/Feature/Api/V1UsersTest.php'));
-            copy(__DIR__.'/../../stubs/tests/Api/V1TeamsTest.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.stub.php', base_path('tests/Feature/Api/DocumentationTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/V1UsersTest.stub.php', base_path('tests/Feature/Api/V1UsersTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/V1TeamsTest.stub.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
         }
     }
 

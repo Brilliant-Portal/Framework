@@ -8,6 +8,10 @@ use App\Models\User;
 use BrilliantPortal\Framework\Http\Controllers\Api\Controller;
 use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
+use BrilliantPortal\Framework\OpenApi\Parameters\Admin as Parameters;
+use BrilliantPortal\Framework\OpenApi\RequestBodies\Admin as RequestBodies;
+use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
+use BrilliantPortal\Framework\OpenApi\Responses as GeneralResponses;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -19,15 +23,15 @@ use Laravel\Jetstream\Contracts\InvitesTeamMembers;
 use Laravel\Jetstream\Contracts\RemovesTeamMembers;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Jetstream;
-use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 /**
  * Team controller.
  *
  * @since 0.1.0
  *
- * @OpenApi\PathItem()
  */
+ #[OpenApi\PathItem]
 class TeamController extends Controller
 {
     /**
@@ -51,13 +55,12 @@ class TeamController extends Controller
     /**
      * Display a listing of all teams.
      *
-     * @OpenApi\Operation(tags="Admin: Team")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamsListResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     *
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Response(factory: AdminResponses\TeamsList::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
     public function index()
     {
         return new DataWrapCollection(Team::all());
@@ -66,16 +69,15 @@ class TeamController extends Controller
     /**
      * Create a new team.
      *
-     * @OpenApi\Operation(tags="Admin: Team")
-     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\TeamCreateRequestBody")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCreateResponse", statusCode=201)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorValidationResponse", statusCode=422)
-     *
      * @param  \Illuminate\Http\Request  $request Team data.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamCreate::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -97,15 +99,14 @@ class TeamController extends Controller
     /**
      * Display the specified team.
      *
-     * @OpenApi\Operation(tags="Admin: Team")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamShowResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     *
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
     public function show(Team $team)
     {
         return response()->json(new JsonResource($team));
@@ -116,18 +117,17 @@ class TeamController extends Controller
      *
      * Update a team by supplying the changed data. Any data not in the request will remain unchanged.
      *
-     * @OpenApi\Operation(tags="Admin: Team", method="PATCH")
-     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\TeamCreateRequestBody")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamShowResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorValidationResponse", statusCode=422)
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team'], method: 'PATCH')]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function update(Request $request, Team $team)
     {
         $validated = $request->validate([
@@ -145,17 +145,16 @@ class TeamController extends Controller
     /**
      * Delete the specified team.
      *
-     * @OpenApi\Operation(tags="Admin: Team")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamDeleteResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamFailedDeleteResponse", statusCode=422)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
-     *
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Response(factory: AdminResponses\TeamDelete::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: AdminResponses\TeamFailedDelete::class, statusCode: 422)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function destroy(Team $team)
     {
         try {
@@ -184,19 +183,18 @@ class TeamController extends Controller
      *
      * @since 0.2.0
      *
-     * @OpenApi\Operation(tags="Admin: Team Management")
-     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamInviteUserParameters")
-     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\TeamInviteUserRequestBody")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamInviteUserResponse", statusCode=201)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
-     *
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team Management'])]
+    #[OpenApi\Parameters(factory: Parameters\TeamInviteUser::class)]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamInviteUser::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamInviteUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function inviteTeamMember(Request $request, $teamId)
     {
         $validated = $request->validate([
@@ -242,19 +240,18 @@ class TeamController extends Controller
      *
      * @since 0.2.0
      *
-     * @OpenApi\Operation(tags="Admin: Team Management")
-     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamCancelInvitationParameters")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
-     *
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
      * @param int $invitationId
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team Management'])]
+    #[OpenApi\Parameters(factory: Parameters\TeamCancelInvitation::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamCancelInvitationUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function cancelTeamMemberInvitation(Request $request, $teamId, $invitationId)
     {
         $teamModel = Jetstream::teamModel();
@@ -277,20 +274,19 @@ class TeamController extends Controller
      *
      * @since 0.2.0
      *
-     * @OpenApi\Operation(tags="Admin: Team Management")
-     * @OpenApi\Parameters(factory="\BrilliantPortal\Framework\OpenApi\Parameters\Admin\TeamRemoveUserParameters")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\TeamCancelInvitationUserResponse", statusCode=201)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\InternalServerErrorResponse", statusCode=500)
-     *
      * @param \Illuminate\Http\Request $request
      * @param int $team
      * @param int $user
      * @param \Laravel\Jetstream\Contracts\RemovesTeamMembers $remover
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: Team Management'])]
+    #[OpenApi\Parameters(factory: Parameters\TeamRemoveUser::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamRemoveUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function removeUser(Request $request, $teamId, $userId, RemovesTeamMembers $remover)
     {
         $teamModel = Jetstream::teamModel();
