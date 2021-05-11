@@ -73,10 +73,10 @@ class GenericController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Generic Object'])]
-    #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeParameters::class)]
-    #[OpenApi\Response(factory: Responses\GenericObjectsListResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: Responses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: Responses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
+    #[OpenApi\Response(factory: Responses\GenericObjectsList::class, statusCode: 200)]
+    #[OpenApi\Response(factory: Responses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
     public function index()
     {
         return new DataWrapCollection($this->model::all());
@@ -89,12 +89,12 @@ class GenericController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Generic Object'])]
-    #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeParameters::class)]
-    #[OpenApi\RequestBody(factory: RequestBodies\GenericObjectCreateRequestBody::class)]
-    #[OpenApi\Response(factory: Responses\GenericObjectCreateResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: Responses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: Responses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: Responses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
+    #[OpenApi\RequestBody(factory: RequestBodies\GenericObjectCreate::class)]
+    #[OpenApi\Response(factory: Responses\GenericObjectCreate::class, statusCode: 201)]
+    #[OpenApi\Response(factory: Responses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: Responses\ErrorValidation::class, statusCode: 422)]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -115,11 +115,11 @@ class GenericController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Generic Object'])]
-    #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeParameters::class)]
-    #[OpenApi\Response(factory: Responses\GenericObjectShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: Responses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: Responses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: Responses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
+    #[OpenApi\Response(factory: Responses\GenericObjectShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: Responses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: Responses\ErrorNotFound::class, statusCode: 404)]
     public function show($model)
     {
         return response()->json(new JsonResource($model));
@@ -135,13 +135,13 @@ class GenericController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Generic Object'], method: 'PATCH')]
-    #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeParameters::class)]
-    #[OpenApi\RequestBody(factory: RequestBodies\GenericObjectCreateRequestBody::class)]
-    #[OpenApi\Response(factory: Responses\GenericObjectShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: Responses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: Responses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: Responses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: Responses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
+    #[OpenApi\RequestBody(factory: RequestBodies\GenericObjectCreate::class)]
+    #[OpenApi\Response(factory: Responses\GenericObjectShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: Responses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: Responses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: Responses\ErrorValidation::class, statusCode: 422)]
     public function update(Request $request, $model)
     {
         $validated = $request->validate([
@@ -162,11 +162,11 @@ class GenericController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Generic Object'])]
-    #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeParameters::class)]
-    #[OpenApi\Response(factory: Responses\GenericObjectDeleteResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: Responses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: Responses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: Responses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
+    #[OpenApi\Response(factory: Responses\GenericObjectDelete::class, statusCode: 200)]
+    #[OpenApi\Response(factory: Responses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: Responses\ErrorNotFound::class, statusCode: 404)]
     public function destroy($model)
     {
         $model->delete();

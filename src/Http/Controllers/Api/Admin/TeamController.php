@@ -58,9 +58,9 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team'])]
-    #[OpenApi\Response(factory: AdminResponses\TeamsListResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: AdminResponses\TeamsList::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
     public function index()
     {
         return new DataWrapCollection(Team::all());
@@ -73,11 +73,11 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team'])]
-    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreateRequestBody::class)]
-    #[OpenApi\Response(factory: AdminResponses\TeamCreateResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamCreate::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -103,10 +103,10 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team'])]
-    #[OpenApi\Response(factory: AdminResponses\TeamShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
     public function show(Team $team)
     {
         return response()->json(new JsonResource($team));
@@ -122,12 +122,12 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team'], method: 'PATCH')]
-    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreateRequestBody::class)]
-    #[OpenApi\Response(factory: AdminResponses\TeamShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function update(Request $request, Team $team)
     {
         $validated = $request->validate([
@@ -149,12 +149,12 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team'])]
-    #[OpenApi\Response(factory: AdminResponses\TeamDeleteResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: AdminResponses\TeamFailedDeleteResponse::class, statusCode: 422)]
-    #[OpenApi\Response(factory: GeneralResponses\InternalServerErrorResponse::class, statusCode: 500)]
+    #[OpenApi\Response(factory: AdminResponses\TeamDelete::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: AdminResponses\TeamFailedDelete::class, statusCode: 422)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function destroy(Team $team)
     {
         try {
@@ -188,13 +188,13 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
-    #[OpenApi\Parameters(factory: Parameters\TeamInviteUserParameters::class)]
-    #[OpenApi\RequestBody(factory: RequestBodies\TeamInviteUserRequestBody::class)]
-    #[OpenApi\Response(factory: AdminResponses\TeamInviteUserResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GeneralResponses\InternalServerErrorResponse::class, statusCode: 500)]
+    #[OpenApi\Parameters(factory: Parameters\TeamInviteUser::class)]
+    #[OpenApi\RequestBody(factory: RequestBodies\TeamInviteUser::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamInviteUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function inviteTeamMember(Request $request, $teamId)
     {
         $validated = $request->validate([
@@ -246,12 +246,12 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
-    #[OpenApi\Parameters(factory: Parameters\TeamCancelInvitationParameters::class)]
-    #[OpenApi\Response(factory: AdminResponses\TeamCancelInvitationUserResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GeneralResponses\InternalServerErrorResponse::class, statusCode: 500)]
+    #[OpenApi\Parameters(factory: Parameters\TeamCancelInvitation::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamCancelInvitationUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function cancelTeamMemberInvitation(Request $request, $teamId, $invitationId)
     {
         $teamModel = Jetstream::teamModel();
@@ -281,12 +281,12 @@ class TeamController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
-    #[OpenApi\Parameters(factory: Parameters\TeamRemoveUserParameters::class)]
-    #[OpenApi\Response(factory: AdminResponses\TeamRemoveUserResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GeneralResponses\InternalServerErrorResponse::class, statusCode: 500)]
+    #[OpenApi\Parameters(factory: Parameters\TeamRemoveUser::class)]
+    #[OpenApi\Response(factory: AdminResponses\TeamRemoveUser::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\InternalServerError::class, statusCode: 500)]
     public function removeUser(Request $request, $teamId, $userId, RemovesTeamMembers $remover)
     {
         $teamModel = Jetstream::teamModel();

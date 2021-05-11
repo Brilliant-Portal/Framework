@@ -46,9 +46,9 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: User'])]
-    #[OpenApi\Response(factory: AdminResponses\UsersListResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: AdminResponses\UsersList::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
     public function index()
     {
         return new DataWrapCollection(User::all());
@@ -61,11 +61,11 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: User'])]
-    #[OpenApi\RequestBody(factory: RequestBodies\UserCreateRequestBody::class)]
-    #[OpenApi\Response(factory: AdminResponses\UserCreateResponse::class, statusCode: 201)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\UserCreate::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -88,10 +88,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: User'])]
-    #[OpenApi\Response(factory: AdminResponses\UserShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: AdminResponses\UserShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
     public function show(User $user)
     {
         return response()->json(new JsonResource($user));
@@ -107,12 +107,12 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: User'], method: 'PATCH')]
-    #[OpenApi\RequestBody(factory: RequestBodies\UserCreateRequestBody::class)]
-    #[OpenApi\Response(factory: AdminResponses\UserShowResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
+    #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
+    #[OpenApi\Response(factory: AdminResponses\UserShow::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -134,10 +134,10 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     #[OpenApi\Operation(tags: ['Admin: User'])]
-    #[OpenApi\Response(factory: AdminResponses\UserDeleteResponse::class, statusCode: 200)]
-    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
-    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
-    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: AdminResponses\UserDelete::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFound::class, statusCode: 404)]
     public function destroy(User $user)
     {
         $user->delete();
