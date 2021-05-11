@@ -5,19 +5,21 @@ namespace BrilliantPortal\Framework\Http\Controllers\Api\Admin;
 use BrilliantPortal\Framework\Http\Controllers\Api\Controller;
 use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
+use BrilliantPortal\Framework\OpenApi\RequestBodies\Admin as RequestBodies;
+use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
+use BrilliantPortal\Framework\OpenApi\Responses as GeneralResponses;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Vyuldashev\LaravelOpenApi\Annotations as OpenApi;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 /**
  * User controller.
  *
  * @since 0.1.0
- *
- * @OpenApi\PathItem()
  */
+#[OpenApi\PathItem()]
 class UserController extends Controller
 {
     /**
@@ -41,13 +43,12 @@ class UserController extends Controller
     /**
      * Display a listing of all users.
      *
-     * @OpenApi\Operation(tags="Admin: User")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\UsersListResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     *
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Response(factory: AdminResponses\UsersListResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
     public function index()
     {
         return new DataWrapCollection(User::all());
@@ -56,16 +57,15 @@ class UserController extends Controller
     /**
      * Create a new user.
      *
-     * @OpenApi\Operation(tags="Admin: User")
-     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\UserCreateRequestBody")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\UserCreateResponse", statusCode=201)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorValidationResponse", statusCode=422)
-     *
      * @param  \Illuminate\Http\Request  $request User data.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\RequestBody(factory: RequestBodies\UserCreateRequestBody::class)]
+    #[OpenApi\Response(factory: AdminResponses\UserCreateResponse::class, statusCode: 201)]
+    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -84,15 +84,14 @@ class UserController extends Controller
     /**
      * Display the specified user.
      *
-     * @OpenApi\Operation(tags="Admin: User")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\UserShowResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     *
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Response(factory: AdminResponses\UserShowResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
     public function show(User $user)
     {
         return response()->json(new JsonResource($user));
@@ -103,18 +102,17 @@ class UserController extends Controller
      *
      * Update a user by supplying the changed data. Any data not in the request will remain unchanged.
      *
-     * @OpenApi\Operation(tags="Admin: User", method="PATCH")
-     * @OpenApi\RequestBody(factory="\BrilliantPortal\Framework\OpenApi\RequestBodies\Admin\UserCreateRequestBody")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\UserShowResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorValidationResponse", statusCode=422)
-     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: User'], method: 'PATCH')]
+    #[OpenApi\RequestBody(factory: RequestBodies\UserCreateRequestBody::class)]
+    #[OpenApi\Response(factory: AdminResponses\UserShowResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorValidationResponse::class, statusCode: 422)]
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -132,15 +130,14 @@ class UserController extends Controller
     /**
      * Delete the specified user.
      *
-     * @OpenApi\Operation(tags="Admin: User")
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\Admin\UserDeleteResponse", statusCode=200)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\UnauthenticatedResponse", statusCode=401)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ForbiddenResponse", statusCode=403)
-     * @OpenApi\Response(factory="\BrilliantPortal\Framework\OpenApi\Responses\ErrorNotFoundResponse", statusCode=404)
-     *
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
+    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Response(factory: AdminResponses\UserDeleteResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: GeneralResponses\UnauthenticatedResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: GeneralResponses\ForbiddenResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: GeneralResponses\ErrorNotFoundResponse::class, statusCode: 404)]
     public function destroy(User $user)
     {
         $user->delete();
