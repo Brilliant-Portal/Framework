@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+## 1.0.0 — 2021-05-11
+
+- Feature: PHP 8.0 support
+
 ## 0.2.0 — 2021-05-10
 
 - Feature: add team and user invitation API endpoints and documentation

@@ -10,6 +10,13 @@ Out of the box, Jetstream assumes that every user will have a personal team and 
 
 BrilliantPortal Framework also installs a set of tests for features it provides.
 
+## PHP Support Matrix
+
+| PHP Version | Version |
+|------------:|--------:|
+|         8.0 |  1.x.x  |
+|         7.4 |  0.1.x  |
+
 ## Installation
 
 Install the package via composer with a custom repository.
