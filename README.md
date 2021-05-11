@@ -33,7 +33,7 @@ Install the package via composer with a custom repository.
 composer require brilliant-portal/framework
 
 # Run installation steps.
-php artisan brilliant-portal-framework:install
+php artisan brilliant-portal:install
 # Available ptions:
 # --stack=livewire|inertia (default livewire)
 # --teams (default disabled)
