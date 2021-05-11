@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -29,7 +30,10 @@ class DocumentationTest extends TestCase
             return $this->markTestSkipped('Teams support is not enabled.');
         }
 
+        $team = Team::factory()->create();
         $user = User::factory()->create();
+
+        $team->users()->attach($user, ['role' => 'editor']);
 
         $this
             ->actingAs($user)

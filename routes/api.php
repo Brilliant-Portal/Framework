@@ -3,6 +3,7 @@
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\TeamController;
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\UserController;
 use BrilliantPortal\Framework\Http\Controllers\Api\GenericController;
+use BrilliantPortal\Framework\Http\Middleware\EnsureHasTeam;
 use Illuminate\Support\Facades\Route;
 use Vyuldashev\LaravelOpenApi\Generator;
 
@@ -45,7 +46,7 @@ Route::name('api.')
 /**
  * OpenAPI documentation.
  */
-Route::middleware(['web', 'auth:sanctum', 'can:see-api-docs'])
+Route::middleware(['web', EnsureHasTeam::class, 'auth:sanctum', 'can:see-api-docs'])
     ->get('/dashboard/api-documentation', function (Generator $generator) {
         return view('brilliant-portal-framework::api.documentation', ['spec' => $generator->generate()]);
     })
