@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.2.0 — 2021-05-12
+
+- Feature: move some installation methods to a base file for use by other BrilliantPortal packages
+
 # 1.1.0 — 2021-05-12
 
 - Feature: track and report on modified vendor files for package maintainability
