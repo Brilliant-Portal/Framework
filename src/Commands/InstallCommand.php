@@ -117,6 +117,27 @@ class InstallCommand extends Command
         }
 
         /**
+         * Dev dependencies.
+         */
+        $devDependencies = [];
+        if ($this->confirm('Would you like to install barryvdh/laravel-ide-helper as a dev dependency?', true)) {
+            $devDependencies[] = 'barryvdh/laravel-ide-helper';
+        }
+        if ($this->confirm('Would you like to install barryvdh/laravel-debugbar as a dev dependency?', true)) {
+            $devDependencies[] = 'barryvdh/laravel-debugbar';
+        }
+        if ($devDependencies) {
+            $this->info('Installing dev dependencies…');
+            $composer = new Process(array_merge(['composer', 'require', '--dev'], $devDependencies));
+            $composer->run();
+            if ($composer->isSuccessful()) {
+                $this->info($composer->getOutput());
+            } else {
+                $this->error($composer->getErrorOutput());
+            }
+        }
+
+        /**
          * Modified vendor files.
          */
         if ($this->changedVendorFiles) {
