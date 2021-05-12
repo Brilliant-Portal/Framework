@@ -11,7 +11,10 @@
     "authors": [
         {
             "name": "LuminFire",
-            "email": "help@luminfire.com",
+            "email": "help@luminfire.com"
+        },
+        {
+            "name": "Andrew Minion",
             "role": "Developer"
         }
     ],
