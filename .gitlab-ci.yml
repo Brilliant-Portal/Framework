@@ -25,7 +25,7 @@ include:
     file:
       - 'build/composer-package.yml'
 
-test:phpn_unit:
+test:php_unit:
   stage: test
   resource_group: test
   tags:
