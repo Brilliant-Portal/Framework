@@ -1,6 +1,6 @@
 # Publishes a composer package and deploys documentation
-# See https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/composer-package
-# See also https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/wp-plugin
+# See https://git.luminfire.net/templates/gitlab/ci-templates/-/tree/master/composer-package
+# See also https://git.luminfire.net/templates/gitlab/ci-templates/-/tree/master/wp-plugin
 #
 # See also:
 # - https://docs.gitlab.com/ee/user/packages/
@@ -21,7 +21,7 @@ cache:
     - vendor
 
 include:
-  - project: 'ops/tooling/ci/gitlab-ci-templates'
+  - project: 'templates/gitlab/ci-templates'
     file:
       - 'build/composer-package.yml'
 
