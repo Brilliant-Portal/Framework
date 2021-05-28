@@ -1,3 +1,5 @@
+[![pipeline status](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/badges/master/pipeline.svg)](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/commits/master) [![coverage report](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/badges/master/coverage.svg)](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/commits/master)
+
 [[_TOC_]]
 
 # BrilliantPortal
