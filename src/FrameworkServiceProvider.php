@@ -60,7 +60,11 @@ class FrameworkServiceProvider extends PackageServiceProvider
          */
         if (Features::api()) {
             Gate::define('see-api-docs', function (User $user) {
-                return $user->hasTeamRole($user->currentTeam, 'admin');
+                if (Features::teams()) {
+                    return $user->is_super_admin || $user->hasTeamRole($user->currentTeam, 'admin');
+                } else {
+                    return $user->is_super_admin;
+                }
             });
 
             config(['openapi.collections.default.security' => [
