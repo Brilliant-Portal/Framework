@@ -1,6 +1,6 @@
 # Publishes a composer package and deploys documentation
-# See https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/composer-package
-# See also https://git.luminfire.net/ops/tooling/ci/gitlab-ci-general/-/tree/master/wp-plugin
+# See https://git.luminfire.net/templates/gitlab/ci-templates/-/tree/master/composer-package
+# See also https://git.luminfire.net/templates/gitlab/ci-templates/-/tree/master/wp-plugin
 #
 # See also:
 # - https://docs.gitlab.com/ee/user/packages/
@@ -21,18 +21,14 @@ cache:
     - vendor
 
 include:
-  - project: 'ops/tooling/ci/gitlab-ci-templates'
+  - project: 'templates/gitlab/ci-templates'
     file:
       - 'build/composer-package.yml'
+      - 'test/phpunit.yml'
 
-test:phpn_unit:
-  stage: test
-  resource_group: test
+test:unit-tests:
   tags:
     - docker
   image: edbizarro/gitlab-ci-pipeline-php:8.0-fpm
-  script:
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
-    - ./vendor/phpunit/phpunit/phpunit -v --coverage-text --colors=never --stderr
-  interruptible: true
-
+  before_script:
+    - composer config http-basic.git.luminfire.net ___token___ "$PERSONAL_ACCESS_TOKEN"

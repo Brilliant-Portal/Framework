@@ -60,7 +60,11 @@ class FrameworkServiceProvider extends PackageServiceProvider
          */
         if (Features::api()) {
             Gate::define('see-api-docs', function (User $user) {
-                return $user->hasTeamRole($user->currentTeam, 'admin');
+                if (Features::teams()) {
+                    return $user->is_super_admin || $user->hasTeamRole($user->currentTeam, 'admin');
+                } else {
+                    return $user->is_super_admin;
+                }
             });
 
             config(['openapi.collections.default.security' => [
@@ -72,7 +76,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * Telescope.
          */
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('telescope:prune --hours='.config('telescope.prune.hours'))->daily();
+            $schedule->command('telescope:prune --hours='.config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
         });
     }
 }
