@@ -56,10 +56,14 @@ class V1UsersTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testIndex()
+    public function testIndexAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -112,7 +116,7 @@ class V1UsersTest extends TestCase
             ->assertJsonCount(5, 'data');
     }
 
-    public function testCreateFailAuthorization()
+    public function testCreateFailAuthorizationAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
@@ -140,10 +144,14 @@ class V1UsersTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testCreate()
+    public function testCreateAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -210,10 +218,11 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('API support is not enabled.');
         }
 
-        /** @var \App\Models\Team $team */
-        $team = Team::factory()->create();
+        $admin = User::factory()->create([
+            'is_super_admin' => true,
+        ]);
 
-        Sanctum::actingAs($team->owner, ['admin:create']);
+        Sanctum::actingAs($admin, ['admin:create']);
 
         $sampleUser = User::factory()->create();
 
@@ -251,10 +260,14 @@ class V1UsersTest extends TestCase
             ]);
     }
 
-    public function testFetchOneFailAuthorization()
+    public function testFetchOneFailAuthorizationAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -285,6 +298,10 @@ class V1UsersTest extends TestCase
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -329,10 +346,14 @@ class V1UsersTest extends TestCase
             ->assertJsonPath('id', $user->id);
     }
 
-    public function testUpdateFailAuthorization()
+    public function testUpdateFailAuthorizationAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -370,10 +391,14 @@ class V1UsersTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testUpdate()
+    public function testUpdateAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -422,10 +447,14 @@ class V1UsersTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testDeleteFailAuthorization()
+    public function testDeleteFailAuthorizationAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -457,10 +486,14 @@ class V1UsersTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testDelete()
+    public function testDeleteAsTeamAdmin()
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -509,8 +542,9 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('API support is not enabled.');
         }
 
-        /** @var \App\Models\Team $team */
-        $team = Team::factory()->create();
+        $admin = User::factory()->create([
+            'is_super_admin' => true,
+        ]);
 
         /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users */
         User::factory()->times(5)->create();
@@ -519,7 +553,7 @@ class V1UsersTest extends TestCase
             'id' => 10,
         ]);
 
-        Sanctum::actingAs($team->owner, [
+        Sanctum::actingAs($admin, [
             'admin:read',
             'admin:create',
             'admin:update',
