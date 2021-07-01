@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.2.1 — 202106-30
+
+- Feature: ask to install recommended dependencies
+- Bugfix: fix issue with Telescope scheduled command
+- Bugfix: tweak API docs permissions
+
 # 1.2.0 — 2021-05-12
 
 - Feature: move some installation methods to a base file for use by other BrilliantPortal packages
