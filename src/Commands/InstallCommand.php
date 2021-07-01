@@ -114,6 +114,27 @@ class InstallCommand extends BaseCommand
         }
 
         /**
+         * Recommended dependencies.
+         */
+        $recommendedDependencies = [];
+        if ($this->confirm('Would you like to install brilliant-packages/betteruptime-laravel as a dependency?', true)) {
+            $recommendedDependencies[] = 'brilliant-packages/betteruptime-laravel';
+        }
+        if ($this->confirm('Would you like to install brilliant-portal/forms as a dependency?', true)) {
+            $recommendedDependencies[] = 'brilliant-portal/forms';
+        }
+        if ($recommendedDependencies) {
+            $this->info('Installing dependencies…');
+            $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
+            $composer->run();
+            if ($composer->isSuccessful()) {
+                $this->info($composer->getOutput());
+            } else {
+                $this->error($composer->getErrorOutput());
+            }
+        }
+
+        /**
          * Dev dependencies.
          */
         $devDependencies = [];
@@ -122,6 +143,9 @@ class InstallCommand extends BaseCommand
         }
         if ($this->confirm('Would you like to install barryvdh/laravel-debugbar as a dev dependency?', true)) {
             $devDependencies[] = 'barryvdh/laravel-debugbar';
+        }
+        if ($this->confirm('Would you like to install brianium/paratest as a dev dependency?', true)) {
+            $devDependencies[] = 'brianium/paratest';
         }
         if ($devDependencies) {
             $this->info('Installing dev dependencies…');
