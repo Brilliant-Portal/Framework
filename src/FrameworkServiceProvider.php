@@ -76,7 +76,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * Telescope.
          */
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('telescope:prune --hours='.config('brilliant-portal-framework.telescope.prune.hours'))->daily();
+            $schedule->command('telescope:prune --hours='.config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
         });
     }
 }
