@@ -19,6 +19,10 @@ class DocumentationTest extends TestCase
             return $this->markTestSkipped('Teams support is not enabled.');
         }
 
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
         $this
             ->get('/dashboard/api-documentation')
             ->assertRedirect('/login');
@@ -28,6 +32,10 @@ class DocumentationTest extends TestCase
     {
         if (! Features::hasTeamFeatures()) {
             return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
         }
 
         $team = Team::factory()->create();
@@ -45,6 +53,10 @@ class DocumentationTest extends TestCase
     {
         if (! Features::hasTeamFeatures()) {
             return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
         }
 
         $user = User::factory()->withPersonalTeam()->create();
