@@ -2,6 +2,9 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.2.2 — 2021-07-01
+- Bugfix: fix OpenAPI security scheme config caching issue
+
 # 1.2.1 — 202106-30
 
 - Feature: ask to install recommended dependencies

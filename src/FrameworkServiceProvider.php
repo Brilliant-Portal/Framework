@@ -49,7 +49,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
         /**
          * Teams.
          */
-        if (Features::teams()) {
+        if (Features::hasTeamFeatures()) {
             Gate::define('super-admin', function (User $user) {
                 return $user->is_super_admin;
             });
@@ -58,7 +58,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
         /**
          * API.
          */
-        if (Features::api()) {
+        if (Features::hasApiFeatures()) {
             Gate::define('see-api-docs', function (User $user) {
                 if (Features::teams()) {
                     return $user->is_super_admin || $user->hasTeamRole($user->currentTeam, 'admin');
@@ -67,9 +67,11 @@ class FrameworkServiceProvider extends PackageServiceProvider
                 }
             });
 
-            config(['openapi.collections.default.security' => [
-                SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
-            ]]);
+            if (! $this->app->runningInConsole()) {
+                config(['openapi.collections.default.security' => [
+                    SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
+                ]]);
+            }
         }
 
         /**
