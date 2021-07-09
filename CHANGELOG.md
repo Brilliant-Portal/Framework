@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.3.1 — 2021-07-09
+
+- Bugfix: fix typo in test installation
+
 # 1.3.0 — 2021-07-09
 
 - Feature: add super-admin middleware
