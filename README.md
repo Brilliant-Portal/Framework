@@ -43,7 +43,7 @@ composer require brilliant-portal/framework
 
 # Run installation steps.
 php artisan brilliant-portal:install
-# Available ptions:
+# Available options:
 # --stack=livewire|inertia (default livewire)
 # --teams (default disabled)
 # --api (default disabled)
