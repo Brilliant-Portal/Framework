@@ -95,12 +95,11 @@ Add the `EnsureHasTeam` middleware to any routes that require a team. If the use
 # Routes file in your app.
 use BrilliantPortal\Framework\Http\Middleware\EnsureHasTeam;
 
-Route::get('/team/settings/', function () {
-    //
-})->middleware(EnsureHasTeam::class);
+Route::middleware(['auth:sanctum', EnsureHasTeam::class])
+    ->get('/team/settings/', function () {
+        //
+    });
 ```
-
-An `EnsureHasNoTeam` middleware is also available if useful.
 
 Screenshot of creating a new team:
 
@@ -122,6 +121,25 @@ The `super-admin` capability can be used in authorization checks to determine if
 if (Auth::user()->can('super-admin')) {
     // User is super-admin.
 }
+```
+
+Add the `SuperAdmin` middleware to any routes that require super-admin access. If the user is not a super-admin, they will receive a `403 Forbidden` response.
+
+```php
+# Routes file in your app.
+use BrilliantPortal\Framework\Http\Middleware\SuperAdmin;
+
+# Using class name
+Route::middleware(['auth:sanctum', SuperAdmin::class])
+    ->get('/admin/dashboard/', function () {
+        //
+    });
+
+# Using ability
+Route::middleware(['auth:sanctum', 'can:super-admin'])
+    ->get('/admin/dashboard/', function () {
+        //
+    });
 ```
 
 ## API
