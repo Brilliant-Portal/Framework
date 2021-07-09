@@ -116,6 +116,14 @@ BrilliantPortal Framework adds an `is_super_admin` column to the `users` table a
 
 Super-admins have privilges to do anything in the app, so use these permissions carefully.
 
+The `super-admin` capability can be used in authorization checks to determine if a user is a super-admin:
+
+```php
+if (Auth::user()->can('super-admin')) {
+    // User is super-admin.
+}
+```
+
 ## API
 
 ### Admin Endpoints
