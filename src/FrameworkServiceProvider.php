@@ -49,11 +49,9 @@ class FrameworkServiceProvider extends PackageServiceProvider
         /**
          * Teams.
          */
-        if (Features::hasTeamFeatures()) {
-            Gate::define('super-admin', function (User $user) {
-                return $user->is_super_admin;
-            });
-        }
+        Gate::define('super-admin', function (User $user) {
+            return $user->is_super_admin;
+        });
 
         /**
          * API.
