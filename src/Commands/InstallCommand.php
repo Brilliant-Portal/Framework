@@ -108,7 +108,7 @@ class InstallCommand extends BaseCommand
                     throw $e;
                 }
             }
-            copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.stub.php', base_path('tests/Feature/Api/ConfigCacheTest.php'));
+            copy(__DIR__.'/../../stubs/tests/Api/ConfigCacheTest.stub.php', base_path('tests/Feature/Api/ConfigCacheTest.php'));
             copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.stub.php', base_path('tests/Feature/Api/DocumentationTest.php'));
             copy(__DIR__.'/../../stubs/tests/Api/V1UsersTest.stub.php', base_path('tests/Feature/Api/V1UsersTest.php'));
             copy(__DIR__.'/../../stubs/tests/Api/V1TeamsTest.stub.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
