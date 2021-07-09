@@ -95,12 +95,11 @@ Add the `EnsureHasTeam` middleware to any routes that require a team. If the use
 # Routes file in your app.
 use BrilliantPortal\Framework\Http\Middleware\EnsureHasTeam;
 
-Route::get('/team/settings/', function () {
-    //
-})->middleware(EnsureHasTeam::class);
+Route::middleware(['auth:sanctum', EnsureHasTeam::class])
+    ->get('/team/settings/', function () {
+        //
+    });
 ```
-
-An `EnsureHasNoTeam` middleware is also available if useful.
 
 Screenshot of creating a new team:
 
@@ -112,9 +111,45 @@ Screenshot of message for joining an existing team:
 
 ### Users
 
+#### Administrators
+
 BrilliantPortal Framework adds an `is_super_admin` column to the `users` table and model. By default, it is set to `false`.
 
 Super-admins have privilges to do anything in the app, so use these permissions carefully.
+
+The `super-admin` capability can be used in authorization checks to determine if a user is a super-admin:
+
+```php
+if (Auth::user()->can('super-admin')) {
+    // User is super-admin.
+}
+```
+
+Add the `SuperAdmin` middleware to any routes that require super-admin access. If the user is not a super-admin, they will receive a `403 Forbidden` response.
+
+```php
+# Routes file in your app.
+use BrilliantPortal\Framework\Http\Middleware\SuperAdmin;
+
+# Using class name
+Route::middleware(['auth:sanctum', SuperAdmin::class])
+    ->get('/admin/dashboard/', function () {
+        //
+    });
+
+# Using ability
+Route::middleware(['auth:sanctum', 'can:super-admin'])
+    ->get('/admin/dashboard/', function () {
+        //
+    });
+```
+
+#### Passwords
+
+BrilliantPortal Framework sets some default password complexity requirements. See the [Laravel documentation](https://laravel.com/docs/8.x/validation#validating-passwords) for more information.
+
+- Production environments: minimum 8 characters, mixed case, must not exist in known breaches
+- Non-production environments: minimum 8 characters
 
 ## API
 

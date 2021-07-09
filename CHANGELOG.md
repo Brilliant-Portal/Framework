@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.3.0 — 2021-07-09
+
+- Feature: add super-admin middleware
+- Feature: enforce minimum password complexity
+
 # 1.2.3 — 2021-07-01
 
 - Bugfix: fix a Jetstream conditional
