@@ -111,6 +111,8 @@ Screenshot of message for joining an existing team:
 
 ### Users
 
+#### Administrators
+
 BrilliantPortal Framework adds an `is_super_admin` column to the `users` table and model. By default, it is set to `false`.
 
 Super-admins have privilges to do anything in the app, so use these permissions carefully.
@@ -141,6 +143,13 @@ Route::middleware(['auth:sanctum', 'can:super-admin'])
         //
     });
 ```
+
+#### Passwords
+
+BrilliantPortal Framework sets some default password complexity requirements. See the [Laravel documentation](https://laravel.com/docs/8.x/validation#validating-passwords) for more information.
+
+- Production environments: minimum 8 characters, mixed case, must not exist in known breaches
+- Non-production environments: minimum 8 characters
 
 ## API
 
