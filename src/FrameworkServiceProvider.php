@@ -78,9 +78,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
             });
 
             if (! $this->app->runningInConsole()) {
-                config(['openapi.collections.default.security' => [
-                    SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
-                ]]);
+                Framework::addApiAuthMechanism();
             }
         }
 

@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Team;
 use App\Models\User;
+use BrilliantPortal\Framework\Framework;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Jetstream\Features;
@@ -58,6 +59,8 @@ class DocumentationTest extends TestCase
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
         }
+
+        Framework::addApiAuthMechanism();
 
         $user = User::factory()->withPersonalTeam()->create();
 
