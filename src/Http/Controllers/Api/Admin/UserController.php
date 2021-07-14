@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 /**
@@ -117,7 +118,11 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'filled|string',
-            'email' => 'filled|email|unique:'.User::class.',email',
+            'email' => [
+                'filled',
+                'email',
+                Rule::unique(User::class)->ignore($user->id),
+            ],
             'external_id' => 'nullable|max:255',
         ]);
 

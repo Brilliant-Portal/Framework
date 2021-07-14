@@ -411,6 +411,7 @@ class V1UsersTest extends TestCase
 
         $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
             'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
         ]);
 
         $response
@@ -421,6 +422,7 @@ class V1UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
         ]);
     }
 
@@ -440,11 +442,55 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($superAdmin);
 
-        $this
-            ->patchJson('api/v1/admin/users/' . $user->id, [
-                'external_id' => 'ABC123',
-            ])
-            ->assertStatus(200);
+        $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonPath('id', $user->id)
+            ->assertJsonPath('name', 'John Doe');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+        ]);
+    }
+
+
+    public function testUpdateWithSameEmail()
+    {
+        if (! Features::hasApiFeatures()) {
+            return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        /** @var \App\Models\User $superAdmin */
+        $superAdmin = User::factory()->create([
+            'is_super_admin' => true,
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = User::factory()->create();
+
+        Sanctum::actingAs($superAdmin);
+
+        $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
+            'name' => 'John Doe',
+            'email' => $user->email,
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonPath('id', $user->id)
+            ->assertJsonPath('name', 'John Doe');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'name' => 'John Doe',
+            'email' => $user->email,
+        ]);
     }
 
     public function testDeleteFailAuthorizationAsTeamAdmin()
