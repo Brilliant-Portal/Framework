@@ -71,6 +71,10 @@ return [
 ];
 ```
 
+## Updating
+
+When updating BrilliantPortal Payments, you may wish to run `php artisan brilliant-portal-payments:install-tests` to install any updated tests into your app.
+
 ## Customization
 
 ### Branding
