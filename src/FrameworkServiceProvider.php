@@ -6,9 +6,8 @@ use App\Models\User;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use BrilliantPortal\Framework\Commands\InstallCommand;
+use BrilliantPortal\Framework\Commands\InstallTestsCommand;
 use BrilliantPortal\Framework\Commands\PublishBrandingCommand;
-use BrilliantPortal\Framework\OpenApi\SecuritySchemes\apiKey;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
@@ -33,6 +32,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
             ->hasViews()
             ->hasCommands(
                 InstallCommand::class,
+                InstallTestsCommand::class,
                 PublishBrandingCommand::class,
             );
     }
@@ -78,9 +78,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
             });
 
             if (! $this->app->runningInConsole()) {
-                config(['openapi.collections.default.security' => [
-                    SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
-                ]]);
+                Framework::addApiAuthMechanism();
             }
         }
 

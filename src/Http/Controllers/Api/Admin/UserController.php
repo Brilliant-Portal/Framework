@@ -12,6 +12,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 /**
@@ -71,7 +72,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:'.User::class.',email',
-            'external_id' => 'nullable|string|max:255',
+            'external_id' => 'nullable|max:255',
         ]);
 
         $user = new User($validated);
@@ -117,8 +118,12 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'filled|string',
-            'email' => 'filled|email|unique:'.User::class.',email',
-            'external_id' => 'nullable|string|max:255',
+            'email' => [
+                'filled',
+                'email',
+                Rule::unique(User::class)->ignore($user->id),
+            ],
+            'external_id' => 'nullable|max:255',
         ]);
 
         $user->fill($validated);

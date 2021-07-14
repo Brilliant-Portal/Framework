@@ -43,7 +43,7 @@ composer require brilliant-portal/framework
 
 # Run installation steps.
 php artisan brilliant-portal:install
-# Available ptions:
+# Available options:
 # --stack=livewire|inertia (default livewire)
 # --teams (default disabled)
 # --api (default disabled)
@@ -70,6 +70,10 @@ return [
     ],
 ];
 ```
+
+## Updating
+
+When updating BrilliantPortal Payments, you may wish to run `php artisan brilliant-portal-payments:install-tests` to install any updated tests into your app.
 
 ## Customization
 
