@@ -5,6 +5,7 @@ All notable changes to `brilliant-portal/framework` will be documented in this f
 # 1.3.2 — 2021-07-14
 
 - Feature: add `brilliant-portal:install-tests` artisan command to install/update tests
+- Bugfix: improve API auth key mechanism
 - Bugfix: allow user update API request including user’s email address
 
 # 1.3.1 — 2021-07-09
