@@ -3,9 +3,11 @@
 namespace BrilliantPortal\Framework\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 
 class BaseCommand extends Command
 {
+    protected Filesystem $filesystem;
     protected $changedVendorFiles = [];
 
     /**
@@ -41,7 +43,11 @@ class BaseCommand extends Command
      */
     protected function replaceInFile($search, $replace, $path)
     {
-        file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+        if (! isset($this->filesystem)) {
+            $this->filesystem = new Filesystem();
+        }
+
+        $this->filesystem->replaceInFile($search, $replace, $path);
     }
 
     /**
