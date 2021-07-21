@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.5.0 — 2021-07-21
+
+- Feature: fire the `Illuminate\Auth\Events\Registered` event when a user is created
+- Tweak: improve placement of the `is_super_admin` column on the `users` table
+- Bugfix: always add the `is_super_admin` column to the `users` table
+
 # 1.4.2 — 2021-07-21
 
 - Feature: make components more extensible
