@@ -9,6 +9,7 @@ use BrilliantPortal\Framework\OpenApi\RequestBodies\Admin as RequestBodies;
 use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
 use BrilliantPortal\Framework\OpenApi\Responses as GeneralResponses;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -78,6 +79,8 @@ class UserController extends Controller
         $user = new User($validated);
         $user->password = Hash::make(Str::random(80));
         $user->save();
+
+        event(new Registered($user));
 
         return response()->json(new JsonResource($user), 201);
     }
