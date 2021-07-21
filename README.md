@@ -85,6 +85,14 @@ To customize the branding, run this command and modify the new files in your app
 php artisan brilliant-portal:publish-branding
 ```
 
+### Views
+
+To publish all views provided by BrilliantPortal Framework, run this command and modify the new files in your application:
+
+```shell
+php artisan vendor:publish --tag brilliant-portal-framework-views
+```
+
 ### BetterUptime
 
 See https://betteruptime-laravel.brilliantpackages.com for documentation.
@@ -154,6 +162,32 @@ BrilliantPortal Framework sets some default password complexity requirements. Se
 
 - Production environments: minimum 8 characters, mixed case, must not exist in known breaches
 - Non-production environments: minimum 8 characters
+
+### Components
+
+Several handy components are provided out of the box:
+
+```blade
+<x-brilliant-portal-framework::h1>I’m an h1</x-brilliant-portal-framework::h1>
+<x-brilliant-portal-framework::h2>I’m an h2</x-brilliant-portal-framework::h2>
+<x-brilliant-portal-framework::h3>I’m an h3</x-brilliant-portal-framework::h3>
+<x-brilliant-portal-framework::h4>I’m an h4</x-brilliant-portal-framework::h4>
+<x-brilliant-portal-framework::h5>I’m an h5</x-brilliant-portal-framework::h5>
+<x-brilliant-portal-framework::h6>I’m an h6</x-brilliant-portal-framework::h6>
+
+<p class="mt-4">
+    <x-brilliant-portal-framework::button-link href="#">normal</x-brilliant-portal-framework::button-link>
+    <x-brilliant-portal-framework::button-link-success href="#">success</x-brilliant-portal-framework::button-link-success>
+    <x-brilliant-portal-framework::button-link-danger href="#">danger</x-brilliant-portal-framework::button-link-danger>
+    <x-brilliant-portal-framework::button-link-disabled href="#">disabled</x-brilliant-portal-framework::button-link-danger>
+</p>
+```
+
+Example screenshot:
+
+![components](documentation/img/components.png)
+
+To customize these, see [publishing views](#views).
 
 ## API
 

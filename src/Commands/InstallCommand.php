@@ -57,6 +57,11 @@ class InstallCommand extends BaseCommand
         }
 
         /**
+         * Tailwind config.
+         */
+        $this->replaceInFile("'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php',".PHP_EOL."        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", base_path('tailwind.config.js'));
+
+        /**
          * Telescope.
          */
         $this->callSilent('telescope:install');
