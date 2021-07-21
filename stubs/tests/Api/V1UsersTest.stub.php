@@ -4,9 +4,11 @@ namespace Tests\Feature\Api;
 
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Event;
 use Laravel\Jetstream\Features;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -154,6 +156,8 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('Teams support is not enabled.');
         }
 
+        Event::fake();
+
         /** @var \App\Models\Team $team */
         $team = Team::factory()->create();
 
@@ -177,6 +181,8 @@ class V1UsersTest extends TestCase
 
         $newUserId = $response->baseResponse->getData()->id;
 
+        Event::assertDispatched(Registered::class);
+
         $this->assertDatabaseHas('users', [
             'id' => $newUserId,
             'name' => $sampleUser->name,
@@ -195,6 +201,8 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('API support is not enabled.');
         }
 
+        Event::fake();
+
         /** @var \App\Models\User $superAdmin */
         $superAdmin = User::factory()->create([
             'is_super_admin' => true,
@@ -210,6 +218,8 @@ class V1UsersTest extends TestCase
                 'email' => $sampleUser->email,
             ])
             ->assertStatus(201);
+
+        Event::assertDispatched(Registered::class);
     }
 
     public function testCreateFailValidation()
