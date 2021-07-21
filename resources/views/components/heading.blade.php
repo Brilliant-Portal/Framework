@@ -2,14 +2,19 @@
 {{ $attributes
     ->except([
         'element',
-        'text',
+        'margin',
+        'padding',
+        'textSize',
+        'textColor',
         'other',
     ])
     ->class([
         $margin ?? 'mt-4 mb-4',
+        $padding ?? '',
         'font-semibold',
-        $text ?? 'text-3xl',
-        'text-gray-800 leading-tight',
+        $textSize ?? 'text-3xl',
+        $textColor ?? 'text-gray-800',
+        'leading-tight',
         $other ?? '',
     ])
 }}>
