@@ -69,8 +69,8 @@ class BaseCommand extends Command
      */
     protected function appendToEnv(...$content): void
     {
-        $existingEnvContent = $this->getFilesystem()->get('.env');
-        $existingExampleContent = $this->getFilesystem()->get('.env');
+        $existingEnvContent = $this->getFilesystem()->get(base_path('.env'));
+        $existingExampleContent = $this->getFilesystem()->get(base_path('.env.example'));
 
         $envContent = collect($content)
             ->filter(function ($string) use ($existingEnvContent) {
