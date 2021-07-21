@@ -5,7 +5,7 @@ namespace BrilliantPortal\Framework\Tests;
 use BrilliantPortal\Framework\Commands\BaseCommand;
 use Illuminate\Filesystem\Filesystem;
 
-class InstallCommand extends TestCase
+class InstallCommandTest extends TestCase
 {
     public function test_env_keys()
     {
