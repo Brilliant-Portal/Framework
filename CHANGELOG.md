@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.4.0 — 2021-07-21
+
+- Feature: add heading and button components
+- Feature: add env keys for dependencies
+
 # 1.3.2 — 2021-07-14
 
 - Feature: add `brilliant-portal:install-tests` artisan command to install/update tests

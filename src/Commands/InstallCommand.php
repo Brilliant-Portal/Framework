@@ -3,6 +3,7 @@
 namespace BrilliantPortal\Framework\Commands;
 
 use ErrorException;
+use Illuminate\Support\Arr;
 use Symfony\Component\Process\Process;
 
 class InstallCommand extends BaseCommand
@@ -55,6 +56,11 @@ class InstallCommand extends BaseCommand
         if ($this->option('api')) {
             $this->replaceInFile('// Features::api(),', 'Features::api(),', config_path('jetstream.php'));
         }
+
+        /**
+         * Tailwind config.
+         */
+        $this->replaceInFile("'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php',".PHP_EOL."        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", base_path('tailwind.config.js'));
 
         /**
          * Telescope.
@@ -118,19 +124,28 @@ class InstallCommand extends BaseCommand
         /**
          * Recommended dependencies.
          */
-        $recommendedDependencies = [];
-        if ($this->confirm('Would you like to install brilliant-packages/betteruptime-laravel as a dependency?', true)) {
-            $recommendedDependencies[] = 'brilliant-packages/betteruptime-laravel';
-        }
-        if ($this->confirm('Would you like to install brilliant-portal/forms as a dependency?', true)) {
-            $recommendedDependencies[] = 'brilliant-portal/forms';
-        }
-        if ($recommendedDependencies) {
+        $recommendedDependencies = $this->choice(
+            'Choose the dependencies you would like to install separated by commas:',
+            [
+                'None',
+                'brilliant-packages/betteruptime-laravel',
+                'brilliant-portal/forms',
+            ],
+            null,
+            null,
+            true
+        );
+
+        if ($recommendedDependencies && ! Arr::has(array_flip($recommendedDependencies), 'None')) {
             $this->info('Installing dependencies…');
             $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
             $composer->run();
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
+
+                if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
+                    $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
+                }
             } else {
                 $this->error($composer->getErrorOutput());
             }
@@ -139,22 +154,29 @@ class InstallCommand extends BaseCommand
         /**
          * Dev dependencies.
          */
-        $devDependencies = [];
-        if ($this->confirm('Would you like to install barryvdh/laravel-ide-helper as a dev dependency?', true)) {
-            $devDependencies[] = 'barryvdh/laravel-ide-helper';
-        }
-        if ($this->confirm('Would you like to install barryvdh/laravel-debugbar as a dev dependency?', true)) {
-            $devDependencies[] = 'barryvdh/laravel-debugbar';
-        }
-        if ($this->confirm('Would you like to install brianium/paratest as a dev dependency?', true)) {
-            $devDependencies[] = 'brianium/paratest';
-        }
-        if ($devDependencies) {
+        $devDependencies = $this->choice(
+            'Choose the dev dependencies you would like to install separated by commas:',
+            [
+                'None',
+                'barryvdh/laravel-ide-helper',
+                'barryvdh/laravel-debugbar',
+                'brianium/paratest',
+            ],
+            null,
+            null,
+            true
+        );
+
+        if ($devDependencies && ! Arr::has(array_flip($devDependencies), 'None')) {
             $this->info('Installing dev dependencies…');
             $composer = new Process(array_merge(['composer', 'require', '--dev'], $devDependencies));
             $composer->run();
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
+
+                if (Arr::has(array_flip($devDependencies), 'barryvdh/laravel-debugbar')) {
+                    $this->appendToEnv('IGNITION_EDITOR=vscode');
+                }
             } else {
                 $this->error($composer->getErrorOutput());
             }

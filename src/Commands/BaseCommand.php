@@ -3,9 +3,12 @@
 namespace BrilliantPortal\Framework\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 class BaseCommand extends Command
 {
+    protected Filesystem $filesystem;
     protected $changedVendorFiles = [];
 
     /**
@@ -32,6 +35,64 @@ class BaseCommand extends Command
     }
 
     /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    private function getFilesystem(): Filesystem
+    {
+        if (! isset($this->filesystem)) {
+            $this->filesystem = new Filesystem();
+        }
+
+        return $this->filesystem;
+    }
+
+    /**
+     * Replace a given string within a given file.
+     *
+     * @param  string  $path
+     * @param  string  $content
+     * @return void
+     */
+    protected function appendToFile($path, $content)
+    {
+        $this->getFilesystem()->append($path, $content);
+    }
+
+    /**
+     * Append content to .env and .env.example.
+     *
+     * @param string[] $content
+     *
+     * @return void
+     */
+    protected function appendToEnv(...$content): void
+    {
+        $existingEnvContent = $this->getFilesystem()->get('.env');
+        $existingExampleContent = $this->getFilesystem()->get('.env');
+
+        $envContent = collect($content)
+            ->filter(function ($string) use ($existingEnvContent) {
+                return ! Str::contains($existingEnvContent, $string);
+            })
+            ->join(PHP_EOL);
+
+        $exampleContent = collect($content)
+            ->filter(function ($string) use ($existingExampleContent) {
+                return ! Str::contains($existingExampleContent, $string);
+            })
+            ->join(PHP_EOL);
+
+        if (! empty($envContent)) {
+            $this->appendToFile(base_path('.env'), PHP_EOL.$envContent.PHP_EOL);
+        }
+        if (! empty($exampleContent)) {
+            $this->appendToFile(base_path('.env.example'), PHP_EOL.$exampleContent.PHP_EOL);
+        }
+    }
+
+    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
@@ -41,7 +102,7 @@ class BaseCommand extends Command
      */
     protected function replaceInFile($search, $replace, $path)
     {
-        file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
+        $this->getFilesystem()->replaceInFile($search, $replace, $path);
     }
 
     /**
