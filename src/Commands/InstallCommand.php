@@ -127,6 +127,7 @@ class InstallCommand extends BaseCommand
         $recommendedDependencies = $this->choice(
             'Choose the dependencies you would like to install separated by commas:',
             [
+                'None',
                 'brilliant-packages/betteruptime-laravel',
                 'brilliant-portal/forms',
             ],
@@ -135,7 +136,7 @@ class InstallCommand extends BaseCommand
             true
         );
 
-        if ($recommendedDependencies) {
+        if ($recommendedDependencies && ! Arr::has(array_flip($recommendedDependencies), 'None')) {
             $this->info('Installing dependencies…');
             $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
             $composer->run();
@@ -156,6 +157,7 @@ class InstallCommand extends BaseCommand
         $devDependencies = $this->choice(
             'Choose the dev dependencies you would like to install separated by commas:',
             [
+                'None',
                 'barryvdh/laravel-ide-helper',
                 'barryvdh/laravel-debugbar',
                 'brianium/paratest',
@@ -165,14 +167,14 @@ class InstallCommand extends BaseCommand
             true
         );
 
-        if ($devDependencies) {
+        if ($devDependencies && ! Arr::has(array_flip($devDependencies), 'None')) {
             $this->info('Installing dev dependencies…');
             $composer = new Process(array_merge(['composer', 'require', '--dev'], $devDependencies));
             $composer->run();
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
 
-                if (Arr::has(array_flip($recommendedDependencies), 'barryvdh/laravel-debugbar')) {
+                if (Arr::has(array_flip($devDependencies), 'barryvdh/laravel-debugbar')) {
                     $this->appendToEnv('IGNITION_EDITOR=vscode');
                 }
             } else {
