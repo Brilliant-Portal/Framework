@@ -123,13 +123,17 @@ class InstallCommand extends BaseCommand
         /**
          * Recommended dependencies.
          */
-        $recommendedDependencies = [];
-        if ($this->confirm('Would you like to install brilliant-packages/betteruptime-laravel as a dependency?', true)) {
-            $recommendedDependencies[] = 'brilliant-packages/betteruptime-laravel';
-        }
-        if ($this->confirm('Would you like to install brilliant-portal/forms as a dependency?', true)) {
-            $recommendedDependencies[] = 'brilliant-portal/forms';
-        }
+        $recommendedDependencies = $this->choice(
+            'Choose the dependencies you would like to install separated by commas:',
+            [
+                'brilliant-packages/betteruptime-laravel',
+                'brilliant-portal/forms',
+            ],
+            null,
+            null,
+            true
+        );
+
         if ($recommendedDependencies) {
             $this->info('Installing dependencies…');
             $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
@@ -144,16 +148,18 @@ class InstallCommand extends BaseCommand
         /**
          * Dev dependencies.
          */
-        $devDependencies = [];
-        if ($this->confirm('Would you like to install barryvdh/laravel-ide-helper as a dev dependency?', true)) {
-            $devDependencies[] = 'barryvdh/laravel-ide-helper';
-        }
-        if ($this->confirm('Would you like to install barryvdh/laravel-debugbar as a dev dependency?', true)) {
-            $devDependencies[] = 'barryvdh/laravel-debugbar';
-        }
-        if ($this->confirm('Would you like to install brianium/paratest as a dev dependency?', true)) {
-            $devDependencies[] = 'brianium/paratest';
-        }
+        $devDependencies = $this->choice(
+            'Choose the dev dependencies you would like to install separated by commas:',
+            [
+                'barryvdh/laravel-ide-helper',
+                'barryvdh/laravel-debugbar',
+                'brianium/paratest',
+            ],
+            null,
+            null,
+            true
+        );
+
         if ($devDependencies) {
             $this->info('Installing dev dependencies…');
             $composer = new Process(array_merge(['composer', 'require', '--dev'], $devDependencies));
