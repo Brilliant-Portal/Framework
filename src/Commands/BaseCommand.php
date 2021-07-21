@@ -34,6 +34,32 @@ class BaseCommand extends Command
     }
 
     /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    private function getFilesystem(): Filesystem
+    {
+        if (! isset($this->filesystem)) {
+            $this->filesystem = new Filesystem();
+        }
+
+        return $this->filesystem;
+    }
+
+    /**
+     * Replace a given string within a given file.
+     *
+     * @param  string  $path
+     * @param  string  $content
+     * @return void
+     */
+    protected function appendToFile($path, $content)
+    {
+        $this->getFilesystem()->append($path, $content);
+    }
+
+    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
@@ -43,11 +69,7 @@ class BaseCommand extends Command
      */
     protected function replaceInFile($search, $replace, $path)
     {
-        if (! isset($this->filesystem)) {
-            $this->filesystem = new Filesystem();
-        }
-
-        $this->filesystem->replaceInFile($search, $replace, $path);
+        $this->getFilesystem()->replaceInFile($search, $replace, $path);
     }
 
     /**
