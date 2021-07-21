@@ -3,6 +3,7 @@
 namespace BrilliantPortal\Framework\Commands;
 
 use ErrorException;
+use Illuminate\Support\Arr;
 use Symfony\Component\Process\Process;
 
 class InstallCommand extends BaseCommand
@@ -140,6 +141,10 @@ class InstallCommand extends BaseCommand
             $composer->run();
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
+
+                if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
+                    $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
+                }
             } else {
                 $this->error($composer->getErrorOutput());
             }
@@ -166,6 +171,10 @@ class InstallCommand extends BaseCommand
             $composer->run();
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
+
+                if (Arr::has(array_flip($recommendedDependencies), 'barryvdh/laravel-debugbar')) {
+                    $this->appendToEnv('IGNITION_EDITOR=vscode');
+                }
             } else {
                 $this->error($composer->getErrorOutput());
             }

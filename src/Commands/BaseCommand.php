@@ -60,6 +60,19 @@ class BaseCommand extends Command
     }
 
     /**
+     * Append content to .env and .env.example.
+     *
+     * @param string $content
+     *
+     * @return void
+     */
+    protected function appendToEnv($content): void
+    {
+        $this->appendToFile(base_path('.env.example'), PHP_EOL.PHP_EOL.$content.PHP_EOL);
+        $this->appendToFile(base_path('.env'), PHP_EOL.PHP_EOL.$content.PHP_EOL);
+    }
+
+    /**
      * Replace a given string within a given file.
      *
      * @param  string  $search
