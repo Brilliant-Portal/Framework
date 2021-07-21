@@ -14,7 +14,7 @@ class AddSuperAdmins extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_super_admin')->default(false);
+            $table->boolean('is_super_admin')->after('remember_token')->default(false);
         });
     }
 
