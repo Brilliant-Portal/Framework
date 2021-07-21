@@ -4,6 +4,7 @@ namespace BrilliantPortal\Framework\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 class BaseCommand extends Command
 {
@@ -68,10 +69,27 @@ class BaseCommand extends Command
      */
     protected function appendToEnv(...$content): void
     {
-        $envContent = PHP_EOL.implode(PHP_EOL,$content).PHP_EOL;
+        $existingEnvContent = $this->getFilesystem()->get('.env');
+        $existingExampleContent = $this->getFilesystem()->get('.env');
 
-        $this->appendToFile(base_path('.env.example'), $envContent);
-        $this->appendToFile(base_path('.env'), $envContent);
+        $envContent = collect($content)
+            ->filter(function ($string) use ($existingEnvContent) {
+                return ! Str::contains($existingEnvContent, $string);
+            })
+            ->join(PHP_EOL);
+
+        $exampleContent = collect($content)
+            ->filter(function ($string) use ($existingExampleContent) {
+                return ! Str::contains($existingExampleContent, $string);
+            })
+            ->join(PHP_EOL);
+
+        if (! empty($envContent)) {
+            $this->appendToFile(base_path('.env'), PHP_EOL.$envContent.PHP_EOL);
+        }
+        if (! empty($exampleContent)) {
+            $this->appendToFile(base_path('.env.example'), PHP_EOL.$exampleContent.PHP_EOL);
+        }
     }
 
     /**
