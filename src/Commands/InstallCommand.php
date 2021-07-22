@@ -126,7 +126,7 @@ class InstallCommand extends BaseCommand
          * Recommended dependencies.
          */
         $recommendedDependencies = $this->choice(
-            'Choose the dependencies you would like to install separated by commas:',
+            'Choose the dependencies you would like to install separated by commas',
             [
                 'None',
                 'brilliant-packages/betteruptime-laravel',
@@ -156,7 +156,7 @@ class InstallCommand extends BaseCommand
          * Dev dependencies.
          */
         $devDependencies = $this->choice(
-            'Choose the dev dependencies you would like to install separated by commas:',
+            'Choose the dev dependencies you would like to install separated by commas',
             [
                 'None',
                 'barryvdh/laravel-ide-helper',
