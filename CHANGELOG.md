@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.6.0 — 2021-07-28
+
+- Feature: add pill view components
+- Bugfix: fix text color on disabled button component
+
 # 1.5.0 — 2021-07-21
 
 - Feature: fire the `Illuminate\Auth\Events\Registered` event when a user is created

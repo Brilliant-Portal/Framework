@@ -168,6 +168,7 @@ BrilliantPortal Framework sets some default password complexity requirements. Se
 Several handy components are provided out of the box:
 
 ```blade
+{{-- Headers --}}
 <x-brilliant-portal-framework::h1>I’m an h1</x-brilliant-portal-framework::h1>
 <x-brilliant-portal-framework::h2>I’m an h2</x-brilliant-portal-framework::h2>
 <x-brilliant-portal-framework::h3>I’m an h3</x-brilliant-portal-framework::h3>
@@ -175,12 +176,45 @@ Several handy components are provided out of the box:
 <x-brilliant-portal-framework::h5>I’m an h5</x-brilliant-portal-framework::h5>
 <x-brilliant-portal-framework::h6>I’m an h6</x-brilliant-portal-framework::h6>
 
+
+{{-- Buttons --}}
 <p class="mt-4">
     <x-brilliant-portal-framework::button-link href="#">normal</x-brilliant-portal-framework::button-link>
     <x-brilliant-portal-framework::button-link-success href="#">success</x-brilliant-portal-framework::button-link-success>
     <x-brilliant-portal-framework::button-link-danger href="#">danger</x-brilliant-portal-framework::button-link-danger>
     <x-brilliant-portal-framework::button-link-disabled href="#">disabled</x-brilliant-portal-framework::button-link-danger>
 </p>
+
+{{-- Pills (Hardcoded) --}}
+<x-brilliant-portal-framework::pills.active>Active</x-brilliant-portal-framework::pills.active>
+<x-brilliant-portal-framework::pills.complete>Complete</x-brilliant-portal-framework::pills.complete>
+<x-brilliant-portal-framework::pills.inactive>Inactive</x-brilliant-portal-framework::pills.inactive>
+<x-brilliant-portal-framework::pills.on-hold>On Hold</x-brilliant-portal-framework::pills.on-hold>
+<x-brilliant-portal-framework::pills.pending>Pending</x-brilliant-portal-framework::pills.pending>
+
+
+{{-- Pills (Dynamic) --}}
+@php
+    switch ($status) {
+        case 'special':
+            $pillSlug = 'something-else';
+            break;
+
+        default:
+            $pillSlug = $status;
+            break;
+    }
+
+    $pillName = 'x-brilliant-portal-framework::pills.'.$pillSlug;
+@endphp
+<x-dynamic-component :component="$pillName">
+    {{ $status->label }}
+</x-dynamic-component>
+```
+
+```php
+// Pills (as a view).
+return view('brilliant-portal-framework::components.pills.active', ['slot' => $value]);
 ```
 
 Example screenshot:
