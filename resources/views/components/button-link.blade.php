@@ -1,4 +1,4 @@
-<button {{ $attributes->class([
+<a {{ $attributes->class([
         'inline-flex',
         'items-center',
         $margin ?? '',
@@ -36,4 +36,4 @@
     ]) }}
 >
     {{ $slot }}
-</button>
+</a>
