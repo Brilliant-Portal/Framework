@@ -42,6 +42,10 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('API support is not enabled.');
         }
 
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
         /** @var \App\Models\Team $team */
         $team = Team::factory()->create();
 
@@ -122,6 +126,10 @@ class V1UsersTest extends TestCase
     {
         if (! Features::hasApiFeatures()) {
             return $this->markTestSkipped('API support is not enabled.');
+        }
+
+        if (! Features::hasTeamFeatures()) {
+            return $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
