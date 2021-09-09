@@ -24,6 +24,12 @@ class InstallTestsCommand extends BaseCommand
             }
         }
 
+        if (Features::hasTeamFeatures() || $this->option('teams')) {
+            copy(__DIR__.'/../../stubs/tests/EnsureHasNoTeamTest.stub.php', base_path('tests/Feature/EnsureHasNoTeamTest.php'));
+        }
+
+        copy(__DIR__.'/../../stubs/tests/DeploymentTest.stub.php', base_path('tests/Feature/DeploymentTest.php'));
+
         $this->info('Copied tests to your app.');
 
         return 0;

@@ -10,7 +10,10 @@ class ConfigCacheTest extends TestCase
 {
     public function test_can_cache_config()
     {
-        $this->artisan('config:cache')->assertExitCode(0);
-        $this->artisan('config:clear')->assertExitCode(0);
+        try {
+            $this->artisan('config:cache')->assertExitCode(0);
+        } finally {
+            $this->artisan('config:clear')->assertExitCode(0);
+        }
     }
 }

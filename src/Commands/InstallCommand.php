@@ -47,9 +47,6 @@ class InstallCommand extends BaseCommand
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'f1d80a0c8a3b252187173c08952a4801683aa71136805d8b0ed100b33935fd7b');
             copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
-            // Tests.
-            copy(__DIR__.'/../../stubs/tests/livewire/EnsureHasNoTeam.stub.php', base_path('tests/Feature/EnsureHasNoTeam.php'));
-
             // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
         }
