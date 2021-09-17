@@ -1,7 +1,7 @@
 <a {{ $attributes->class([
         'inline-flex',
         'items-center',
-        $margin ?? '',
+        $margin ?? 'mb-1',
         $padding ?? 'px-4 py-2',
         $bg ?? 'bg-gray-800',
         'border',
