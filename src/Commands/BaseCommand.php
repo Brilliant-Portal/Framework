@@ -35,20 +35,6 @@ class BaseCommand extends Command
     }
 
     /**
-     * Get the filesystem instance.
-     *
-     * @return \Illuminate\Filesystem\Filesystem
-     */
-    private function getFilesystem(): Filesystem
-    {
-        if (! isset($this->filesystem)) {
-            $this->filesystem = new Filesystem();
-        }
-
-        return $this->filesystem;
-    }
-
-    /**
      * Replace a given string within a given file.
      *
      * @param  string  $path
@@ -85,10 +71,10 @@ class BaseCommand extends Command
             ->join(PHP_EOL);
 
         if (! empty($envContent)) {
-            $this->appendToFile(base_path('.env'), PHP_EOL.$envContent.PHP_EOL);
+            $this->appendToFile(base_path('.env'), PHP_EOL . $envContent . PHP_EOL);
         }
         if (! empty($exampleContent)) {
-            $this->appendToFile(base_path('.env.example'), PHP_EOL.$exampleContent.PHP_EOL);
+            $this->appendToFile(base_path('.env.example'), PHP_EOL . $exampleContent . PHP_EOL);
         }
     }
 
@@ -122,5 +108,19 @@ class BaseCommand extends Command
         if ($actualHash !== $expectedHash) {
             $this->changedVendorFiles[] = $path;
         }
+    }
+
+    /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    private function getFilesystem(): Filesystem
+    {
+        if (! isset($this->filesystem)) {
+            $this->filesystem = new Filesystem();
+        }
+
+        return $this->filesystem;
     }
 }
