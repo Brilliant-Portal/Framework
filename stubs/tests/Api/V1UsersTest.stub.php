@@ -5,9 +5,7 @@ namespace Tests\Feature\Api;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
 use Laravel\Jetstream\Features;
 use Laravel\Sanctum\Sanctum;
@@ -209,8 +207,6 @@ class V1UsersTest extends TestCase
             return $this->markTestSkipped('API support is not enabled.');
         }
 
-        Event::fake();
-
         /** @var \App\Models\User $superAdmin */
         $superAdmin = User::factory()->create([
             'is_super_admin' => true,
@@ -219,6 +215,8 @@ class V1UsersTest extends TestCase
         Sanctum::actingAs($superAdmin);
 
         $sampleUser = User::factory()->make();
+
+        Event::fake();
 
         $this
             ->postJson('api/v1/admin/users', [
