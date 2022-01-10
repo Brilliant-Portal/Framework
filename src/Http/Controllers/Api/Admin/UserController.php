@@ -2,13 +2,13 @@
 
 namespace BrilliantPortal\Framework\Http\Controllers\Api\Admin;
 
+use App\Models\User;
 use BrilliantPortal\Framework\Http\Controllers\Api\Controller;
 use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
 use BrilliantPortal\Framework\OpenApi\RequestBodies\Admin as RequestBodies;
-use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
 use BrilliantPortal\Framework\OpenApi\Responses as GeneralResponses;
-use App\Models\User;
+use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -72,7 +72,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:'.User::class.',email',
+            'email' => 'required|email|unique:' . User::class . ',email',
             'external_id' => 'nullable|max:255',
         ]);
 
