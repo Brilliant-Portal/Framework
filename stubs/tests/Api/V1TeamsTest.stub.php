@@ -5,7 +5,6 @@ namespace Tests\Feature\Api;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Jetstream\Features;
@@ -218,12 +217,12 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->getJson('api/v1/admin/teams/'.$team2->id)
+            ->getJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:update']);
         $this
-            ->getJson('api/v1/admin/teams/'.$team2->id)
+            ->getJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
     }
 
@@ -242,7 +241,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:read']);
 
-        $response = $this->getJson('api/v1/admin/teams/'.$team->id);
+        $response = $this->getJson('api/v1/admin/teams/' . $team->id);
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $team->id)
@@ -270,7 +269,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($superAdmin);
 
-        $response = $this->getJson('api/v1/admin/teams/'.$team->id);
+        $response = $this->getJson('api/v1/admin/teams/' . $team->id);
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $team->id)
@@ -295,14 +294,14 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->patchJson('api/v1/admin/teams/'.$team2->id, [
+            ->patchJson('api/v1/admin/teams/' . $team2->id, [
                 'name' => 'ABC123',
             ])
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:read']);
         $this
-            ->patchJson('api/v1/admin/teams/'.$team2->id, [
+            ->patchJson('api/v1/admin/teams/' . $team2->id, [
                 'name' => 'ABC123',
             ])
             ->assertStatus(403);
@@ -328,7 +327,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:update']);
 
-        $response = $this->patchJson('api/v1/admin/teams/'.$team->id, [
+        $response = $this->patchJson('api/v1/admin/teams/' . $team->id, [
             'name' => 'ABC123',
         ]);
 
@@ -364,7 +363,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($superAdmin, []);
         $this
-            ->patchJson('api/v1/admin/teams/'.$team->id, [
+            ->patchJson('api/v1/admin/teams/' . $team->id, [
                 'name' => 'ABC123',
             ])
             ->assertStatus(200);
@@ -385,7 +384,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:update']);
 
-        $response = $this->patchJson('api/v1/admin/teams/'.$team->id, [
+        $response = $this->patchJson('api/v1/admin/teams/' . $team->id, [
             'name' => '',
         ]);
 
@@ -419,7 +418,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:update']);
 
-        $response = $this->patchJson('api/v1/admin/teams/'.$team->id, [
+        $response = $this->patchJson('api/v1/admin/teams/' . $team->id, [
             'user_id' => $newOwner->id,
         ]);
 
@@ -459,7 +458,7 @@ class V1TeamsTest extends TestCase
         Sanctum::actingAs($superAdmin);
 
         $this
-            ->patchJson('api/v1/admin/teams/'.$team->id, [
+            ->patchJson('api/v1/admin/teams/' . $team->id, [
                 'user_id' => $newOwner->id,
             ])
             ->assertStatus(200);
@@ -483,22 +482,22 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team2->id)
+            ->deleteJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:create']);
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team2->id)
+            ->deleteJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:update']);
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team2->id)
+            ->deleteJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:delete']);
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team2->id)
+            ->deleteJson('api/v1/admin/teams/' . $team2->id)
             ->assertStatus(403);
     }
 
@@ -522,7 +521,7 @@ class V1TeamsTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:delete']);
 
-        $response = $this->deleteJson('api/v1/admin/teams/'.$team2->id);
+        $response = $this->deleteJson('api/v1/admin/teams/' . $team2->id);
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $team2->id)
@@ -555,7 +554,7 @@ class V1TeamsTest extends TestCase
         Sanctum::actingAs($superAdmin);
 
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team->id)
+            ->deleteJson('api/v1/admin/teams/' . $team->id)
             ->assertStatus(200);
     }
 
@@ -630,7 +629,7 @@ class V1TeamsTest extends TestCase
         $email = $this->faker->safeEmail;
 
         $this
-            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+            ->postJson('api/v1/admin/teams/' . $team->id . '/invitations', [
                 'role' => $role,
                 'email' => $email,
             ])
@@ -644,7 +643,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+            ->postJson('api/v1/admin/teams/' . $team->id . '/invitations', [
                 'role' => $role,
                 'email' => $email,
             ])
@@ -690,7 +689,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [])
+            ->postJson('api/v1/admin/teams/' . $team->id . '/invitations', [])
             ->assertJsonValidationErrors([
                 'role' => 'The role field is required.',
                 'email' => 'The email field is required.',
@@ -734,15 +733,15 @@ class V1TeamsTest extends TestCase
             'admin:delete',
         ]);
 
-        $response = $this->postJson('api/v1/admin/teams/'.$team->id.'/invitations', [
+        $response = $this->postJson('api/v1/admin/teams/' . $team->id . '/invitations', [
             'role' => $role,
             'email' => $email,
         ]);
 
         if (Features::sendsTeamInvitations()) {
-            $expectedMessage = 'Invited '.$email.' to '.$team->name.' with role '.$role;
+            $expectedMessage = 'Invited ' . $email . ' to ' . $team->name . ' with role ' . $role;
         } else {
-            $expectedMessage = 'Added '.$email.' to '.$team->name.' with role '.$role;
+            $expectedMessage = 'Added ' . $email . ' to ' . $team->name . ' with role ' . $role;
         }
 
         $response
@@ -809,7 +808,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id)
+            ->deleteJson('api/v1/admin/teams/' . $team->id . '/invitations/' . $teamInvitation->id)
             ->assertUnauthorized();
 
         Sanctum::actingAs($team2->owner, [
@@ -820,7 +819,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id)
+            ->deleteJson('api/v1/admin/teams/' . $team->id . '/invitations/' . $teamInvitation->id)
             ->assertForbidden();
 
         if (Features::sendsTeamInvitations()) {
@@ -877,7 +876,7 @@ class V1TeamsTest extends TestCase
             'admin:delete',
         ]);
 
-        $response = $this->deleteJson('api/v1/admin/teams/'.$team->id.'/invitations/'.$teamInvitation->id);
+        $response = $this->deleteJson('api/v1/admin/teams/' . $team->id . '/invitations/' . $teamInvitation->id);
 
         $response
             ->assertStatus(200)
@@ -924,7 +923,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id)
+            ->putJson('api/v1/admin/teams/' . $team->id . '/remove/' . $user->id)
             ->assertUnauthorized();
 
         Sanctum::actingAs($team2->owner, [
@@ -935,7 +934,7 @@ class V1TeamsTest extends TestCase
         ]);
 
         $this
-            ->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id)
+            ->putJson('api/v1/admin/teams/' . $team->id . '/remove/' . $user->id)
             ->assertForbidden();
 
         $this->assertDatabaseHas('team_user', [
@@ -984,7 +983,7 @@ class V1TeamsTest extends TestCase
             'admin:delete',
         ]);
 
-        $response = $this->putJson('api/v1/admin/teams/'.$team->id.'/remove/'.$user->id);
+        $response = $this->putJson('api/v1/admin/teams/' . $team->id . '/remove/' . $user->id);
 
         $response
             ->assertStatus(200)

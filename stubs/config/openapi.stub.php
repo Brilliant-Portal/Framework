@@ -47,7 +47,7 @@ return [
             'security' => [
                 [
                     'apiKey' => [],
-                ]
+                ],
             ],
 
             // Route for exposing specification.
