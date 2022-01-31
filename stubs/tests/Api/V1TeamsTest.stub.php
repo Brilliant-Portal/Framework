@@ -616,6 +616,10 @@ class V1TeamsTest extends TestCase
             return $this->markTestSkipped('Teams support is not enabled.');
         }
 
+        if (! Features::sendsTeamInvitations()) {
+            $this->markTestSkipped('Team invitations are not enabled.');
+        }
+
         /** @var \App\Models\Team */
         $team = Team::factory()->create();
 
@@ -671,6 +675,10 @@ class V1TeamsTest extends TestCase
             return $this->markTestSkipped('Teams support is not enabled.');
         }
 
+        if (! Features::sendsTeamInvitations()) {
+            $this->markTestSkipped('Team invitations are not enabled.');
+        }
+
         /** @var \App\Models\Team */
         $team = Team::factory()->create();
 
@@ -707,6 +715,10 @@ class V1TeamsTest extends TestCase
 
         if (! Features::hasTeamFeatures()) {
             return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::sendsTeamInvitations()) {
+            $this->markTestSkipped('Team invitations are not enabled.');
         }
 
         /** @var \App\Models\Team */
@@ -761,7 +773,6 @@ class V1TeamsTest extends TestCase
         }
     }
 
-
     public function testCanCancelTeamInvitationFailAuthorization()
     {
         if (! Features::hasApiFeatures()) {
@@ -770,6 +781,10 @@ class V1TeamsTest extends TestCase
 
         if (! Features::hasTeamFeatures()) {
             return $this->markTestSkipped('Teams support is not enabled.');
+        }
+
+        if (! Features::sendsTeamInvitations()) {
+            $this->markTestSkipped('Team invitations are not enabled.');
         }
 
         /** @var \App\Models\Team */
@@ -834,7 +849,7 @@ class V1TeamsTest extends TestCase
         }
 
         if (! Features::sendsTeamInvitations()) {
-            return $this->markTestSkipped('Teams invitations support is not enabled.');
+            $this->markTestSkipped('Team invitations are not enabled.');
         }
 
         /** @var \App\Models\Team */
