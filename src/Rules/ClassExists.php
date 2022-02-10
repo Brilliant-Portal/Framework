@@ -29,7 +29,7 @@ class ClassExists implements Rule
         if (Str::of($value)->startsWith('\\')) {
             return class_exists($value);
         } else {
-            return class_exists('\App\Models\\'.$value);
+            return class_exists('\App\Models\\' . $value);
         }
     }
 

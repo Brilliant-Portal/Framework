@@ -24,7 +24,7 @@ class BaseCommand extends Command
             $this->warn('Some of the vendor files overridden by BrilliantPortal Framework have been modified. Please open an issue and assign to the appropriate person.');
             $this->warn('Click the link below to start an issue, then copy-and-paste the table into the issue dsecription.');
             $this->newLine();
-            $this->line('https://git.luminfire.net/products/brilliantportal/brilliantportal-framework/-/issues/new?issue[title]=Modified vendor files&issue[description]=These vendor files have been modified:');
+            $this->line('https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/issues/new?issue[title]=Modified%20vendor%20files&issue[description]=These%20vendor%20files%20have%20been%20modified:');
             $this->table(
                 ['Modified Files'],
                 array_map(function ($file) {
@@ -32,20 +32,6 @@ class BaseCommand extends Command
                 }, $this->changedVendorFiles)
             );
         }
-    }
-
-    /**
-     * Get the filesystem instance.
-     *
-     * @return \Illuminate\Filesystem\Filesystem
-     */
-    private function getFilesystem(): Filesystem
-    {
-        if (! isset($this->filesystem)) {
-            $this->filesystem = new Filesystem();
-        }
-
-        return $this->filesystem;
     }
 
     /**
@@ -85,10 +71,10 @@ class BaseCommand extends Command
             ->join(PHP_EOL);
 
         if (! empty($envContent)) {
-            $this->appendToFile(base_path('.env'), PHP_EOL.$envContent.PHP_EOL);
+            $this->appendToFile(base_path('.env'), PHP_EOL . $envContent . PHP_EOL);
         }
         if (! empty($exampleContent)) {
-            $this->appendToFile(base_path('.env.example'), PHP_EOL.$exampleContent.PHP_EOL);
+            $this->appendToFile(base_path('.env.example'), PHP_EOL . $exampleContent . PHP_EOL);
         }
     }
 
@@ -122,5 +108,19 @@ class BaseCommand extends Command
         if ($actualHash !== $expectedHash) {
             $this->changedVendorFiles[] = $path;
         }
+    }
+
+    /**
+     * Get the filesystem instance.
+     *
+     * @return \Illuminate\Filesystem\Filesystem
+     */
+    private function getFilesystem(): Filesystem
+    {
+        if (! isset($this->filesystem)) {
+            $this->filesystem = new Filesystem();
+        }
+
+        return $this->filesystem;
     }
 }

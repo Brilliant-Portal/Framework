@@ -10,8 +10,8 @@ use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
 use BrilliantPortal\Framework\OpenApi\Parameters\Admin as Parameters;
 use BrilliantPortal\Framework\OpenApi\RequestBodies\Admin as RequestBodies;
-use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
 use BrilliantPortal\Framework\OpenApi\Responses as GeneralResponses;
+use BrilliantPortal\Framework\OpenApi\Responses\Admin as AdminResponses;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -81,7 +81,7 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|integer|exists:'.User::class.',id',
+            'user_id' => 'required|integer|exists:' . User::class . ',id',
             'name' => 'required|string|max:255',
             'personal_team' => 'nullable|boolean',
         ]);
@@ -91,6 +91,7 @@ class TeamController extends Controller
         }
 
         $team = new Team($validated);
+        $team->user_id = data_get($validated, 'user_id');
         $team->save();
 
         return response()->json(new JsonResource($team), 201);
@@ -131,12 +132,12 @@ class TeamController extends Controller
     public function update(Request $request, Team $team)
     {
         $validated = $request->validate([
-            'user_id' => 'integer|exists:'.User::class.',id',
+            'user_id' => 'integer|exists:' . User::class . ',id',
             'name' => 'filled|string|max:255',
             'personal_team' => 'filled|boolean',
         ]);
 
-        $team->fill($validated);
+        $team->forceFill($validated);
         $team->save();
 
         return response()->json(new JsonResource($team));
@@ -213,10 +214,10 @@ class TeamController extends Controller
 
         if (Features::sendsTeamInvitations()) {
             app(InvitesTeamMembers::class)->invite(Auth::user(), $team, $validated['email'], $validated['role']);
-            $message = 'Invited '.$validated['email'].' to '.$team->name.' with role '.$validated['role'];
+            $message = 'Invited ' . $validated['email'] . ' to ' . $team->name . ' with role ' . $validated['role'];
         } else {
             app(AddsTeamMembers::class)->add(Auth::user(), $team, $validated['email'], $validated['role']);
-            $message = 'Added '.$validated['email'].' to '.$team->name.' with role '.$validated['role'];
+            $message = 'Added ' . $validated['email'] . ' to ' . $team->name . ' with role ' . $validated['role'];
         }
 
         $invitation = TeamInvitation::query()

@@ -3,8 +3,6 @@
 namespace BrilliantPortal\Framework;
 
 use App\Models\User;
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 use BrilliantPortal\Framework\Commands\InstallCommand;
 use BrilliantPortal\Framework\Commands\InstallTestsCommand;
 use BrilliantPortal\Framework\Commands\PublishBrandingCommand;
@@ -12,6 +10,8 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Jetstream\Features;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
@@ -60,7 +60,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
         Password::defaults(function () {
             $rule = Password::min(8);
 
-            return $this->app->isProduction()
+            return $this->app->environment('production')
                         ? $rule->mixedCase()->uncompromised()
                         : $rule;
         });
@@ -86,7 +86,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * Telescope.
          */
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('telescope:prune --hours='.config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
+            $schedule->command('telescope:prune --hours=' . config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
         });
     }
 }

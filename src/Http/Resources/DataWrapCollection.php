@@ -20,7 +20,7 @@ class DataWrapCollection extends ResourceCollection
             'data' => $this->collection,
             'meta' => [
                 'count' => $this->collection->count(),
-            ]
+            ],
         ];
     }
 }

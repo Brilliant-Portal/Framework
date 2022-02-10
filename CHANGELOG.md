@@ -2,6 +2,15 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.7.0 — 2022-02-10
+
+- Feature: add Laravel 9 compatibility
+- Feature: add deployment test for route and config caching
+- Feature: add [Larastan](https://github.com/nunomaduro/larastan) as a suggested dev dependency
+- Bugfix: fix failing test when teams support is disabled
+- Bugfix: fix facade accessor
+- Tweak: add default bottom margin to button components
+
 # 1.6.0 — 2021-07-28
 
 - Feature: add pill view components

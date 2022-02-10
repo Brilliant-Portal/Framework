@@ -5,8 +5,8 @@ namespace BrilliantPortal\Framework\OpenApi\Responses\Admin;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
-use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
+use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 
 class TeamFailedDelete extends ResponseFactory implements Reusable
 {

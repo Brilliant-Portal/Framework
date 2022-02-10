@@ -11,6 +11,6 @@ class FrameworkFacade extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return 'framework';
+        return Framework::class;
     }
 }

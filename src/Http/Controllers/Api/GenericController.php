@@ -59,7 +59,7 @@ class GenericController extends Controller
         if (Str::of($type)->startsWith('\\')) {
             $this->model = $type;
         } else {
-            $this->model = '\App\Models\\'.$type;
+            $this->model = '\App\Models\\' . $type;
         }
 
         $this->ability = Str::of($type)->lower()->__toString();

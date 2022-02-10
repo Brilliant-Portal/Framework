@@ -36,7 +36,7 @@ class BasePolicy
         switch (get_class($model)) {
             case Team::class:
             case User::class:
-                $permission = 'admin:'.$verb;
+                $permission = 'admin:' . $verb;
                 break;
 
             default:

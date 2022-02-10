@@ -15,14 +15,20 @@ class InstallTestsCommand extends BaseCommand
     public function handle()
     {
         if (Features::hasApiFeatures() || $this->option('api')) {
-            copy(__DIR__.'/../../stubs/tests/Api/ConfigCacheTest.stub.php', base_path('tests/Feature/Api/ConfigCacheTest.php'));
-            copy(__DIR__.'/../../stubs/tests/Api/DocumentationTest.stub.php', base_path('tests/Feature/Api/DocumentationTest.php'));
-            copy(__DIR__.'/../../stubs/tests/Api/V1UsersTest.stub.php', base_path('tests/Feature/Api/V1UsersTest.php'));
+            copy(__DIR__ . '/../../stubs/tests/Api/ConfigCacheTest.stub.php', base_path('tests/Feature/Api/ConfigCacheTest.php'));
+            copy(__DIR__ . '/../../stubs/tests/Api/DocumentationTest.stub.php', base_path('tests/Feature/Api/DocumentationTest.php'));
+            copy(__DIR__ . '/../../stubs/tests/Api/V1UsersTest.stub.php', base_path('tests/Feature/Api/V1UsersTest.php'));
 
             if (Features::hasTeamFeatures() || $this->option('teams')) {
-                copy(__DIR__.'/../../stubs/tests/Api/V1TeamsTest.stub.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
+                copy(__DIR__ . '/../../stubs/tests/Api/V1TeamsTest.stub.php', base_path('tests/Feature/Api/V1TeamsTest.php'));
             }
         }
+
+        if (Features::hasTeamFeatures() || $this->option('teams')) {
+            copy(__DIR__ . '/../../stubs/tests/EnsureHasNoTeamTest.stub.php', base_path('tests/Feature/EnsureHasNoTeamTest.php'));
+        }
+
+        copy(__DIR__ . '/../../stubs/tests/DeploymentTest.stub.php', base_path('tests/Feature/DeploymentTest.php'));
 
         $this->info('Copied tests to your app.');
 

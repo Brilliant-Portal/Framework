@@ -29,6 +29,6 @@ include:
 test:unit-tests:
   tags:
     - docker
-  image: edbizarro/gitlab-ci-pipeline-php:8.0-fpm
+  image: git.luminfire.net:5005/luminfire/ops/devops/docker/stacks/edbizarro-gitlab-ci-pipeline-php:8.0-fpm
   before_script:
     - composer config http-basic.git.luminfire.net ___token___ "$PERSONAL_ACCESS_TOKEN"
