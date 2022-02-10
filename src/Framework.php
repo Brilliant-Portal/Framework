@@ -14,8 +14,10 @@ class Framework
      */
     public static function addApiAuthMechanism(): void
     {
-        config(['openapi.collections.default.security' => [
-            SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
-        ]]);
+        config([
+            'openapi.collections.default.security' => [
+                SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
+            ],
+        ]);
     }
 }

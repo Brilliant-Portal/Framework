@@ -3,7 +3,6 @@
 namespace BrilliantPortal\Framework\OpenApi\Responses;
 
 use BrilliantPortal\Framework\OpenApi\Schemas\GenericObject;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Example;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
