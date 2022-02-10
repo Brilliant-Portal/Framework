@@ -91,6 +91,7 @@ class TeamController extends Controller
         }
 
         $team = new Team($validated);
+        $team->user_id = data_get($validated, 'user_id');
         $team->save();
 
         return response()->json(new JsonResource($team), 201);
@@ -136,7 +137,7 @@ class TeamController extends Controller
             'personal_team' => 'filled|boolean',
         ]);
 
-        $team->fill($validated);
+        $team->forceFill($validated);
         $team->save();
 
         return response()->json(new JsonResource($team));

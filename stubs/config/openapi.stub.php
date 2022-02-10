@@ -12,11 +12,14 @@ return [
                 'title' => config('app.name'),
                 'description' => null,
                 'version' => '1.0.0',
+                'contact' => [],
             ],
 
             'servers' => [
                 [
                     'url' => config('app.url'),
+                    'description' => null,
+                    'variables' => [],
                 ],
             ],
 
@@ -47,7 +50,7 @@ return [
             'security' => [
                 [
                     'apiKey' => [],
-                ]
+                ],
             ],
 
             // Route for exposing specification.
@@ -64,6 +67,9 @@ return [
             // Register custom middlewares for different objects.
             'middlewares' => [
                 'paths' => [
+                    //
+                ],
+                'components' => [
                     //
                 ],
             ],

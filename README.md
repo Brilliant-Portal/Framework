@@ -205,7 +205,7 @@ Several handy components are provided out of the box:
             break;
     }
 
-    $pillName = 'x-brilliant-portal-framework::pills.'.$pillSlug;
+    $pillName = 'brilliant-portal-framework::pills.'.$pillSlug;
 @endphp
 <x-dynamic-component :component="$pillName">
     {{ $status->label }}

@@ -30,22 +30,20 @@ class InstallCommand extends BaseCommand
 
         $this->callSilent('jetstream:install', $jetstreamArgs);
 
-        copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
+        copy(__DIR__ . '/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
 
         if ($this->option('teams')) {
             // Actions.
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Actions/Fortify/CreateNewUser.php', 'a40bf00dd23a574d2515df28ce35496e987c951722c880f0e70605a68f7b2d52');
-            copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
+            copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/Team.php', '6da867dcf458b38d313517a529abec1852a4f9ffdeae5ab667004b3de198b53f');
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', '7066970d21811528c0a502aefb6da0f616b52b86180b093ecffa665db5a88658');
-            copy(__DIR__.'/../../stubs/app/Models/Team.stub.php', app_path('Models/Team.php'));
-            copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'f357b9f1253bf3320c19dd506cf86bef2ad56c2851542bb14000c238ff97be80');
+            copy(__DIR__ . '/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'f1d80a0c8a3b252187173c08952a4801683aa71136805d8b0ed100b33935fd7b');
-            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
+            copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Views.
             $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
@@ -58,7 +56,7 @@ class InstallCommand extends BaseCommand
         /**
          * Tailwind config.
          */
-        $this->replaceInFile("'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php',".PHP_EOL."        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", base_path('tailwind.config.js'));
+        $this->replaceInFile("'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php'," . PHP_EOL . "        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", base_path('tailwind.config.js'));
 
         /**
          * Telescope.
@@ -99,8 +97,8 @@ class InstallCommand extends BaseCommand
          * OpenAPI docs.
          */
         if ($this->option('api')) {
-            $this->checkFileHash('vendor/vyuldashev/laravel-openapi/config/openapi.php', '83d3ef3b1887c1e11dace8375abf047c640678944d2b54fa9679a11927879601');
-            copy(__DIR__.'/../../stubs/config/openapi.stub.php', config_path('openapi.php'));
+            $this->checkFileHash('vendor/vyuldashev/laravel-openapi/config/openapi.php', '195766f8e3d163dd320baebd2633df4b9e136a13fbb3d1fa790a25d8c297bfb7');
+            copy(__DIR__ . '/../../stubs/config/openapi.stub.php', config_path('openapi.php'));
 
             $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
             \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
@@ -177,7 +175,7 @@ class InstallCommand extends BaseCommand
                     $this->appendToEnv('IGNITION_EDITOR=vscode');
                 }
                 if (Arr::has(array_flip($devDependencies), 'nunomaduro/larastan')) {
-                    copy(__DIR__.'/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));
+                    copy(__DIR__ . '/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));
                 }
             } else {
                 $this->error($composer->getErrorOutput());

@@ -20,8 +20,8 @@
     ],
     "require": {
         "php": "^8.0",
-        "illuminate/contracts": "^8.43",
-        "laravel/framework": "^8.51",
+        "illuminate/contracts": "^8.43 || ^9.0",
+        "laravel/framework": "^8.51 || ^9.0",
         "laravel/jetstream": "^2.3",
         "laravel/telescope": "^4.4",
         "spatie/laravel-package-tools": "^1.4.3",
@@ -29,7 +29,7 @@
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
-        "nunomaduro/collision": "^5.3",
+        "nunomaduro/collision": "^5.3 || ^6.1",
         "orchestra/testbench": "^6.15",
         "phpunit/phpunit": "^9.3",
         "vimeo/psalm": "^4.4"

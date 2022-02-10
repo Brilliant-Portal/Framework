@@ -3,10 +3,6 @@
 namespace BrilliantPortal\Framework\OpenApi\Schemas\Admin;
 
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\AllOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\AnyOf;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\Not;
-use GoldSpecDigital\ObjectOrientedOAS\Objects\OneOf;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Laravel\Jetstream\Jetstream;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
