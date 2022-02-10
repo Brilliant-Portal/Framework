@@ -38,7 +38,7 @@ class InstallCommand extends BaseCommand
             copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', '7066970d21811528c0a502aefb6da0f616b52b86180b093ecffa665db5a88658');
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'f357b9f1253bf3320c19dd506cf86bef2ad56c2851542bb14000c238ff97be80');
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
