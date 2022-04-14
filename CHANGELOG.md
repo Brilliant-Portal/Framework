@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.8.0 — 2022-04-14
+
+- Feature: improve dark mode typography
+
 # 1.7.1 — 2022-03-03
 
 - Feature: update dependencies to add Laravel 9 compatibility
