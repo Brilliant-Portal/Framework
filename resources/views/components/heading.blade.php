@@ -13,7 +13,7 @@
         $padding ?? '',
         'font-semibold',
         $textSize ?? 'text-3xl',
-        $textColor ?? 'text-gray-800',
+        $textColor ?? 'text-gray-800 dark:text-gray-200',
         'leading-tight',
         $other ?? '',
     ])
