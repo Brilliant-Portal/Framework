@@ -13,8 +13,8 @@
         'rounded-full',
         'text-xs',
         'font-bold',
-        $bg ?? 'bg-gray-400',
-        $text ?? 'text-white',
+        $bg ?? 'bg-gray-400 dark:bg-gray-700',
+        $text ?? 'text-white dark:text-gray-900',
         $focus ?? '',
         $border ?? '',
         'uppercase'
