@@ -32,3 +32,4 @@ test:unit-tests:
   image: git.luminfire.net:5005/luminfire/ops/devops/docker/stacks/edbizarro-gitlab-ci-pipeline-php:8.0-fpm
   before_script:
     - composer config http-basic.git.luminfire.net ___token___ "$PERSONAL_ACCESS_TOKEN"
+    - if [ ! -f "vendor/autoload.php" ]; then composer install --prefer-dist --no-ansi --no-interaction --no-progress; fi;
