@@ -69,6 +69,13 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * API.
          */
         if (Features::hasApiFeatures()) {
+            // Allow super-admins to do anything.
+            Gate::before(function (User $user, $ability) {
+                if ($user->is_super_admin) {
+                    return true;
+                }
+            });
+
             Gate::define('see-api-docs', function (User $user) {
                 if (Features::hasTeamFeatures()) {
                     return $user->is_super_admin || $user->hasTeamRole($user->currentTeam, 'admin');

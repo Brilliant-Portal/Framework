@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <x-brilliant-portal-framework::h2>
             {{ __('API Documentation') }}
-        </h2>
+        </x-brilliant-portal-framework::h2>
     </x-slot>
 
     <div>

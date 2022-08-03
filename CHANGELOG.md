@@ -2,6 +2,13 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.9.0 — 2022-08-03
+
+- Feature: add `NotImplemented` API response schema
+- Feature: improve dark mode typography for API documentation
+- Feature: add a `Gate::before()` check to allow super-admins any ability
+- Bugfix: fix a test class name
+
 # 1.8.0 — 2022-04-14
 
 - Feature: improve dark mode typography
