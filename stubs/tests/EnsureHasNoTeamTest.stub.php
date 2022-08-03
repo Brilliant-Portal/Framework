@@ -8,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
-class EnsureHasNoTeam extends TestCase
+class EnsureHasNoTeamTest extends TestCase
 {
     use RefreshDatabase;
 
