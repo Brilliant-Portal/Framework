@@ -99,6 +99,11 @@ class InstallCommand extends BaseCommand
         }
 
         /**
+         * Code style and quality.
+         */
+        copy(__DIR__ . '/../../stubs/phpcs.xml.dist', base_path('phpcs.xml.dist'));
+
+        /**
          * OpenAPI docs.
          */
         if ($this->option('api')) {
@@ -165,6 +170,7 @@ class InstallCommand extends BaseCommand
                 'brianium/paratest',
                 'laravel/pint',
                 'nunomaduro/larastan',
+                'spatie/invade',
             ],
             null,
             null,
