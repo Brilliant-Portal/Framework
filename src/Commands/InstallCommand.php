@@ -4,6 +4,7 @@ namespace BrilliantPortal\Framework\Commands;
 
 use ErrorException;
 use Illuminate\Support\Arr;
+use PDOException;
 use Symfony\Component\Process\Process;
 
 class InstallCommand extends BaseCommand
@@ -18,6 +19,16 @@ class InstallCommand extends BaseCommand
 
     public function handle()
     {
+        /**
+         * Verify setup.
+         */
+        try {
+            $this->callSilently('db:show');
+            $databaseIsConfigured = true;
+        } catch (PDOException) {
+            $databaseIsConfigured = false;
+        }
+
         /**
          * Jetstream.
          */
@@ -81,21 +92,17 @@ class InstallCommand extends BaseCommand
         /**
          * Migrations.
          */
-        if ($this->confirm('Would you like to run php artisan migrate now?', true)) {
+        if ($databaseIsConfigured && $this->confirm('Would you like to run php artisan migrate now?', true)) {
             $this->call('migrate');
         }
 
         /**
          * Assets.
          */
-        if ($this->confirm('Would you like to run npm install && npm run dev now?', true)) {
+        if ($this->confirm('Would you like to run npm install now?', true)) {
             $install = new Process(['npm', 'install']);
             $install->run();
             $this->info($install->getOutput());
-
-            $dev = new Process(['npm', 'run', 'dev']);
-            $dev->run();
-            $this->info($dev->getOutput());
         }
 
         /**
@@ -152,12 +159,18 @@ class InstallCommand extends BaseCommand
                 $this->info($composer->getOutput());
 
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
-                    $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
+                    $this->appendToEnv(PHP_EOL.'BETTER_UPTIME_HEARTBEAT_URL='.PHP_EOL);
                 }
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
                     copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
                     copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
-                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL.'MAIL_FROM_ADDRESS=help@{insert sending domain here}'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"');
+                    $this->appendToEnv(PHP_EOL.'MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL);
+
+                    $this->replaceInFile(
+                        search: 'MAIL_MAILER=smtp'.PHP_EOL.'MAIL_HOST=mailhog'.PHP_EOL.'MAIL_PORT=1025'.PHP_EOL.'MAIL_USERNAME=null'.PHP_EOL.'MAIL_PASSWORD=null'.PHP_EOL.'MAIL_ENCRYPTION=null'.PHP_EOL.'MAIL_FROM_ADDRESS="hello@example.com"'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"',
+                        replace: 'MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL.'MAIL_FROM_ADDRESS=help@'.basename(config('app.url')).PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"',
+                        path: base_path('.env.example'),
+                    );
                 }
             } else {
                 $this->error($composer->getErrorOutput());
@@ -243,5 +256,9 @@ class InstallCommand extends BaseCommand
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
+
+        if (! $databaseIsConfigured) {
+            $this->info('Don’t forget to configure your database and run migrations.');
+        }
     }
 }
