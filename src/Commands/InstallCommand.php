@@ -4,6 +4,7 @@ namespace BrilliantPortal\Framework\Commands;
 
 use ErrorException;
 use Illuminate\Support\Arr;
+use PDOException;
 use Symfony\Component\Process\Process;
 
 class InstallCommand extends BaseCommand
@@ -18,6 +19,16 @@ class InstallCommand extends BaseCommand
 
     public function handle()
     {
+        /**
+         * Verify setup.
+         */
+        try {
+            $this->callSilently('db:show');
+            $databaseIsConfigured = true;
+        } catch (PDOException) {
+            $databaseIsConfigured = false;
+        }
+
         /**
          * Jetstream.
          */
@@ -81,7 +92,7 @@ class InstallCommand extends BaseCommand
         /**
          * Migrations.
          */
-        if ($this->confirm('Would you like to run php artisan migrate now?', true)) {
+        if ($databaseIsConfigured && $this->confirm('Would you like to run php artisan migrate now?', true)) {
             $this->call('migrate');
         }
 
@@ -243,5 +254,9 @@ class InstallCommand extends BaseCommand
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
+
+        if (! $databaseIsConfigured) {
+            $this->info('Don’t forget to configure your database and run migrations.');
+        }
     }
 }
