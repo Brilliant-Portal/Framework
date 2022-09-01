@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.10.1 — 2022-09-01
+
+- Bugfix: verify that database connection works before trying to migrate
+- Bugfix: don’t run the long-running `npm run dev` Vite process
+
 # 1.10.0 — 2022-09-01
 
 - Feature: add Sparkpost mail driver as recommended dependency

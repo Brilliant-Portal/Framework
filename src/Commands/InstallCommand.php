@@ -164,7 +164,7 @@ class InstallCommand extends BaseCommand
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
                     copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
                     copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
-                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL.'MAIL_FROM_ADDRESS=help@{insert sending domain here}'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"');
+                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL.'MAIL_FROM_ADDRESS=help@'.basename(config('app.url')).PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"');
                 }
             } else {
                 $this->error($composer->getErrorOutput());
