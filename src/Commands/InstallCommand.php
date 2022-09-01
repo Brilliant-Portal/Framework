@@ -99,14 +99,10 @@ class InstallCommand extends BaseCommand
         /**
          * Assets.
          */
-        if ($this->confirm('Would you like to run npm install && npm run dev now?', true)) {
+        if ($this->confirm('Would you like to run npm install now?', true)) {
             $install = new Process(['npm', 'install']);
             $install->run();
             $this->info($install->getOutput());
-
-            $dev = new Process(['npm', 'run', 'dev']);
-            $dev->run();
-            $this->info($dev->getOutput());
         }
 
         /**
