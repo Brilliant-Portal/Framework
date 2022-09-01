@@ -161,6 +161,7 @@ class InstallCommand extends BaseCommand
                 'barryvdh/laravel-ide-helper',
                 'barryvdh/laravel-debugbar',
                 'brianium/paratest',
+                'laravel/pint',
                 'nunomaduro/larastan',
             ],
             null,
