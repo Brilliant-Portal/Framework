@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.10.0 — 2022-09-01
+
+- Feature: add Sparkpost mail driver as recommended dependency
+- Feature: add Laravel Pint as recommended dev dependency
+- Feature: add Vite and Airdrop configuration
+
 # 1.9.0 — 2022-08-03
 
 - Feature: add `NotImplemented` API response schema

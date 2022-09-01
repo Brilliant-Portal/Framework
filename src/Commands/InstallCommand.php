@@ -11,7 +11,8 @@ class InstallCommand extends BaseCommand
     public $signature = 'brilliant-portal:install
                                         {--stack=livewire : The development stack that should be installed}
                                         {--api : Indicates if API support should be installed};
-                                        {--teams : Indicates if team support should be installed}';
+                                        {--teams : Indicates if team support should be installed}
+                                        {--with-airdrop=true : Indicates if the Airdrop package should be installed (recommended when using Vite)}';
 
     public $description = 'Install all of the resources and components';
 
@@ -56,7 +57,11 @@ class InstallCommand extends BaseCommand
         /**
          * Tailwind config.
          */
-        $this->replaceInFile("'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php'," . PHP_EOL . "        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',", base_path('tailwind.config.js'));
+        $this->replaceInFile(
+            search: "'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',",
+            replace: "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php'," . PHP_EOL . "        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',",
+            path: base_path('tailwind.config.js'),
+        );
 
         /**
          * Telescope.
@@ -94,6 +99,11 @@ class InstallCommand extends BaseCommand
         }
 
         /**
+         * Code style and quality.
+         */
+        copy(__DIR__ . '/../../stubs/phpcs.xml.dist', base_path('phpcs.xml.dist'));
+
+        /**
          * OpenAPI docs.
          */
         if ($this->option('api')) {
@@ -118,7 +128,7 @@ class InstallCommand extends BaseCommand
         }
 
         /**
-         * Recommended dependencies.
+         * Recommended PHP dependencies.
          */
         $recommendedDependencies = $this->choice(
             'Choose the dependencies you would like to install separated by commas',
@@ -126,6 +136,8 @@ class InstallCommand extends BaseCommand
                 'None',
                 'brilliant-packages/betteruptime-laravel',
                 'brilliant-portal/forms',
+                'hammerstone/airdrop',
+                'vemcogroup/laravel-sparkpost-driver',
             ],
             null,
             null,
@@ -142,6 +154,11 @@ class InstallCommand extends BaseCommand
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
                     $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
                 }
+                if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
+                    copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
+                    copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
+                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL.'MAIL_FROM_ADDRESS=help@{insert sending domain here}'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"');
+                }
             } else {
                 $this->error($composer->getErrorOutput());
             }
@@ -157,7 +174,9 @@ class InstallCommand extends BaseCommand
                 'barryvdh/laravel-ide-helper',
                 'barryvdh/laravel-debugbar',
                 'brianium/paratest',
+                'laravel/pint',
                 'nunomaduro/larastan',
+                'spatie/invade',
             ],
             null,
             null,
@@ -181,6 +200,46 @@ class InstallCommand extends BaseCommand
                 $this->error($composer->getErrorOutput());
             }
         }
+
+        /**
+         * Recommended JS dependencies.
+         */
+        $recommendedJsDependencies = $this->choice(
+            'Choose any additional recommended Javascript dev dependencies you would like to install separated by commas',
+            array_filter([
+                'None',
+                'livewire' === $this->option('stack') ? '@defstudio/vite-livewire-plugin' : null,
+            ]),
+            null,
+            null,
+            true
+        );
+
+        if ($recommendedJsDependencies && ! Arr::has(array_flip($recommendedJsDependencies), 'None')) {
+            $this->info('Installing dependencies…');
+            $npm = new Process(array_merge(['npm', 'install', '--save-dev'], $recommendedJsDependencies));
+            $npm->run();
+            if ($npm->isSuccessful()) {
+                $this->info($npm->getOutput());
+            } else {
+                $this->error($npm->getErrorOutput());
+            }
+        }
+
+        /**
+         * Vite and assets config.
+         */
+        if ($this->option('with-airdrop')) {
+            $this->checkFileHash('vendor/hammerstone/airdrop/config/airdrop.php', 'd69661927e3dfb37fcad0895afff56d76b02c8e222f213e3f9df7a0c6e108416');
+            copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
+            copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
+        }
+        copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
+        $this->replaceInFile(
+            search: 'localhost.test',
+            replace: basename(config('app.url')),
+            path: base_path('vite.config.js'),
+        );
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
