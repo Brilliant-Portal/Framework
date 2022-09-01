@@ -11,7 +11,8 @@ class InstallCommand extends BaseCommand
     public $signature = 'brilliant-portal:install
                                         {--stack=livewire : The development stack that should be installed}
                                         {--api : Indicates if API support should be installed};
-                                        {--teams : Indicates if team support should be installed}';
+                                        {--teams : Indicates if team support should be installed}
+                                        {--with-airdrop=true : Indicates if the Airdrop package should be installed (recommended when using Vite)}';
 
     public $description = 'Install all of the resources and components';
 
@@ -122,7 +123,7 @@ class InstallCommand extends BaseCommand
         }
 
         /**
-         * Recommended dependencies.
+         * Recommended PHP dependencies.
          */
         $recommendedDependencies = $this->choice(
             'Choose the dependencies you would like to install separated by commas',
@@ -130,6 +131,7 @@ class InstallCommand extends BaseCommand
                 'None',
                 'brilliant-packages/betteruptime-laravel',
                 'brilliant-portal/forms',
+                'hammerstone/airdrop',
             ],
             null,
             null,
@@ -186,6 +188,46 @@ class InstallCommand extends BaseCommand
                 $this->error($composer->getErrorOutput());
             }
         }
+
+        /**
+         * Recommended JS dependencies.
+         */
+        $recommendedJsDependencies = $this->choice(
+            'Choose any additional recommended Javascript dev dependencies you would like to install separated by commas',
+            array_filter([
+                'None',
+                'livewire' === $this->option('stack') ? '@defstudio/vite-livewire-plugin' : null,
+            ]),
+            null,
+            null,
+            true
+        );
+
+        if ($recommendedJsDependencies && ! Arr::has(array_flip($recommendedJsDependencies), 'None')) {
+            $this->info('Installing dependencies…');
+            $npm = new Process(array_merge(['npm', 'install', '--save-dev'], $recommendedJsDependencies));
+            $npm->run();
+            if ($npm->isSuccessful()) {
+                $this->info($npm->getOutput());
+            } else {
+                $this->error($npm->getErrorOutput());
+            }
+        }
+
+        /**
+         * Vite and assets config.
+         */
+        if ($this->option('with-airdrop')) {
+            $this->checkFileHash('vendor/hammerstone/airdrop/config/airdrop.php', 'd69661927e3dfb37fcad0895afff56d76b02c8e222f213e3f9df7a0c6e108416');
+            copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
+            copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
+        }
+        copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
+        $this->replaceInFile(
+            search: 'localhost.test',
+            replace: basename(config('app.url')),
+            path: base_path('vite.config.js'),
+        );
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
