@@ -19,7 +19,7 @@ return [
             'disk' => env('AIRDROP_REMOTE_DISK', 'airdrop'),
 
             // The folder (if any) where you'd like your stashed assets to reside.
-            'remote_directory' => env('AIRDROP_REMOTE_DIR', 'hunts.tyhp.org'),
+            'remote_directory' => env('AIRDROP_REMOTE_DIR', env('APP_URL')),
 
             // A writeable directory on the machine that builds the assets.
             // Used to build up the ZIP file before stashing it.

@@ -164,7 +164,7 @@ class InstallCommand extends BaseCommand
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
-                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL);
+                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')).PHP_EOL);
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
