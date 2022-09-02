@@ -4,7 +4,7 @@ import laravel from 'laravel-vite-plugin';
 import {homedir} from 'os';
 import {resolve} from 'path';
 
-let host = 'app.aviationsg.test';
+let host = 'localhost.test';
 
 export default defineConfig({
     plugins: [
