@@ -144,6 +144,7 @@ class InstallCommand extends BaseCommand
                 'brilliant-packages/betteruptime-laravel',
                 'brilliant-portal/forms',
                 'hammerstone/airdrop',
+                'league/flysystem-aws-s3-v3',
                 'vemcogroup/laravel-sparkpost-driver',
             ],
             null,
@@ -161,6 +162,11 @@ class InstallCommand extends BaseCommand
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
                     $this->appendToEnv(PHP_EOL.'BETTER_UPTIME_HEARTBEAT_URL='.PHP_EOL);
                 }
+
+                if (Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
+                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL);
+                }
+
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
                     copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
                     copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
