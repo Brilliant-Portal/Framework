@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# Unreleased
+
+- Bugfix: add Airdrop S3 dependency and env keys
+- Bugfix: fix Airdrop default directory
+- Bugfix: don’t install Livewire Vite config for non-Livewire apps
+
 # 1.10.1 — 2022-09-01
 
 - Bugfix: verify that database connection works before trying to migrate

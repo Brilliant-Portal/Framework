@@ -258,13 +258,15 @@ class InstallCommand extends BaseCommand
             copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
         }
         if ('livewire' === $this->option('stack')) {
-            copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
-            $this->replaceInFile(
-                search: 'localhost.test',
-                replace: basename(config('app.url')),
-                path: base_path('vite.config.js'),
-            );
+            copy(__DIR__ . '/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
+        } else {
+            copy(__DIR__ . '/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
         }
+        $this->replaceInFile(
+            search: 'localhost.test',
+            replace: basename(config('app.url')),
+            path: base_path('vite.config.js'),
+        );
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
