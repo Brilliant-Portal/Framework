@@ -253,12 +253,14 @@ class InstallCommand extends BaseCommand
             copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
             copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
         }
-        copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
-        $this->replaceInFile(
-            search: 'localhost.test',
-            replace: basename(config('app.url')),
-            path: base_path('vite.config.js'),
-        );
+        if ('livewire' === $this->option('stack')) {
+            copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
+            $this->replaceInFile(
+                search: 'localhost.test',
+                replace: basename(config('app.url')),
+                path: base_path('vite.config.js'),
+            );
+        }
 
         $this->maybeDisplayVendorErrors();
         $this->info('Done!');
