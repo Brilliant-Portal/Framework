@@ -19,7 +19,7 @@ return [
             'disk' => env('AIRDROP_REMOTE_DISK', 'airdrop'),
 
             // The folder (if any) where you'd like your stashed assets to reside.
-            'remote_directory' => env('AIRDROP_REMOTE_DIR', basename(env('APP_URL'))),
+            'remote_directory' => env('AIRDROP_REMOTE_DIR', basename(env('APP_URL', strtolower(env('APP_NAME', ''))))),
 
             // A writeable directory on the machine that builds the assets.
             // Used to build up the ZIP file before stashing it.
