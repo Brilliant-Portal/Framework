@@ -156,7 +156,7 @@ class InstallCommand extends BaseCommand
             $recommendedDependencies[] = 'hammerstone/airdrop';
         }
 
-        if ($recommendedDependencies && ! Arr::has(array_flip($recommendedDependencies), 'None')) {
+        if (filled($recommendedDependencies) && $recommendedDependencies !== ['None']) {
             $this->info('Installing dependencies…');
             $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
             $composer->run();
