@@ -252,7 +252,7 @@ class InstallCommand extends BaseCommand
         /**
          * Vite and assets config.
          */
-        if ($this->option('with-airdrop')) {
+        if ($this->option('with-airdrop') && file_exists('vendor/hammerstone/airdrop/config/airdrop.php')) {
             $this->checkFileHash('vendor/hammerstone/airdrop/config/airdrop.php', 'd69661927e3dfb37fcad0895afff56d76b02c8e222f213e3f9df7a0c6e108416');
             copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
             copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
