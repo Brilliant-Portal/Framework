@@ -127,7 +127,7 @@ Screenshot of message for joining an existing team:
 
 BrilliantPortal Framework adds an `is_super_admin` column to the `users` table and model. By default, it is set to `false`.
 
-Super-admins have privilges to do anything in the app, so use these permissions carefully.
+Super-admins have privileges to do **anything** in the app, so use these permissions carefully.
 
 The `super-admin` capability can be used in authorization checks to determine if a user is a super-admin:
 
