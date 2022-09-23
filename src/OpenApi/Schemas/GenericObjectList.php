@@ -17,7 +17,7 @@ class GenericObjectList extends SchemaFactory implements Reusable
         return Schema::object('GenericObjectList')
             ->properties(
                 Schema::array('data')
-                    ->items((new GenericObject)->ref())
+                    ->items(GenericObject::ref())
                     ->description('List of objects'),
                 Schema::object('meta')
                     ->properties(

@@ -17,7 +17,7 @@ class UserList extends SchemaFactory implements Reusable
         return Schema::object('UserList')
             ->properties(
                 Schema::array('data')
-                    ->items((new User)->ref())
+                    ->items(User::ref())
                     ->description('List of users'),
                 Schema::object('meta')
                     ->properties(
