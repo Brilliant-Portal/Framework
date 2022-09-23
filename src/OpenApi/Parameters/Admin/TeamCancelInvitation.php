@@ -19,8 +19,8 @@ class TeamCancelInvitation extends ParametersFactory implements Reusable
                 ->schema(Schema::integer())
                 ->example(123),
             Parameter::path()
-                ->name('userId')
-                ->description('User ID')
+                ->name('invitationId')
+                ->description('Invitation ID')
                 ->required()
                 ->schema(Schema::integer())
                 ->example(123),
