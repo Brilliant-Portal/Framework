@@ -16,7 +16,7 @@ class Framework
     {
         config([
             'openapi.collections.default.security' => [
-                SecurityRequirement::create('apiKey')->securityScheme(apiKey::class),
+                SecurityRequirement::create('apiKey')->securityScheme((new apiKey())->build()),
             ],
         ]);
     }
