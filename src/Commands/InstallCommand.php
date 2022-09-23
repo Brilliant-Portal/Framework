@@ -144,6 +144,7 @@ class InstallCommand extends BaseCommand
                 'brilliant-packages/betteruptime-laravel',
                 'brilliant-portal/forms',
                 'hammerstone/airdrop',
+                'league/flysystem-aws-s3-v3',
                 'vemcogroup/laravel-sparkpost-driver',
             ],
             null,
@@ -151,7 +152,11 @@ class InstallCommand extends BaseCommand
             true
         );
 
-        if ($recommendedDependencies && ! Arr::has(array_flip($recommendedDependencies), 'None')) {
+        if ($this->option('with-airdrop') && ! Arr::has(array_flip($recommendedDependencies, 'hammerstone/airdrop'))) {
+            $recommendedDependencies[] = 'hammerstone/airdrop';
+        }
+
+        if (filled($recommendedDependencies) && $recommendedDependencies !== ['None']) {
             $this->info('Installing dependencies…');
             $composer = new Process(array_merge(['composer', 'require'], $recommendedDependencies));
             $composer->run();
@@ -161,6 +166,11 @@ class InstallCommand extends BaseCommand
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
                     $this->appendToEnv(PHP_EOL.'BETTER_UPTIME_HEARTBEAT_URL='.PHP_EOL);
                 }
+
+                if (Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
+                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')).PHP_EOL);
+                }
+
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
                     copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
                     copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
@@ -242,12 +252,16 @@ class InstallCommand extends BaseCommand
         /**
          * Vite and assets config.
          */
-        if ($this->option('with-airdrop')) {
+        if ($this->option('with-airdrop') && file_exists('vendor/hammerstone/airdrop/config/airdrop.php')) {
             $this->checkFileHash('vendor/hammerstone/airdrop/config/airdrop.php', 'd69661927e3dfb37fcad0895afff56d76b02c8e222f213e3f9df7a0c6e108416');
             copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
             copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
         }
-        copy(__DIR__ . '/../../stubs/vite.config.js', base_path('vite.config.js'));
+        if ('livewire' === $this->option('stack')) {
+            copy(__DIR__ . '/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
+        } else {
+            copy(__DIR__ . '/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
+        }
         $this->replaceInFile(
             search: 'localhost.test',
             replace: basename(config('app.url')),

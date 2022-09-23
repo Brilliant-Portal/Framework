@@ -82,27 +82,22 @@ return [
     'locations' => [
         'callbacks' => [
             app_path('OpenApi/Callbacks'),
-            base_path('vendor/brilliant-portal/framework/src/OpenApi/Callbacks'),
         ],
 
         'request_bodies' => [
             app_path('OpenApi/RequestBodies'),
-            base_path('vendor/brilliant-portal/framework/src/OpenApi/RequestBodies'),
         ],
 
         'responses' => [
             app_path('OpenApi/Responses'),
-            base_path('vendor/brilliant-portal/framework/src/OpenApi/Responses'),
         ],
 
         'schemas' => [
             app_path('OpenApi/Schemas'),
-            base_path('vendor/brilliant-portal/framework/src/OpenApi/Schemas'),
         ],
 
         'security_schemes' => [
             app_path('OpenApi/SecuritySchemes'),
-            base_path('vendor/brilliant-portal/framework/src/OpenApi/SecuritySchemes'),
         ],
     ],
 
