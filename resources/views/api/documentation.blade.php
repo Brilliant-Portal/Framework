@@ -10,8 +10,8 @@
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div id="api-explorer" class="font-sans"></div>
 
-                <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
-                <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@3/swagger-ui.css">
+                <script src="https://unpkg.com/swagger-ui-dist@4/swagger-ui-bundle.js"></script>
+                <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@4/swagger-ui.css">
 
                 <script>
                     var ui = SwaggerUIBundle({
