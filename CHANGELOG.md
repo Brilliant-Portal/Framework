@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.12.0 — 2022-09-23
+
+- Feature: automatically register OpenAPI tags
+- Chore: update OpenAPI documentation viewer
+- Bugfix: fix OpenAPI documentation errors
+
 # 1.11.0 — 2022-09-23
 
 - Feature: automatically register OpenAPI resource locations

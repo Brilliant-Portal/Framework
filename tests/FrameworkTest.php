@@ -2,84 +2,94 @@
 
 namespace BrilliantPortal\Framework\Tests;
 
-use BrilliantPortal\Framework\Traits\HasOpenApiDefinitions;
+use BrilliantPortal\Framework\Framework;
 
-class FrameworkServiceProviderTest extends TestCase
+class FrameworkTest extends TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
 
-        config(['openapi.locations' => [
-            'callbacks' => [
-                app_path('OpenApi/Callbacks'),
-            ],
+        config([
+            'openapi' => [
+                'collections' => [
+                    'default' => [
+                        'tags' => [
+                            ['name' => 'Existing tag name', 'description' => 'Existing tag description'],
+                        ],
+                    ],
+                ],
 
-            'request_bodies' => [
-                app_path('OpenApi/RequestBodies'),
-            ],
+                'locations' => [
+                    'callbacks' => [
+                        app_path('OpenApi/Callbacks'),
+                    ],
 
-            'responses' => [
-                app_path('OpenApi/Responses'),
-            ],
+                    'request_bodies' => [
+                        app_path('OpenApi/RequestBodies'),
+                    ],
 
-            'schemas' => [
-                app_path('OpenApi/Schemas'),
-            ],
+                    'responses' => [
+                        app_path('OpenApi/Responses'),
+                    ],
 
-            'security_schemes' => [
-                app_path('OpenApi/SecuritySchemes'),
+                    'schemas' => [
+                        app_path('OpenApi/Schemas'),
+                    ],
+
+                    'security_schemes' => [
+                        app_path('OpenApi/SecuritySchemes'),
+                    ],
+                ],
             ],
-        ]]);
+        ]);
     }
 
-    public function test_open_api_configs_can_be_merged_simple()
+    public function test_open_api_configs_can_be_merged_with_default_path()
     {
-        $provider = new Provider();
-        $locations = $provider->test();
+        Framework::addOpenApiLocation();
 
         $this->assertEquals(
             expected: [
                 app_path('OpenApi/Callbacks'),
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Callbacks'),
             ],
-            actual: $locations['callbacks'],
+            actual: config('openapi.locations.callbacks'),
         );
         $this->assertEquals(
             expected: [
                 app_path('OpenApi/RequestBodies'),
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/RequestBodies'),
             ],
-            actual: $locations['request_bodies'],
+            actual: config('openapi.locations.request_bodies'),
         );
         $this->assertEquals(
             expected: [
                 app_path('OpenApi/Responses'),
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Responses'),
             ],
-            actual: $locations['responses'],
+            actual: config('openapi.locations.responses'),
         );
         $this->assertEquals(
             expected: [
                 app_path('OpenApi/Schemas'),
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Schemas'),
             ],
-            actual: $locations['schemas'],
+            actual: config('openapi.locations.schemas'),
         );
         $this->assertEquals(
             expected: [
                 app_path('OpenApi/SecuritySchemes'),
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/SecuritySchemes'),
             ],
-            actual: $locations['security_schemes'],
+            actual: config('openapi.locations.security_schemes'),
         );
     }
 
-    public function test_open_api_configs_can_be_merged_with_path()
+    public function test_open_api_configs_can_be_merged_with_custom_path()
     {
-        $provider = new Provider();
-        $locations = $provider->test();
-        $locations = $provider->testWithPath('brilliant-portal/package');
+        Framework::addOpenApiLocation();
+        Framework::addOpenApiLocation('brilliant-portal/package');
 
         $this->assertEquals(
             expected: [
@@ -87,7 +97,7 @@ class FrameworkServiceProviderTest extends TestCase
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Callbacks'),
                 base_path('vendor/brilliant-portal/package/src/OpenApi/Callbacks'),
             ],
-            actual: $locations['callbacks'],
+            actual: config('openapi.locations.callbacks'),
         );
         $this->assertEquals(
             expected: [
@@ -95,7 +105,7 @@ class FrameworkServiceProviderTest extends TestCase
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/RequestBodies'),
                 base_path('vendor/brilliant-portal/package/src/OpenApi/RequestBodies'),
             ],
-            actual: $locations['request_bodies'],
+            actual: config('openapi.locations.request_bodies'),
         );
         $this->assertEquals(
             expected: [
@@ -103,7 +113,7 @@ class FrameworkServiceProviderTest extends TestCase
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Responses'),
                 base_path('vendor/brilliant-portal/package/src/OpenApi/Responses'),
             ],
-            actual: $locations['responses'],
+            actual: config('openapi.locations.responses'),
         );
         $this->assertEquals(
             expected: [
@@ -111,7 +121,7 @@ class FrameworkServiceProviderTest extends TestCase
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/Schemas'),
                 base_path('vendor/brilliant-portal/package/src/OpenApi/Schemas'),
             ],
-            actual: $locations['schemas'],
+            actual: config('openapi.locations.schemas'),
         );
         $this->assertEquals(
             expected: [
@@ -119,22 +129,22 @@ class FrameworkServiceProviderTest extends TestCase
                 base_path('vendor/brilliant-portal/framework/src/OpenApi/SecuritySchemes'),
                 base_path('vendor/brilliant-portal/package/src/OpenApi/SecuritySchemes'),
             ],
-            actual: $locations['security_schemes'],
+            actual: config('openapi.locations.security_schemes'),
         );
     }
-}
 
-class Provider
-{
-    use HasOpenApiDefinitions;
-
-    public function test(): array
+    public function test_open_api_tags_can_be_merged()
     {
-        return $this->addOpenApiLocations();
-    }
+        Framework::addOpenApiTag('New tag 1', 'New tag description 1');
+        Framework::addOpenApiTag('New tag 2', 'New tag description 2');
 
-    public function testWithPath(string $path): array
-    {
-        return $this->addOpenApiLocations($path);
+        $this->assertEquals(
+            expected: [
+                ['name' => 'Existing tag name', 'description' => 'Existing tag description'],
+                ['name' => 'New tag 1', 'description' => 'New tag description 1'],
+                ['name' => 'New tag 2', 'description' => 'New tag description 2'],
+            ],
+            actual: config('openapi.collections.default.tags'),
+        );
     }
 }

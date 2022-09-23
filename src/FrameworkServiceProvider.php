@@ -6,7 +6,6 @@ use App\Models\User;
 use BrilliantPortal\Framework\Commands\InstallCommand;
 use BrilliantPortal\Framework\Commands\InstallTestsCommand;
 use BrilliantPortal\Framework\Commands\PublishBrandingCommand;
-use BrilliantPortal\Framework\Traits\HasOpenApiDefinitions;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
@@ -16,8 +15,6 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
-    use HasOpenApiDefinitions;
-
     public function configurePackage(Package $package): void
     {
         /*
@@ -94,10 +91,27 @@ class FrameworkServiceProvider extends PackageServiceProvider
             });
 
             if (! $this->app->runningInConsole()) {
+                // FIXME: remove conditional for https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/issues/34
                 Framework::addApiAuthMechanism();
             }
 
-            $this->addOpenApiLocations();
+            Framework::addOpenApiTag(
+                name: 'Admin: Teams',
+                description: 'A team is owned by a single user; zero or more additional users can be part of a team.',
+            );
+            Framework::addOpenApiTag(
+                name: 'Admin: Team Management',
+                description: 'Users can be invited or removed from teams.',
+            );
+            Framework::addOpenApiTag(
+                name: 'Admin: Users',
+                description: 'Users can belong to zero or more teams. A user may have different roles in different teams determining what capabilities they should have.',
+            );
+            Framework::addOpenApiTag(
+                name: 'Generic Objects',
+                description: 'A general-purpose API endpoint for models in this app.',
+            );
+            Framework::addOpenApiLocation();
         }
 
         /**

@@ -47,7 +47,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UsersList::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
@@ -62,7 +62,7 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request User data.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
     #[OpenApi\Response(factory: AdminResponses\UserCreate::class, statusCode: 201)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
@@ -91,7 +91,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UserShow::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
@@ -110,7 +110,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: User'], method: 'PATCH')]
+    #[OpenApi\Operation(tags: ['Admin: Users'], method: 'PATCH')]
     #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
     #[OpenApi\Response(factory: AdminResponses\UserShow::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
@@ -141,7 +141,7 @@ class UserController extends Controller
      * @param  \App\Models\User  $user User ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: User'])]
+    #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UserDelete::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]

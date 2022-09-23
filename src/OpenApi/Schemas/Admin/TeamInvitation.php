@@ -15,7 +15,7 @@ class TeamInvitation extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
-        return Schema::object('Team')
+        return Schema::object('TeamInvitation')
             ->properties(
                 Schema::integer('id')
                     ->description('Invitation ID')

@@ -17,7 +17,7 @@ class TeamList extends SchemaFactory implements Reusable
         return Schema::object('TeamList')
             ->properties(
                 Schema::array('data')
-                    ->items((new Team)->ref())
+                    ->items(Team::ref())
                     ->description('List of teams'),
                 Schema::object('meta')
                     ->properties(

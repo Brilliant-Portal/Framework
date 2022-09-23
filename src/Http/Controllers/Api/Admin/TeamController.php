@@ -57,7 +57,7 @@ class TeamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamsList::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
@@ -72,7 +72,7 @@ class TeamController extends Controller
      * @param  \Illuminate\Http\Request  $request Team data.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
     #[OpenApi\Response(factory: AdminResponses\TeamCreate::class, statusCode: 201)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
@@ -103,7 +103,7 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
@@ -122,7 +122,7 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: Team'], method: 'PATCH')]
+    #[OpenApi\Operation(tags: ['Admin: Teams'], method: 'PATCH')]
     #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
     #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
@@ -149,7 +149,7 @@ class TeamController extends Controller
      * @param  \App\Models\Team  $team Team ID.
      * @return \Illuminate\Http\Response
      */
-    #[OpenApi\Operation(tags: ['Admin: Team'])]
+    #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamDelete::class, statusCode: 200)]
     #[OpenApi\Response(factory: GeneralResponses\Unauthenticated::class, statusCode: 401)]
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]

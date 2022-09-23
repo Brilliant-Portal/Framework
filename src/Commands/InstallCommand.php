@@ -114,9 +114,6 @@ class InstallCommand extends BaseCommand
          * OpenAPI docs.
          */
         if ($this->option('api')) {
-            $this->checkFileHash('vendor/vyuldashev/laravel-openapi/config/openapi.php', '195766f8e3d163dd320baebd2633df4b9e136a13fbb3d1fa790a25d8c297bfb7');
-            copy(__DIR__ . '/../../stubs/config/openapi.stub.php', config_path('openapi.php'));
-
             $this->replaceInFile('Jetstream::role(\'admin\', __(\'Administrator\'), [', 'Jetstream::role(\'admin\', __(\'Administrator\'), [
             \'see-api-docs\',', app_path('Providers/JetstreamServiceProvider.php'));
 
