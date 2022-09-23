@@ -94,6 +94,7 @@ class FrameworkServiceProvider extends PackageServiceProvider
             });
 
             if (! $this->app->runningInConsole()) {
+                // FIXME: remove conditional for https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/issues/34
                 Framework::addApiAuthMechanism();
             }
 
