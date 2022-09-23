@@ -6,6 +6,7 @@ use App\Models\User;
 use BrilliantPortal\Framework\Commands\InstallCommand;
 use BrilliantPortal\Framework\Commands\InstallTestsCommand;
 use BrilliantPortal\Framework\Commands\PublishBrandingCommand;
+use BrilliantPortal\Framework\Traits\HasOpenApiDefinitions;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
@@ -15,6 +16,8 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FrameworkServiceProvider extends PackageServiceProvider
 {
+    use HasOpenApiDefinitions;
+
     public function configurePackage(Package $package): void
     {
         /*
@@ -75,6 +78,13 @@ class FrameworkServiceProvider extends PackageServiceProvider
          * API.
          */
         if (Features::hasApiFeatures()) {
+            // Allow super-admins to do anything.
+            Gate::before(function (User $user, $ability) {
+                if ($user->is_super_admin) {
+                    return true;
+                }
+            });
+
             Gate::define('see-api-docs', function (User $user) {
                 if (Features::hasTeamFeatures()) {
                     return $user->is_super_admin || $user->hasTeamRole($user->currentTeam, 'admin');
@@ -86,6 +96,8 @@ class FrameworkServiceProvider extends PackageServiceProvider
             if (! $this->app->runningInConsole()) {
                 Framework::addApiAuthMechanism();
             }
+
+            $this->addOpenApiLocations();
         }
 
         /**
