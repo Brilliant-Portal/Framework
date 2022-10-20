@@ -20,6 +20,9 @@ cache:
     - public
     - vendor
 
+variables:
+  PHP_VERSION: "8.0"
+
 include:
   - project: 'templates/gitlab/ci-templates'
     file:
@@ -27,9 +30,8 @@ include:
       - 'test/phpunit.yml'
 
 test:unit-tests:
-  tags:
-    - docker
-  image: git.luminfire.net:5005/luminfire/ops/devops/docker/stacks/edbizarro-gitlab-ci-pipeline-php:8.0-fpm
   before_script:
+    - echo -e "\\e[0Ksection_start:`date +%s`:setup[collapsed=true]\r\\e[0KInstalling dependencies and configuring app"
     - composer config http-basic.git.luminfire.net ___token___ "$PERSONAL_ACCESS_TOKEN"
     - if [ ! -f "vendor/autoload.php" ]; then composer install --prefer-dist --no-ansi --no-interaction --no-progress; fi;
+    - echo -e "\\e[0Ksection_end:`date +%s`:setup\r\\e[0K"
