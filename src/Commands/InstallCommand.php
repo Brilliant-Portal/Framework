@@ -149,7 +149,7 @@ class InstallCommand extends BaseCommand
             true
         );
 
-        if ($this->option('with-airdrop') && ! Arr::has(array_flip($recommendedDependencies, 'hammerstone/airdrop'))) {
+        if ($this->option('with-airdrop') && ! Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
             $recommendedDependencies[] = 'hammerstone/airdrop';
         }
 
