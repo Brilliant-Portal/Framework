@@ -8,6 +8,7 @@ use BrilliantPortal\Framework\Commands\InstallTestsCommand;
 use BrilliantPortal\Framework\Commands\PublishBrandingCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Jetstream\Features;
 use Spatie\LaravelPackageTools\Package;
@@ -115,10 +116,15 @@ class FrameworkServiceProvider extends PackageServiceProvider
         }
 
         /**
-         * Telescope.
+         * Horizon and Telescope.
          */
         $this->callAfterResolving(Schedule::class, function (Schedule $schedule) {
-            $schedule->command('telescope:prune --hours=' . config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
+            if (filled(config('horizon')) && collect($schedule->events())->map(fn ($event) => Str::of($event->command)->contains('horizon:snapshot'))->filter()->isEmpty()) {
+                $schedule->command('horizon:snapshot')->everyFiveMinutes();
+            }
+            if (filled(config('telescope')) && collect($schedule->events())->map(fn ($event) => Str::of($event->command)->contains('telescope:prune'))->filter()->isEmpty()) {
+                $schedule->command('telescope:prune --hours=' . config('brilliant-portal-framework.telescope.prune.hours', 48))->daily();
+            }
         });
     }
 }

@@ -1,6 +1,6 @@
 [![pipeline status](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/badges/master/pipeline.svg)](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/commits/master) [![coverage report](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/badges/master/coverage.svg)](https://git.luminfire.net/luminfire/products/brilliantportal/brilliant-portal-framework/-/commits/master)
 
-[[_TOC_]]
+[TOC]
 
 # BrilliantPortal
 
@@ -16,28 +16,18 @@ BrilliantPortal Framework also installs a set of tests for features it provides.
 
 | PHP Version | Version |
 |------------:|--------:|
-|         8.0 |  1.x.x  |
+|       > 8.0 |  1.x.x  |
 |         7.4 |  0.1.x  |
 
 ## Installation
 
 Install the package via composer with a custom repository.
 
-1. Add this to your app’s `composer.json`:
-```jsonc
-{
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://git.luminfire.net/api/v4/group/242/-/packages/composer/packages.json"
-        }
-    ],
-    // etc.
-}
-```
-
 1. Install the app:
-```bash
+```shell
+# Add the custom repository.
+composer config repositories.brilliant-portal '{"type": "composer", "url": "https://git.luminfire.net/api/v4/group/242/-/packages/composer/packages.json"}'
+
 # Require the framework.
 composer require brilliant-portal/framework
 
@@ -47,6 +37,7 @@ php artisan brilliant-portal:install
 # --stack=livewire|inertia (default livewire)
 # --teams (default disabled)
 # --api (default disabled)
+# --with-airdrop=true (default enabled)
 ```
 
 You can publish the config file with:

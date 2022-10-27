@@ -149,7 +149,7 @@ class InstallCommand extends BaseCommand
             true
         );
 
-        if ($this->option('with-airdrop') && ! Arr::has(array_flip($recommendedDependencies, 'hammerstone/airdrop'))) {
+        if ($this->option('with-airdrop') && ! Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
             $recommendedDependencies[] = 'hammerstone/airdrop';
         }
 
@@ -210,8 +210,9 @@ class InstallCommand extends BaseCommand
             if ($composer->isSuccessful()) {
                 $this->info($composer->getOutput());
 
+                $this->appendToEnv('IGNITION_EDITOR=vscode');
                 if (Arr::has(array_flip($devDependencies), 'barryvdh/laravel-debugbar')) {
-                    $this->appendToEnv('IGNITION_EDITOR=vscode');
+                    $this->appendToEnv('DEBUGBAR_EDITOR=vscode');
                 }
                 if (Arr::has(array_flip($devDependencies), 'nunomaduro/larastan')) {
                     copy(__DIR__ . '/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));

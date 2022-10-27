@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.12.1 — 2022-10-24
+
+- Bugfix: fix installation command typo
+- Tweak: improve IDE support for Ignition and Laravel Debugbar
+- Tweak: improve Telescope and Horizon scheduled commands
+
 # 1.12.0 — 2022-09-23
 
 - Feature: automatically register OpenAPI tags
