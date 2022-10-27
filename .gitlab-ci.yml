@@ -26,8 +26,9 @@ variables:
 include:
   - project: 'templates/gitlab/ci-templates'
     file:
-      - 'build/composer-package.yml'
+      - 'generic/composer.yml'
       - 'test/phpunit.yml'
+      - 'build/composer-package.yml'
 
 test:unit-tests:
   before_script:
