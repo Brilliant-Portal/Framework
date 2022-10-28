@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.12.2 — 2022-10-28
+
+- Bugfix: fix `php artisan brilliant-portal:publish-branding` command for apps with no published Jetstream resources
+
 # 1.12.1 — 2022-10-24
 
 - Bugfix: fix installation command typo
