@@ -39,7 +39,9 @@ class DocumentationTest extends TestCase
         }
 
         $team = Team::factory()->create();
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'current_team_id' => $team->id,
+        ]);
 
         $team->users()->attach($user, ['role' => 'editor']);
 
