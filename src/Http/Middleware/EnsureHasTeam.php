@@ -10,7 +10,7 @@ class EnsureHasTeam
 {
     public function handle(Request $request, Closure $next)
     {
-        if (! Auth::user()->isMemberOfATeam()) {
+        if (! Auth::user()?->isMemberOfATeam()) {
             return redirect()->route('brilliant-portal-framework.teams.create-first');
         }
 
@@ -21,7 +21,7 @@ class EnsureHasTeam
 
     protected function ensureOneOfTheTeamsIsCurrent(): void
     {
-        if (! is_null(Auth::user()->current_team_id)) {
+        if (! is_null(Auth::user()?->current_team_id)) {
             return;
         }
 
