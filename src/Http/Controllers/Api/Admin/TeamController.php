@@ -55,7 +55,7 @@ class TeamController extends Controller
     /**
      * Display a listing of all teams.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamsList::class, statusCode: 200)]
@@ -63,14 +63,14 @@ class TeamController extends Controller
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
     public function index()
     {
-        return new DataWrapCollection(Team::all());
+        return response()->json(new DataWrapCollection(Team::all()));
     }
 
     /**
      * Create a new team.
      *
      * @param  \Illuminate\Http\Request  $request Team data.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
@@ -101,7 +101,7 @@ class TeamController extends Controller
      * Display the specified team.
      *
      * @param  \App\Models\Team  $team Team ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamShow::class, statusCode: 200)]
@@ -120,7 +120,7 @@ class TeamController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Team  $team Team ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Teams'], method: 'PATCH')]
     #[OpenApi\RequestBody(factory: RequestBodies\TeamCreate::class)]
@@ -147,7 +147,7 @@ class TeamController extends Controller
      * Delete the specified team.
      *
      * @param  \App\Models\Team  $team Team ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Teams'])]
     #[OpenApi\Response(factory: AdminResponses\TeamDelete::class, statusCode: 200)]
@@ -186,7 +186,7 @@ class TeamController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
     #[OpenApi\Parameters(factory: Parameters\TeamInviteUser::class)]
@@ -244,7 +244,7 @@ class TeamController extends Controller
      * @param \Illuminate\Http\Request $request
      * @param int $teamId
      * @param int $invitationId
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
     #[OpenApi\Parameters(factory: Parameters\TeamCancelInvitation::class)]
@@ -279,7 +279,7 @@ class TeamController extends Controller
      * @param int $team
      * @param int $user
      * @param \Laravel\Jetstream\Contracts\RemovesTeamMembers $remover
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Team Management'])]
     #[OpenApi\Parameters(factory: Parameters\TeamRemoveUser::class)]

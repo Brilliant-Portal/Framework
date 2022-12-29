@@ -70,7 +70,7 @@ class GenericController extends Controller
     /**
      * Display a listing of all objects.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Generic Objects'])]
     #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeWithoutId::class)]
@@ -79,14 +79,14 @@ class GenericController extends Controller
     #[OpenApi\Response(factory: Responses\Forbidden::class, statusCode: 403)]
     public function index()
     {
-        return new DataWrapCollection($this->model::all());
+        return response()->json(new DataWrapCollection($this->model::all()));
     }
 
     /**
      * Create a new object.
      *
      * @param  \Illuminate\Http\Request  $request User data.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Generic Objects'])]
     #[OpenApi\Parameters(factory: Parameters\GenericObjectTypeWithoutId::class)]
@@ -112,7 +112,7 @@ class GenericController extends Controller
      * Display the specified object.
      *
      * @param  \App\Models\Model  $model Model.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Generic Objects'])]
     #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
@@ -132,7 +132,7 @@ class GenericController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Model  $model Model.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Generic Objects'], method: 'PATCH')]
     #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
@@ -159,7 +159,7 @@ class GenericController extends Controller
      * Delete the specified object.
      *
      * @param  \App\Models\Model  $model Model.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Generic Objects'])]
     #[OpenApi\Parameters(factory: Parameters\GenericObjectType::class)]
