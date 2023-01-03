@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.12.3 — 2023-01-13
+
+- Bugfix: fix permissions for models not owned by teams
+- Bugfix: improve authorization checks
+- Bugfix: fix user factory
+
 # 1.12.2 — 2022-10-28
 
 - Bugfix: fix `php artisan brilliant-portal:publish-branding` command for apps with no published Jetstream resources
