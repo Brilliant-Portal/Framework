@@ -9,9 +9,6 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class User extends SchemaFactory implements Reusable
 {
-    /**
-     * @return AllOf|OneOf|AnyOf|Not|Schema
-     */
     public function build(): SchemaContract
     {
         return Schema::object('User')
@@ -27,11 +24,13 @@ class User extends SchemaFactory implements Reusable
                     ->example('ABC123'),
                 Schema::string('name')
                     ->description('First and last name')
+                    ->required()
                     ->default(null)
                     ->example('John Doe'),
                 Schema::string('email')
                     ->format('email')
                     ->description('Email address')
+                    ->required()
                     ->default(null)
                     ->example('john.doe@example.com'),
                 Schema::string('email_verified_at')

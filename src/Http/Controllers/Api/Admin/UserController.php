@@ -45,7 +45,7 @@ class UserController extends Controller
     /**
      * Display a listing of all users.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UsersList::class, statusCode: 200)]
@@ -53,14 +53,14 @@ class UserController extends Controller
     #[OpenApi\Response(factory: GeneralResponses\Forbidden::class, statusCode: 403)]
     public function index()
     {
-        return new DataWrapCollection(User::all());
+        return response()->json(new DataWrapCollection(User::all()));
     }
 
     /**
      * Create a new user.
      *
      * @param  \Illuminate\Http\Request  $request User data.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
@@ -89,7 +89,7 @@ class UserController extends Controller
      * Display the specified user.
      *
      * @param  \App\Models\User  $user User ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UserShow::class, statusCode: 200)]
@@ -108,7 +108,7 @@ class UserController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user User ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Users'], method: 'PATCH')]
     #[OpenApi\RequestBody(factory: RequestBodies\UserCreate::class)]
@@ -139,7 +139,7 @@ class UserController extends Controller
      * Delete the specified user.
      *
      * @param  \App\Models\User  $user User ID.
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     #[OpenApi\Operation(tags: ['Admin: Users'])]
     #[OpenApi\Response(factory: AdminResponses\UserDelete::class, statusCode: 200)]

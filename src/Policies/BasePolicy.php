@@ -45,7 +45,7 @@ class BasePolicy
         }
 
 
-        if (empty($model->getAttributes())) {
+        if (empty($model->getAttributes()) || ! isset($model->team)) {
             // Team won’t be set for new models, so we’ll check the user’s current team instead.
             $teamPermission = $user->hasTeamPermission($user->currentTeam, $permission);
         } elseif (is_a($model, User::class)) {
@@ -53,8 +53,8 @@ class BasePolicy
             // Admin users can modify other users in their team(s).
             $teamPermission = $user->allTeams()->contains($user->currentTeam);
         } else {
-            $teamPermission = $user->belongsToTeam($model->team) &&
-               $user->hasTeamPermission($model->team, $permission);
+            $teamPermission = $user->belongsToTeam($model->team)
+                && $user->hasTeamPermission($model->team, $permission);
         }
 
         // Don’t check API tokens for Nova requests.

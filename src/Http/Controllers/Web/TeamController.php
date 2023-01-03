@@ -23,10 +23,10 @@ class TeamController extends Controller
     /**
      * Store the user’s team.
      *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return void
      * @since 1.0.0
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {

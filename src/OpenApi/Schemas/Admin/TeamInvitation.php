@@ -10,9 +10,6 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class TeamInvitation extends SchemaFactory implements Reusable
 {
-    /**
-     * @return AllOf|OneOf|AnyOf|Not|Schema
-     */
     public function build(): SchemaContract
     {
         return Schema::object('TeamInvitation')
