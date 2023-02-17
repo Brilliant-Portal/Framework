@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.13.0 — 2023-02-17
+
+- Feature: Laravel 10 compatibility
+
 # 1.12.3 — 2023-01-13
 
 - Bugfix: fix permissions for models not owned by teams

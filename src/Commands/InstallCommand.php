@@ -46,15 +46,15 @@ class InstallCommand extends BaseCommand
 
         if ($this->option('teams')) {
             // Actions.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Actions/Fortify/CreateNewUser.php', 'a40bf00dd23a574d2515df28ce35496e987c951722c880f0e70605a68f7b2d52');
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Actions/Fortify/CreateNewUser.php', 'de57e52100d4f356a8d98c9e5c56a7c93bcba0e20f8e9b782a2d5574e7249347');
             copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'f357b9f1253bf3320c19dd506cf86bef2ad56c2851542bb14000c238ff97be80');
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'e7aafa6757545b8e757e952e528d03b577395bff2f979452defdd7fbb332a2b7');
             copy(__DIR__ . '/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'f1d80a0c8a3b252187173c08952a4801683aa71136805d8b0ed100b33935fd7b');
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'bc6e342976ff178688ece8e2633bbdea3c047ac1328d4fb0d141a1dcbfd2584d');
             copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Views.
