@@ -23,9 +23,6 @@ Install the package via composer with a custom repository.
 
 1. Install the app:
 ```shell
-# Add the custom repository.
-composer config repositories.brilliant-portal '{"type": "composer", "url": "https://git.luminfire.net/api/v4/group/242/-/packages/composer/packages.json"}'
-
 # Require the framework.
 composer require brilliant-portal/framework
 
