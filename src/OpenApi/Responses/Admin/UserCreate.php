@@ -13,7 +13,7 @@ class UserCreate extends ResponseFactory implements Reusable
 {
     public function build(): Response
     {
-        return Response::created('UserShow')
+        return Response::created('UserCreate')
             ->description('Displays the new user data object.')
             ->content(
                 MediaType::json()
