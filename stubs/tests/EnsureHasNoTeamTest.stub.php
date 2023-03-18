@@ -15,7 +15,7 @@ class EnsureHasNoTeamTest extends TestCase
     public function test_user_without_teams_can_create_first_team()
     {
         if (! Features::hasTeamFeatures()) {
-            return $this->markTestSkipped('Teams support is not enabled.');
+            $this->marktestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->create();
@@ -33,7 +33,7 @@ class EnsureHasNoTeamTest extends TestCase
     public function test_user_without_teams_can_see_already_invited()
     {
         if (! Features::hasTeamFeatures()) {
-            return $this->markTestSkipped('Teams support is not enabled.');
+            $this->marktestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->create();
@@ -51,7 +51,7 @@ class EnsureHasNoTeamTest extends TestCase
     public function test_user_with_teams_cant_create_first_team()
     {
         if (! Features::hasTeamFeatures()) {
-            return $this->markTestSkipped('Teams support is not enabled.');
+            $this->marktestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->withPersonalTeam()->create();
@@ -70,7 +70,7 @@ class EnsureHasNoTeamTest extends TestCase
     public function test_user_with_teams_cant_see_already_invited()
     {
         if (! Features::hasTeamFeatures()) {
-            return $this->markTestSkipped('Teams support is not enabled.');
+            $this->marktestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->withPersonalTeam()->create();
