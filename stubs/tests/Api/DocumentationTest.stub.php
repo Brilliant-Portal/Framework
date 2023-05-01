@@ -15,14 +15,14 @@ class DocumentationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_logged_out_users_cant_see_api_docs()
+    public function testLoggedOutUsersCantSeeApiDocs(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         $this
@@ -30,14 +30,14 @@ class DocumentationTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    public function test_non_admin_users_cant_see_api_docs()
+    public function testNonAdminUsersCantSeeApiDocs(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         $team = Team::factory()->create();
@@ -53,14 +53,14 @@ class DocumentationTest extends TestCase
             ->assertForbidden();
     }
 
-    public function test_admin_users_can_see_api_docs()
+    public function testAdminUsersCanSeeApiDocs(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         Framework::addApiAuthMechanism();

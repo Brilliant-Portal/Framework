@@ -17,14 +17,14 @@ class V1TeamsTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testNoAuth()
+    public function testNoAuth(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         $response = $this->getJson('api/v1/admin/teams');
@@ -40,14 +40,14 @@ class V1TeamsTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function testIndexFailAuthorization()
+    public function testIndexFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         // Note: this should actually PASS authorization.
@@ -64,14 +64,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testIndexAsSuperAdmin()
+    public function testIndexAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\User $superAdmin */
@@ -105,14 +105,14 @@ class V1TeamsTest extends TestCase
             ]);
     }
 
-    public function testCreateAsSuperAdmin()
+    public function testCreateAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\User $superAdmin */
@@ -150,14 +150,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testCreateFailValidationAsSuperAdmin()
+    public function testCreateFailValidationAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\User $superAdmin */
@@ -199,14 +199,14 @@ class V1TeamsTest extends TestCase
             ]);
     }
 
-    public function testFetchOneFailAuthorization()
+    public function testFetchOneFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -226,14 +226,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testFetchOne()
+    public function testFetchOne(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -248,14 +248,14 @@ class V1TeamsTest extends TestCase
             ->assertJsonPath('name', $team->name);
     }
 
-    public function testFetchOneAsSuperAdmin()
+    public function testFetchOneAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -276,14 +276,14 @@ class V1TeamsTest extends TestCase
             ->assertJsonPath('name', $team->name);
     }
 
-    public function testUpdateFailAuthorization()
+    public function testUpdateFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -312,14 +312,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testUpdate()
+    public function testUpdate(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -342,14 +342,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testUpdateAsSuperAdmin()
+    public function testUpdateAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -369,14 +369,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testUpdateFailValidation()
+    public function testUpdateFailValidation(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -400,14 +400,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testUpdateTeamOwnership()
+    public function testUpdateTeamOwnership(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -433,14 +433,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testUpdateTeamOwnershipAsSuperAdmin()
+    public function testUpdateTeamOwnershipAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -464,14 +464,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testDeleteFailAuthorization()
+    public function testDeleteFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -501,14 +501,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(403);
     }
 
-    public function testDelete()
+    public function testDelete(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -532,14 +532,14 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testDeleteAsSuperAdmin()
+    public function testDeleteAsSuperAdmin(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -558,14 +558,14 @@ class V1TeamsTest extends TestCase
             ->assertStatus(200);
     }
 
-    public function testMissing()
+    public function testMissing(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team $team */
@@ -605,14 +605,14 @@ class V1TeamsTest extends TestCase
             ->assertJsonPath('message', 'No query results for model [App\\Models\\Team] 10');
     }
 
-    public function testCanInviteUsersFailAuthorization()
+    public function testCanInviteUsersFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
@@ -664,14 +664,14 @@ class V1TeamsTest extends TestCase
         }
     }
 
-    public function testCanInviteUsersFailValidation()
+    public function testCanInviteUsersFailValidation(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
@@ -706,14 +706,14 @@ class V1TeamsTest extends TestCase
         }
     }
 
-    public function testCanInviteUsers()
+    public function testCanInviteUsers(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
@@ -772,14 +772,14 @@ class V1TeamsTest extends TestCase
         }
     }
 
-    public function testCanCancelTeamInvitationFailAuthorization()
+    public function testCanCancelTeamInvitationFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
@@ -837,14 +837,14 @@ class V1TeamsTest extends TestCase
         }
     }
 
-    public function testCanCancelTeamInvitation()
+    public function testCanCancelTeamInvitation(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
@@ -891,14 +891,14 @@ class V1TeamsTest extends TestCase
     }
 
 
-    public function testCanRemoveUsersFailAuthorization()
+    public function testCanRemoveUsersFailAuthorization(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         /** @var \App\Models\Team */
@@ -944,18 +944,18 @@ class V1TeamsTest extends TestCase
         ]);
     }
 
-    public function testCanRemoveUser()
+    public function testCanRemoveUser(): void
     {
         if (! Features::hasApiFeatures()) {
-            $this->marktestSkipped('API support is not enabled.');
+            $this->markTestSkipped('API support is not enabled.');
         }
 
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         if (! Features::sendsTeamInvitations()) {
-            $this->marktestSkipped('Teams invitations support is not enabled.');
+            $this->markTestSkipped('Teams invitations support is not enabled.');
         }
 
         /** @var \App\Models\Team */

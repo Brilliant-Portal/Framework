@@ -11,7 +11,7 @@ class SuperAdminTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_superadmin_privileges()
+    public function testSuperadminPrivileges(): void
     {
         $abilities = Gate::abilities();
         $this->assertArrayNotHasKey('abc', $abilities);

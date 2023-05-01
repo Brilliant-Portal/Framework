@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class DeploymentTest extends TestCase
 {
-    public function testRouteCaching()
+    public function testRouteCaching(): void
     {
         try {
             $this
@@ -18,7 +18,7 @@ class DeploymentTest extends TestCase
         }
     }
 
-    public function testConfigCaching()
+    public function testConfigCaching(): void
     {
         try {
             $this
