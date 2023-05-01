@@ -11,7 +11,7 @@ class EnsureHasNoTeam
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->isMemberOfATeam()) {
+        if (Auth::user()?->isMemberOfATeam()) {
             return redirect(RouteServiceProvider::HOME);
         }
 

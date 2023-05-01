@@ -2,6 +2,13 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.14.0 — 2023-05-01
+
+- Feature: add `HasTeamPermission` middleware
+- Feature/bugfix: improve Inertia support
+- Bugfix: fix OpenAPI response documentation for creating users
+- Bugfix: fix skipped tests
+
 # 1.13.0 — 2023-02-17
 
 - Feature: Laravel 10 compatibility

@@ -23,9 +23,6 @@ Install the package via composer with a custom repository.
 
 1. Install the app:
 ```shell
-# Add the custom repository.
-composer config repositories.brilliant-portal '{"type": "composer", "url": "https://git.luminfire.net/api/v4/group/242/-/packages/composer/packages.json"}'
-
 # Require the framework.
 composer require brilliant-portal/framework
 
@@ -87,6 +84,18 @@ php artisan vendor:publish --tag brilliant-portal-framework-views
 See https://betteruptime-laravel.brilliantpackages.com for documentation.
 
 ## Usage
+
+### Permissions
+
+Add the `HasTeamPermission` middleware to routes that require a specific permission as defined in your `JetstreamServiceProvider`:
+
+```php
+# Routes file in your app.
+use BrilliantPortal\Framework\Http\Middleware\HasTeamPermission;
+
+Route::middleware(['auth:sanctum', HasTeamPermission::class.':create'])
+    ->post(/* any endpoint where the user must have the `create` permission on their current team */);
+```
 
 ### Teams
 

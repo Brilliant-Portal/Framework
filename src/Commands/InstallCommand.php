@@ -58,11 +58,21 @@ class InstallCommand extends BaseCommand
             copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Views.
-            $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
+            if ('livewire' === $this->option('stack')) {
+                $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
+            } elseif ('inertia' === $this->option('stack')) {
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/AlreadyInvited.vue', base_path('resources/js/Pages/Teams/AlreadyInvited.vue'));
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/CreateFirst.vue', base_path('resources/js/Pages/Teams/CreateFirst.vue'));
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/Partials/CreateTeamForm.vue', base_path('resources/js/Pages/Teams/Partials/CreateTeamForm.vue'));
+            }
         }
 
         if ($this->option('api')) {
             $this->replaceInFile('// Features::api(),', 'Features::api(),', config_path('jetstream.php'));
+
+            if ('inertia' === $this->option('stack')) {
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/API/Documentation.vue', base_path('resources/js/Pages/API/Documentation.vue'));
+            }
         }
 
         /**
@@ -227,10 +237,12 @@ class InstallCommand extends BaseCommand
          */
         $recommendedJsDependencies = $this->choice(
             'Choose any additional recommended Javascript dev dependencies you would like to install separated by commas',
-            array_filter([
+            array_filter(array_merge([
                 'None',
-                'livewire' === $this->option('stack') ? '@defstudio/vite-livewire-plugin' : null,
-            ]),
+            ],
+                'livewire' === $this->option('stack') ? ['@defstudio/vite-livewire-plugin'] : [],
+                'inertia' === $this->option('stack') ? ['@headlessui/vue', '@heroicons/vue'] : [],
+            )),
             null,
             null,
             true
@@ -257,6 +269,9 @@ class InstallCommand extends BaseCommand
         }
         if ('livewire' === $this->option('stack')) {
             copy(__DIR__ . '/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
+        } elseif ('inertia' === $this->option('stack')) {
+            copy(__DIR__ . '/../../stubs/vite-inertia.config.js', base_path('vite.config.js'));
+            copy(__DIR__ . '/../../stubs/jsconfig.json', base_path('jsconfig.json'));
         } else {
             copy(__DIR__ . '/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
         }

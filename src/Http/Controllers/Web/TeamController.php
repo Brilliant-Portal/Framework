@@ -4,7 +4,11 @@ namespace BrilliantPortal\Framework\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Team;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class TeamController extends Controller
 {
@@ -12,12 +16,12 @@ class TeamController extends Controller
      * Show the form to create the first team.
      *
      * @since 1.0.0
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function create()
+    public function create(): View|Response
     {
-        return view('brilliant-portal-framework::teams.create-first');
+        return class_exists(Inertia::class)
+            ? Inertia::render('Teams/CreateFirst')
+            : view('brilliant-portal-framework::teams.create-first');
     }
 
     /**
@@ -26,9 +30,8 @@ class TeamController extends Controller
      * @since 1.0.0
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -48,11 +51,11 @@ class TeamController extends Controller
      * Show the already invited message.
      *
      * @since 1.0.0
-     *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function alreadyInvited()
+    public function alreadyInvited(): View|Response
     {
-        return view('brilliant-portal-framework::teams.already-invited');
+        return class_exists(Inertia::class)
+            ? Inertia::render('Teams/AlreadyInvited')
+            : view('brilliant-portal-framework::teams.already-invited');
     }
 }

@@ -11,6 +11,7 @@ stages:
   - test
   - build
   - deploy
+  - release
 
 cache:
   key: $CI_BUILD_REF_NAME
