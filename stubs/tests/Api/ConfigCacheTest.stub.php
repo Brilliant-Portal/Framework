@@ -6,7 +6,7 @@ use Tests\TestCase;
 
 class ConfigCacheTest extends TestCase
 {
-    public function test_can_cache_config()
+    public function testCanCacheConfig(): void
     {
         try {
             $this->artisan('config:cache')->assertExitCode(0);

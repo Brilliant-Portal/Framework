@@ -14,10 +14,10 @@ class EnsureHasNoTeamTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_without_teams_can_create_first_team()
+    public function testUserWithoutTeamsCanCreateFirstTeam(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->create();
@@ -38,10 +38,10 @@ class EnsureHasNoTeamTest extends TestCase
         }
     }
 
-    public function test_user_without_teams_can_see_already_invited()
+    public function testUserWithoutTeamsCanSeeAlreadyInvited(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->create();
@@ -62,10 +62,10 @@ class EnsureHasNoTeamTest extends TestCase
         }
     }
 
-    public function test_user_with_teams_cant_create_first_team()
+    public function testUserWithTeamsCantCreateFirstTeam(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->withPersonalTeam()->create();
@@ -81,10 +81,10 @@ class EnsureHasNoTeamTest extends TestCase
             ->assertRedirect(RouteServiceProvider::HOME);
     }
 
-    public function test_user_with_teams_cant_see_already_invited()
+    public function testUserWithTeamsCantSeeAlreadyInvited(): void
     {
         if (! Features::hasTeamFeatures()) {
-            $this->marktestSkipped('Teams support is not enabled.');
+            $this->markTestSkipped('Teams support is not enabled.');
         }
 
         $user = User::factory()->withPersonalTeam()->create();
