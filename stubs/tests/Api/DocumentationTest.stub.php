@@ -75,7 +75,7 @@ class DocumentationTest extends TestCase
 
         if (class_exists(Inertia::class)) {
             $response->assertInertia(fn (Assert $page) => $page
-                ->component('Api/Documentation')
+                ->component('API/Documentation')
                 ->has('spec')
             );
         } else {
