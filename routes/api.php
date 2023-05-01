@@ -52,7 +52,7 @@ Route::name('api.')
 /**
  * OpenAPI documentation.
  */
-Route::middleware(['web', EnsureHasTeam::class, 'auth:sanctum', 'can:see-api-docs'])
+Route::middleware(['web', 'auth:sanctum', EnsureHasTeam::class, 'can:see-api-docs'])
     ->get('/dashboard/api-documentation', function (Generator $openApi) {
         return class_exists(Inertia::class)
             ? Inertia::render('API/Documentation', ['spec' => $openApi->generate()])
