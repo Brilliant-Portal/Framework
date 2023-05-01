@@ -63,6 +63,7 @@ class InstallCommand extends BaseCommand
             } elseif ('inertia' === $this->option('stack')) {
                 copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/AlreadyInvited.vue', base_path('resources/js/Pages/Teams/AlreadyInvited.vue'));
                 copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/CreateFirst.vue', base_path('resources/js/Pages/Teams/CreateFirst.vue'));
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/Partials/CreateTeamForm.vue', base_path('resources/js/Pages/Teams/Partials/CreateTeamForm.vue'));
             }
         }
 
