@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.14.1 — 2023-05-01
+
+- Bugfix: fix test return types and capitalization
+
 # 1.14.0 — 2023-05-01
 
 - Feature: add `HasTeamPermission` middleware
