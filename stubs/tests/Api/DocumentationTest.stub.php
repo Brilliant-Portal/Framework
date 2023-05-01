@@ -6,6 +6,8 @@ use App\Models\Team;
 use App\Models\User;
 use BrilliantPortal\Framework\Framework;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Inertia;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
@@ -65,10 +67,19 @@ class DocumentationTest extends TestCase
 
         $user = User::factory()->withPersonalTeam()->create();
 
-        $this
+        $response = $this
             ->actingAs($user)
             ->get('/dashboard/api-documentation')
-            ->assertOk()
-            ->assertViewIs('brilliant-portal-framework::api.documentation');
+            ->assertOk();
+
+
+        if (class_exists(Inertia::class)) {
+            $response->assertInertia(fn (Assert $page) => $page
+                ->component('Api/Documentation')
+                ->has('spec')
+            );
+        } else {
+            $response->assertViewIs('brilliant-portal-framework::api.documentation');
+        }
     }
 }

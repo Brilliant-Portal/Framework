@@ -65,6 +65,10 @@ class InstallCommand extends BaseCommand
 
         if ($this->option('api')) {
             $this->replaceInFile('// Features::api(),', 'Features::api(),', config_path('jetstream.php'));
+
+            if ('inertia' === $this->option('stack')) {
+                copy(__DIR__ . '/../../stubs/resources/js/Pages/API/Documentation.vue', base_path('resources/js/Pages/API/Documentation.vue'));
+            }
         }
 
         /**

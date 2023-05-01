@@ -5,6 +5,7 @@ use BrilliantPortal\Framework\Http\Controllers\Api\Admin\UserController;
 use BrilliantPortal\Framework\Http\Controllers\Api\GenericController;
 use BrilliantPortal\Framework\Http\Middleware\EnsureHasTeam;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Laravel\Jetstream\Features;
 use Vyuldashev\LaravelOpenApi\Generator;
 
@@ -51,7 +52,9 @@ Route::name('api.')
  * OpenAPI documentation.
  */
 Route::middleware(['web', EnsureHasTeam::class, 'auth:sanctum', 'can:see-api-docs'])
-    ->get('/dashboard/api-documentation', function (Generator $generator) {
-        return view('brilliant-portal-framework::api.documentation', ['spec' => $generator->generate()]);
+    ->get('/dashboard/api-documentation', function (Generator $openApi) {
+        return class_exists(Inertia::class)
+            ? Inertia::render('API/Documentation', ['spec' => $openApi->generate()])
+            : view('brilliant-portal-framework::api.documentation', ['spec' => $openApi->generate()]);
     })
     ->name('api.documentation');
