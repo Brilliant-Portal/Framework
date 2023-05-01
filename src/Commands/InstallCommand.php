@@ -229,10 +229,12 @@ class InstallCommand extends BaseCommand
          */
         $recommendedJsDependencies = $this->choice(
             'Choose any additional recommended Javascript dev dependencies you would like to install separated by commas',
-            array_filter([
+            array_filter(array_merge([
                 'None',
-                'livewire' === $this->option('stack') ? '@defstudio/vite-livewire-plugin' : null,
-            ]),
+            ],
+                'livewire' === $this->option('stack') ? ['@defstudio/vite-livewire-plugin'] : [],
+                'inertia' === $this->option('stack') ? ['@headlessui/vue', '@heroicons/vue'] : [],
+            )),
             null,
             null,
             true
