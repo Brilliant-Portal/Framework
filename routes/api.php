@@ -45,7 +45,8 @@ Route::name('api.')
         /**
          * Generic routes.
          */
-        Route::apiResource('generic-object', GenericController::class);
+        Route::apiResource('generic-object', GenericController::class)
+            ->parameter('generic-object', 'genericObject');
     });
 
 /**
