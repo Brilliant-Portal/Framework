@@ -259,6 +259,9 @@ class InstallCommand extends BaseCommand
         }
         if ('livewire' === $this->option('stack')) {
             copy(__DIR__ . '/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
+        } elseif ('inertia' === $this->option('stack')) {
+            copy(__DIR__ . '/../../stubs/vite-inertia.config.js', base_path('vite.config.js'));
+            copy(__DIR__ . '/../../stubs/jsconfig.json', base_path('jsconfig.json'));
         } else {
             copy(__DIR__ . '/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
         }
