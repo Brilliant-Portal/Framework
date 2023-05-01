@@ -5,6 +5,8 @@ namespace BrilliantPortal\Framework\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Team;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class TeamController extends Controller
 {
@@ -17,7 +19,9 @@ class TeamController extends Controller
      */
     public function create()
     {
-        return view('brilliant-portal-framework::teams.create-first');
+        return class_exists(Inertia::class)
+            ? Inertia::render('Teams/CreateFirst')
+            : view('brilliant-portal-framework::teams.create-first');
     }
 
     /**
@@ -53,6 +57,8 @@ class TeamController extends Controller
      */
     public function alreadyInvited()
     {
-        return view('brilliant-portal-framework::teams.already-invited');
+        return class_exists(Inertia::class)
+            ? Inertia::render('Teams/AlreadyInvited')
+            : view('brilliant-portal-framework::teams.already-invited');
     }
 }

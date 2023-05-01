@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Inertia;
+use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
 
@@ -24,10 +26,16 @@ class EnsureHasNoTeamTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this
+        $response = $this
             ->actingAs($user)
             ->get(route('brilliant-portal-framework.teams.create-first'))
-            ->assertViewIs('brilliant-portal-framework::teams.create-first');
+            ->assertOk();
+
+        if (class_exists(Inertia::class)) {
+            $response->assertInertia(fn (Assert $page) => $page->component('Teams/CreateFirst'));
+        } else {
+            $response->assertViewIs('brilliant-portal-framework::teams.create-first');
+        }
     }
 
     public function test_user_without_teams_can_see_already_invited()
@@ -42,10 +50,16 @@ class EnsureHasNoTeamTest extends TestCase
             'user_id' => $user->id,
         ]);
 
-        $this
+        $response = $this
             ->actingAs($user)
             ->get(route('brilliant-portal-framework.teams.already-invited'))
-            ->assertViewIs('brilliant-portal-framework::teams.already-invited');
+            ->assertOk();
+
+        if (class_exists(Inertia::class)) {
+            $response->assertInertia(fn (Assert $page) => $page->component('Teams/AlreadyInvited'));
+        } else {
+            $response->assertViewIs('brilliant-portal-framework::teams.already-invited');
+        }
     }
 
     public function test_user_with_teams_cant_create_first_team()
