@@ -85,6 +85,18 @@ See https://betteruptime-laravel.brilliantpackages.com for documentation.
 
 ## Usage
 
+### Permissions
+
+Add the `HasTeamPermission` middleware to routes that require a specific permission as defined in your `JetstreamServiceProvider`:
+
+```php
+# Routes file in your app.
+use BrilliantPortal\Framework\Http\Middleware\HasTeamPermission;
+
+Route::middleware(['auth:sanctum', HasTeamPermission::class.':create'])
+    ->post(/* any endpoint where the user must have the `create` permission on their current team */);
+```
+
 ### Teams
 
 Add the `EnsureHasTeam` middleware to any routes that require a team. If the user does not have a team, they will be redirected to a screen prompting them to create a team.
