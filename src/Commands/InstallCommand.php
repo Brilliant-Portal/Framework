@@ -53,12 +53,12 @@ class InstallCommand extends BaseCommand
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'e7aafa6757545b8e757e952e528d03b577395bff2f979452defdd7fbb332a2b7');
             copy(__DIR__ . '/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
-            if ('livewire' === $this->option('stack')) {
-                // Providers.
-                $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'bc6e342976ff178688ece8e2633bbdea3c047ac1328d4fb0d141a1dcbfd2584d');
-                copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
+            // Providers.
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Providers/AuthServiceProvider.php', 'bc6e342976ff178688ece8e2633bbdea3c047ac1328d4fb0d141a1dcbfd2584d');
+            copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
-                // Views.
+            // Views.
+            if ('livewire' === $this->option('stack')) {
                 $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
             } elseif ('inertia' === $this->option('stack')) {
                 copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/AlreadyInvited.vue', base_path('resources/js/Pages/Teams/AlreadyInvited.vue'));
