@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.15.0 — 2023-05-02
+
+- Feature: add OpenAPI documentation deep links
+- Bugfix: check for authentication first before checking for team
+- Bugfix: don’t check API token when authorizing models if not present
+
 # 1.14.1 — 2023-05-01
 
 - Bugfix: fix test return types and capitalization

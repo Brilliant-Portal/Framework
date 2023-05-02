@@ -5,6 +5,7 @@ namespace BrilliantPortal\Framework\Policies;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
@@ -15,13 +16,11 @@ class BasePolicy
     /**
      * Verify team membership.
      *
-     * @param \App\Models\User $user
-     * @param \Illuminate\Database\Eloquent\Model $model
-     * @param string $verb One of read, create, update, delete
-     * @return bool
      * @since 1.1.0
+     *
+     * @param string $verb One of read, create, update, delete
      */
-    protected function checkTeamOwnership(User $user, $model = null, $verb = null)
+    protected function checkTeamOwnership(User $user, ?Model $model = null, string $verb = null): bool
     {
         // Super-admins can do anything.
         if ($user->can('super-admin')) {
@@ -62,6 +61,10 @@ class BasePolicy
             return $teamPermission;
         }
 
-        return $teamPermission && $user->tokenCan($permission);
+        if ($user->currentAccessToken()) {
+            return $teamPermission && $user->tokenCan($permission);
+        }
+
+        return $teamPermission;
     }
 }

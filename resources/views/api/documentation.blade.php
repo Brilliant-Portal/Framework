@@ -15,11 +15,12 @@
 
                 <script>
                     var ui = SwaggerUIBundle({
-                        spec: {!! json_encode($spec) !!},
+                        spec: @js($spec),
                         dom_id: "#api-explorer",
+                        deepLinking: true,
                         presets: [
                             SwaggerUIBundle.presets.apis,
-                            SwaggerUIBundle.SwaggerUIStandalonePreset
+                            SwaggerUIBundle.SwaggerUIStandalonePreset,
                         ],
                     })
                 </script>
