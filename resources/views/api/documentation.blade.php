@@ -15,7 +15,7 @@
 
                 <script>
                     var ui = SwaggerUIBundle({
-                        spec: {!! json_encode($spec) !!},
+                        spec: @js($spec),
                         dom_id: "#api-explorer",
                         presets: [
                             SwaggerUIBundle.presets.apis,
