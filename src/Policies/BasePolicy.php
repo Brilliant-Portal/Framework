@@ -61,6 +61,10 @@ class BasePolicy
             return $teamPermission;
         }
 
-        return $teamPermission && $user->tokenCan($permission);
+        if ($user->currentAccessToken()) {
+            return $teamPermission && $user->tokenCan($permission);
+        }
+
+        return $teamPermission;
     }
 }
