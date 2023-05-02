@@ -17,9 +17,10 @@
                     var ui = SwaggerUIBundle({
                         spec: @js($spec),
                         dom_id: "#api-explorer",
+                        deepLinking: true,
                         presets: [
                             SwaggerUIBundle.presets.apis,
-                            SwaggerUIBundle.SwaggerUIStandalonePreset
+                            SwaggerUIBundle.SwaggerUIStandalonePreset,
                         ],
                     })
                 </script>

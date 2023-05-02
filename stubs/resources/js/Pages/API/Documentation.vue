@@ -15,6 +15,7 @@ onMounted(() => {
     SwaggerUI({
         spec: props.spec,
         dom_id: '#api-explorer',
+        deepLinking: true,
         presets: [
             SwaggerUI.presets.apis,
             SwaggerUI.SwaggerUIStandalonePreset,
