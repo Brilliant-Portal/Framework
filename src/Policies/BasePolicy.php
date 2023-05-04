@@ -6,8 +6,6 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 
 class BasePolicy
 {
@@ -54,11 +52,6 @@ class BasePolicy
         } else {
             $teamPermission = $user->belongsToTeam($model->team)
                 && $user->hasTeamPermission($model->team, $permission);
-        }
-
-        // Don’t check API tokens for Nova requests.
-        if (class_exists(Laravel\Nova::class) && Str::contains(get_class(Route::current()->getController()), Laravel\Nova::class)) {
-            return $teamPermission;
         }
 
         if ($user->currentAccessToken()) {
