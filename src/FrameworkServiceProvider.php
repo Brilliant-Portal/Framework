@@ -26,10 +26,11 @@ class FrameworkServiceProvider extends PackageServiceProvider
         $package
             ->name('brilliant-portal-framework')
             ->hasConfigFile()
-            ->hasRoutes([
+            ->hasRoutes(array_filter([
                 'teams',
                 'api',
-            ])
+                app()->environment('local') ? 'dev' : null,
+            ]))
             ->hasViews()
             ->hasCommands(
                 InstallCommand::class,
