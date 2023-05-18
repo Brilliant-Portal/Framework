@@ -161,6 +161,10 @@ BrilliantPortal Framework sets some default password complexity requirements. Se
 - Production environments: minimum 8 characters, mixed case, must not exist in known breaches
 - Non-production environments: minimum 8 characters
 
+#### Individual Name Fields
+
+The `\BrilliantPortal\Framework\Traits\HasIndividualNameFields` trait may be used on a `User` model to indicate that the user table has distinct `first_name` and `last_name` fields rather than the standard `name` field that Laravel provides.
+
 ### Components
 
 Several handy components are provided out of the box:

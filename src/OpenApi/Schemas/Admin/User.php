@@ -2,6 +2,7 @@
 
 namespace BrilliantPortal\Framework\OpenApi\Schemas\Admin;
 
+use BrilliantPortal\Framework\Framework;
 use GoldSpecDigital\ObjectOrientedOAS\Contracts\SchemaContract;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
@@ -12,7 +13,7 @@ class User extends SchemaFactory implements Reusable
     public function build(): SchemaContract
     {
         return Schema::object('User')
-            ->properties(
+            ->properties(...array_merge([
                 Schema::integer('id')
                     ->description('User ID')
                     ->readOnly()
@@ -22,11 +23,26 @@ class User extends SchemaFactory implements Reusable
                     ->description('Optional ID for an external system')
                     ->default(null)
                     ->example('ABC123'),
-                Schema::string('name')
-                    ->description('First and last name')
-                    ->required()
-                    ->default(null)
-                    ->example('John Doe'),
+                ],
+                (Framework::userHasIndividualNameFields()
+                    ? [
+                        Schema::string('first_name')
+                            ->description('First name')
+                            ->required()
+                            ->default(null)
+                            ->example('John'),
+                        Schema::string('last_name')
+                            ->description('Last name')
+                            ->required()
+                            ->default(null)
+                            ->example('Doe'),
+                        ]
+                    : [Schema::string('name')
+                        ->description('First and last name')
+                        ->required()
+                        ->default(null)
+                        ->example('John Doe')]),
+                [
                 Schema::string('email')
                     ->format('email')
                     ->description('Email address')
@@ -63,6 +79,6 @@ class User extends SchemaFactory implements Reusable
                     ->readOnly()
                     ->default(null)
                     ->example('https://ui-avatars.com/api/?name=John+Doe&color=7F9CF5&background=EBF4FF'),
-            );
+            ]));
     }
 }
