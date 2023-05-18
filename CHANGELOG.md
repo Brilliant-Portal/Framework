@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.16.1 — 2023-05-18
+
+- Bugfix: add missing read-only `name` field for apps with distinct name fields
+
 # 1.16.0 — 2023-05-18
 
 - Refactor: remove unnecessary authorization check for Nova requests
