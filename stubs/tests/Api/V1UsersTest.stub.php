@@ -608,7 +608,7 @@ class V1UsersTest extends TestCase
             'is_super_admin' => true,
         ]);
 
-        /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users */
+        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> */
         User::factory()->times(5)->create();
 
         $this->assertDatabaseMissing('users', [

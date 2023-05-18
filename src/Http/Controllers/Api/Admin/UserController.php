@@ -29,7 +29,7 @@ class UserController extends Controller
      *
      * @since 0.1.0
      *
-     * @var string
+     * @var class-string
      */
     protected $model = User::class;
 
