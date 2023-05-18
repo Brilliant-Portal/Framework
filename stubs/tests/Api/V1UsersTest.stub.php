@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use App\Models\Team;
 use App\Models\User;
+use BrilliantPortal\Framework\Framework;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -171,19 +172,31 @@ class V1UsersTest extends TestCase
 
         $sampleUser = User::factory()->make();
 
-        $this->assertDatabaseMissing('users', [
-            'name' => $sampleUser->name,
-            'email' => $sampleUser->email,
-        ]);
+        if (Framework::userHasIndividualNameFields()) {
+            $testData = [
+                'first_name' => $sampleUser->first_name,
+                'last_name' => $sampleUser->last_name,
+            ];
+        } else {
+            $testData = [
+                'name' => $sampleUser->name,
+            ];
+        }
+        $testData['email'] = $sampleUser->email;
 
-        $response = $this->postJson('api/v1/admin/users', [
-            'name' => $sampleUser->name,
-            'email' => $sampleUser->email,
-        ]);
+        $this->assertDatabaseMissing('users', $testData);
+
+        $response = $this->postJson('api/v1/admin/users', $testData);
         $response
             ->assertStatus(201)
             ->assertJsonPath('name', $sampleUser->name)
             ->assertJsonPath('email', $sampleUser->email);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertJsonPath('first_name', $sampleUser->first_name)
+                ->assertJsonPath('last_name', $sampleUser->last_name);
+        }
 
         $newUserId = $response->baseResponse->getData()->id;
 
@@ -191,9 +204,8 @@ class V1UsersTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $newUserId,
-            'name' => $sampleUser->name,
             'email' => $sampleUser->email,
-        ]);
+        ]+$testData);
 
         $this->assertDatabaseMissing('users', [
             'id' => $newUserId,
@@ -219,10 +231,16 @@ class V1UsersTest extends TestCase
         Event::fake();
 
         $this
-            ->postJson('api/v1/admin/users', [
-                'name' => $sampleUser->name,
-                'email' => $sampleUser->email,
-            ])
+            ->postJson('api/v1/admin/users', Framework::userHasIndividualNameFields()
+                ? [
+                    'first_name' => $sampleUser->first_name,
+                    'last_name' => $sampleUser->last_name,
+                    'email' => $sampleUser->email,
+                ]
+                : [
+                    'name' => $sampleUser->name,
+                    'email' => $sampleUser->email,
+                ])
             ->assertStatus(201);
 
         Event::assertDispatched(Registered::class);
@@ -242,15 +260,21 @@ class V1UsersTest extends TestCase
 
         $sampleUser = User::factory()->create();
 
-        $this->assertDatabaseHas('users', [
-            'name' => $sampleUser->name,
-            'email' => $sampleUser->email,
-        ]);
+        if (Framework::userHasIndividualNameFields()) {
+            $testData = [
+                'first_name' => $sampleUser->first_name,
+                'last_name' => $sampleUser->last_name,
+            ];
+        } else {
+            $testData = [
+                'name' => $sampleUser->name,
+            ];
+        }
+        $testData['email'] = $sampleUser->email;
 
-        $response = $this->postJson('api/v1/admin/users', [
-            'name' => $sampleUser->name,
-            'email' => $sampleUser->email,
-        ]);
+        $this->assertDatabaseHas('users', $testData);
+
+        $response = $this->postJson('api/v1/admin/users', $testData);
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
@@ -258,7 +282,8 @@ class V1UsersTest extends TestCase
             ]);
 
         $response = $this->postJson('api/v1/admin/users', [
-            'name' => $sampleUser->name,
+            'first_name' => $sampleUser->first_name,
+            'last_name' => $sampleUser->last_name,
         ]);
         $response
             ->assertStatus(422)
@@ -272,7 +297,8 @@ class V1UsersTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'name' => 'The name field is required.',
+                'first_name' => 'The first name field is required.',
+                'last_name' => 'The last name field is required.',
             ]);
     }
 
@@ -296,17 +322,17 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->getJson('api/v1/admin/users/' . $user->id)
+            ->getJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:update']);
         $this
-            ->getJson('api/v1/admin/users/' . $user->id)
+            ->getJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:delete']);
         $this
-            ->getJson('api/v1/admin/users/' . $user->id)
+            ->getJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
     }
 
@@ -332,7 +358,7 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:read']);
 
-        $response = $this->getJson('api/v1/admin/users/' . $user->id);
+        $response = $this->getJson('api/v1/admin/users/'.$user->id);
 
         $response
             ->assertStatus(200)
@@ -355,7 +381,7 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($superAdmin);
 
-        $response = $this->getJson('api/v1/admin/users/' . $user->id);
+        $response = $this->getJson('api/v1/admin/users/'.$user->id);
 
         $response
             ->assertStatus(200)
@@ -380,28 +406,28 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->patchJson('api/v1/admin/users/' . $user->id, [
+            ->patchJson('api/v1/admin/users/'.$user->id, [
                 'external_id' => 'ABC123',
             ])
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:create']);
         $this
-            ->patchJson('api/v1/admin/users/' . $user->id, [
+            ->patchJson('api/v1/admin/users/'.$user->id, [
                 'external_id' => 'ABC123',
             ])
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['admin:delete']);
         $this
-            ->patchJson('api/v1/admin/users/' . $user->id, [
+            ->patchJson('api/v1/admin/users/'.$user->id, [
                 'external_id' => 'ABC123',
             ])
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['update']);
         $this
-            ->patchJson('api/v1/admin/users/' . $user->id, [
+            ->patchJson('api/v1/admin/users/'.$user->id, [
                 'external_id' => 'ABC123',
             ])
             ->assertStatus(403);
@@ -425,21 +451,35 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:update']);
 
-        $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-        ]);
+        if (Framework::userHasIndividualNameFields()) {
+            $newData = [
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+            ];
+        } else {
+            $newData = [
+                'name' => 'John Doe',
+            ];
+        }
+        $newData['email'] = 'john.doe@example.com';
+
+        $response = $this->patchJson('api/v1/admin/users/'.$user->id, $newData);
 
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $user->id)
-            ->assertJsonPath('name', 'John Doe');
+            ->assertJsonPath('name', 'John Doe')
+            ->assertJsonPath('email', 'john.doe@example.com');
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertJsonPath('first_name', 'John')
+                ->assertJsonPath('last_name', 'Doe');
+        }
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-        ]);
+        ]+$newData);
     }
 
     public function testUpdateAsSuperAdmin(): void
@@ -458,23 +498,37 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($superAdmin);
 
-        $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-        ]);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $newData = [
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+            ];
+        } else {
+            $newData = [
+                'name' => 'John Doe',
+            ];
+        }
+        $newData['email'] = 'john.doe@example.com';
+
+        $response = $this->patchJson('api/v1/admin/users/'.$user->id, $newData);
 
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $user->id)
-            ->assertJsonPath('name', 'John Doe');
+            ->assertJsonPath('name', 'John Doe')
+            ->assertJsonPath('email', 'john.doe@example.com');
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertJsonPath('first_name', 'John')
+                ->assertJsonPath('last_name', 'Doe');
+        }
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-        ]);
+        ]+$newData);
     }
-
 
     public function testUpdateWithSameEmail(): void
     {
@@ -492,21 +546,37 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($superAdmin);
 
-        $response = $this->patchJson('api/v1/admin/users/' . $user->id, [
-            'name' => 'John Doe',
-            'email' => $user->email,
-        ]);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $newData = [
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+            ];
+        } else {
+            $newData = [
+                'name' => 'John Doe',
+            ];
+        }
+        $newData['email'] = $user->email;
+
+        $response = $this->patchJson('api/v1/admin/users/'.$user->id, $newData);
 
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $user->id)
-            ->assertJsonPath('name', 'John Doe');
+            ->assertJsonPath('name', 'John Doe')
+            ->assertJsonPath('email', $user->email);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertJsonPath('first_name', 'John')
+                ->assertJsonPath('last_name', 'Doe');
+        }
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'name' => 'John Doe',
             'email' => $user->email,
-        ]);
+        ]+$newData);
     }
 
     public function testDeleteFailAuthorizationAsTeamAdmin(): void
@@ -527,24 +597,22 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, []);
         $this
-            ->deleteJson('api/v1/admin/users/' . $user->id)
+            ->deleteJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
-
 
         Sanctum::actingAs($team->owner, ['admin:create']);
         $this
-            ->deleteJson('api/v1/admin/users/' . $user->id)
+            ->deleteJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
-
 
         Sanctum::actingAs($team->owner, ['admin:update']);
         $this
-            ->deleteJson('api/v1/admin/users/' . $user->id)
+            ->deleteJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
 
         Sanctum::actingAs($team->owner, ['delete']);
         $this
-            ->deleteJson('api/v1/admin/users/' . $user->id)
+            ->deleteJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(403);
     }
 
@@ -566,7 +634,7 @@ class V1UsersTest extends TestCase
 
         Sanctum::actingAs($team->owner, ['admin:delete']);
 
-        $response = $this->deleteJson('api/v1/admin/users/' . $user->id);
+        $response = $this->deleteJson('api/v1/admin/users/'.$user->id);
         $response
             ->assertStatus(200)
             ->assertJsonPath('id', $user->id)
@@ -594,7 +662,7 @@ class V1UsersTest extends TestCase
         Sanctum::actingAs($superAdmin);
 
         $this
-            ->deleteJson('api/v1/admin/users/' . $user->id)
+            ->deleteJson('api/v1/admin/users/'.$user->id)
             ->assertStatus(200);
     }
 
@@ -608,7 +676,6 @@ class V1UsersTest extends TestCase
             'is_super_admin' => true,
         ]);
 
-        /** @var \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> */
         User::factory()->times(5)->create();
 
         $this->assertDatabaseMissing('users', [

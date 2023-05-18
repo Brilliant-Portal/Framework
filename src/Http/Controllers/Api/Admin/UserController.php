@@ -3,6 +3,7 @@
 namespace BrilliantPortal\Framework\Http\Controllers\Api\Admin;
 
 use App\Models\User;
+use BrilliantPortal\Framework\Framework;
 use BrilliantPortal\Framework\Http\Controllers\Api\Controller;
 use BrilliantPortal\Framework\Http\Resources\DataWrapCollection;
 use BrilliantPortal\Framework\Http\Resources\JsonResource;
@@ -70,11 +71,19 @@ class UserController extends Controller
     #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:' . User::class . ',email',
+        $validated = $request->validate(array_filter([
+            'name' => ! Framework::userHasIndividualNameFields()
+                ? 'required|string|max:255'
+                : null,
+            'first_name' => Framework::userHasIndividualNameFields()
+                ? 'required|string|max:255'
+                : null,
+            'last_name' => Framework::userHasIndividualNameFields()
+                ? 'required|string|max:255'
+                : null,
+            'email' => 'required|email|unique:'.User::class.',email',
             'external_id' => 'nullable|max:255',
-        ]);
+        ]));
 
         $user = new User($validated);
         $user->password = Hash::make(Str::random(80));
@@ -119,15 +128,23 @@ class UserController extends Controller
     #[OpenApi\Response(factory: GeneralResponses\ErrorValidation::class, statusCode: 422)]
     public function update(Request $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'filled|string',
+        $validated = $request->validate(array_filter([
+            'name' => ! Framework::userHasIndividualNameFields()
+                ? 'filled|string|max:255'
+                : null,
+            'first_name' => Framework::userHasIndividualNameFields()
+                ? 'filled|string|max:255'
+                : null,
+            'last_name' => Framework::userHasIndividualNameFields()
+                ? 'filled|string|max:255'
+                : null,
             'email' => [
                 'filled',
                 'email',
                 Rule::unique(User::class)->ignore($user->id),
             ],
             'external_id' => 'nullable|max:255',
-        ]);
+        ]));
 
         $user->fill($validated);
         $user->save();
