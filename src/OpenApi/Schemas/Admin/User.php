@@ -36,6 +36,11 @@ class User extends SchemaFactory implements Reusable
                             ->required()
                             ->default(null)
                             ->example('Doe'),
+                        Schema::string('name')
+                            ->description('Full name')
+                            ->readOnly()
+                            ->default(null)
+                            ->example('John Doe'),
                         ]
                     : [Schema::string('name')
                         ->description('First and last name')
