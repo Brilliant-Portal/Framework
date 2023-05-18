@@ -2,6 +2,12 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.16.0 — 2023-05-18
+
+- Refactor: remove unnecessary authorization check for Nova requests
+- Feature: fix Vite open-in-editor URLs
+- Feature: add `HasIndividualNameFields` trait for apps with distinct name fields
+
 # 1.15.0 — 2023-05-02
 
 - Feature: add OpenAPI documentation deep links
