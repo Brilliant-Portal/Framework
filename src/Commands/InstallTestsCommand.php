@@ -29,6 +29,7 @@ class InstallTestsCommand extends BaseCommand
         }
 
         copy(__DIR__ . '/../../stubs/tests/DeploymentTest.stub.php', base_path('tests/Feature/DeploymentTest.php'));
+        copy(__DIR__ . '/../../stubs/tests/RobotsMiddlewareTest.stub.php', base_path('tests/Feature/RobotsMiddlewareTest.php'));
 
         $this->info('Copied tests to your app.');
 
