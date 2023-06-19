@@ -225,6 +225,19 @@ Example screenshot:
 
 To customize these, see [publishing views](#views).
 
+## Search Engine Optimization
+
+This package uses the [Spatie Laravel Robots Middleware package](https://github.com/spatie/laravel-robots-middleware) to prove `x-robots-tag` headers.
+
+To use this, add the `\BrilliantPortal\Framework\Http\Middleware\RobotsMiddleware` class to your app’s `app/Http/Kernel.php` file under the `web` group.
+
+You may use the `SEARCH_ENGINES_SHOULD_INDEX` and/or `SEARCH_ENGINES_BLOCK_PATTERNS` env variables to control access, or copy the `vendor/brilliant-portal/framework/src/Http/Middleware/RobotsMiddleware.php` file into your app and tweak the logic.
+
+```conf
+SEARCH_ENGINES_SHOULD_INDEX=false # by default, is true only in production environment
+SEARCH_ENGINES_BLOCK_PATTERNS="login,two-factor.*,admin.*" # comma-separated string of route names; wildcards are supported
+```
+
 ## API
 
 ### Admin Endpoints
