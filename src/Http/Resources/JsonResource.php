@@ -2,6 +2,7 @@
 
 namespace BrilliantPortal\Framework\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource as LaravelJsonResource;
 
 class JsonResource extends LaravelJsonResource
@@ -11,10 +12,9 @@ class JsonResource extends LaravelJsonResource
      *
      * @since 0.1.0
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+    public function toArray(Request $request)
     {
         return parent::toArray($request);
     }
