@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.17.1 — 2023-07-27
+
+- Bugfix: add typehints to `JsonResource` to support Laravel 10’s type hints
+
 # 1.17.0 — 2023-06-15
 
 - Feature: add optional middleware to block SEO in non-production environments
