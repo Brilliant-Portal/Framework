@@ -2,7 +2,7 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
-# 1.18.0 — 2023-09-18
+# 2.0.0 — 2023-09-18
 
 - Feature: add compatibility with Jetstream 4/Livewire 3
 

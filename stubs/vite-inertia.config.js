@@ -7,11 +7,9 @@ let host = 'localhost.test';
 export default defineConfig({
     plugins: [
         laravel({
-            input: [
-                'resources/js/app.js',
-            ],
+            input: ["resources/js/app.js"],
             refresh: true,
-            valetTls: host,
+            detectTls: host,
         }),
 
         vue({
