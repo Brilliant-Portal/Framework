@@ -205,7 +205,7 @@ class V1UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $newUserId,
             'email' => $sampleUser->email,
-        ]+$testData);
+        ] + $testData);
 
         $this->assertDatabaseMissing('users', [
             'id' => $newUserId,
@@ -486,7 +486,7 @@ class V1UsersTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testUpdateAsSuperAdmin(): void
@@ -504,7 +504,6 @@ class V1UsersTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($superAdmin);
-
 
         if (Framework::userHasIndividualNameFields()) {
             $newData = [
@@ -534,7 +533,7 @@ class V1UsersTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testUpdateWithSameEmail(): void
@@ -552,7 +551,6 @@ class V1UsersTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($superAdmin);
-
 
         if (Framework::userHasIndividualNameFields()) {
             $newData = [
@@ -583,7 +581,7 @@ class V1UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'email' => $user->email,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testDeleteFailAuthorizationAsTeamAdmin(): void
