@@ -281,10 +281,7 @@ class V1UsersTest extends TestCase
                 'email' => 'The email has already been taken',
             ]);
 
-        $response = $this->postJson('api/v1/admin/users', [
-            'first_name' => $sampleUser->first_name,
-            'last_name' => $sampleUser->last_name,
-        ]);
+        $response = $this->postJson('api/v1/admin/users', collect($testData)->except('email')->all());
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
@@ -294,12 +291,22 @@ class V1UsersTest extends TestCase
         $response = $this->postJson('api/v1/admin/users', [
             'email' => $sampleUser->email,
         ]);
-        $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors([
-                'first_name' => 'The first name field is required.',
-                'last_name' => 'The last name field is required.',
-            ]);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertStatus(422)
+                ->assertJsonValidationErrors([
+                    'first_name' => 'The first name field is required.',
+                    'last_name' => 'The last name field is required.',
+                ]);
+        } else {
+            $response
+                ->assertStatus(422)
+                ->assertJsonValidationErrors([
+                    'name' => 'The name field is required.',
+                ]);
+
+        }
     }
 
     public function testFetchOneFailAuthorizationAsTeamAdmin(): void
