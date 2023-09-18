@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.18.0 — 2023-09-18
+
+- Feature: add compatibility with Jetstream 4/Livewire 3
+
 # 1.17.1 — 2023-07-27
 
 - Bugfix: add typehints to `JsonResource` to support Laravel 10’s type hints
