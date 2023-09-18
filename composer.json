@@ -22,7 +22,7 @@
         "php": "^8.0",
         "illuminate/contracts": "^8.43 || ^9.0 || ^10.0",
         "laravel/framework": "^8.51 || ^9.0 || ^10.0",
-        "laravel/jetstream": "^2.3 || ^3.0",
+        "laravel/jetstream": "^2.3 || ^3.0 || ^4.0",
         "laravel/telescope": "^4.4",
         "spatie/laravel-package-tools": "^1.4.3",
         "spatie/laravel-robots-middleware": "^1.3",
