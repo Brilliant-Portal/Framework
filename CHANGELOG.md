@@ -2,9 +2,18 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 2.1.0 — 2023-11-06
+
+- Feature: allow other BrilliantPortal pages to specify project for modified vendor files URL
+- Bugfix: fix users API test for combined vs. distinct name fields
+
 # 2.0.0 — 2023-09-18
 
 - Feature: add compatibility with Jetstream 4/Livewire 3
+
+# 1.18.0 — 2023-11-06
+
+- Feature: allow other BrilliantPortal pages to specify project for modified vendor files URL
 
 # 1.17.1 — 2023-07-27
 
