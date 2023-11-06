@@ -4,7 +4,7 @@ All notable changes to `brilliant-portal/framework` will be documented in this f
 
 # 2.1.0 — 2023-11-06
 
-- Feature: allow other BrilliantPortal pages to specify project for modified vendor files URL
+- Feature: allow other BrilliantPortal packages to specify project for modified vendor files URL
 - Bugfix: fix users API test for combined vs. distinct name fields
 
 # 2.0.0 — 2023-09-18
