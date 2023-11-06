@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 1.18.0 — 2023-11-06
+
+- Feature: allow other BrilliantPortal pages to specify project for modified vendor files URL
+
 # 1.17.1 — 2023-07-27
 
 - Bugfix: add typehints to `JsonResource` to support Laravel 10’s type hints
