@@ -205,7 +205,7 @@ class V1UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $newUserId,
             'email' => $sampleUser->email,
-        ]+$testData);
+        ] + $testData);
 
         $this->assertDatabaseMissing('users', [
             'id' => $newUserId,
@@ -281,10 +281,7 @@ class V1UsersTest extends TestCase
                 'email' => 'The email has already been taken',
             ]);
 
-        $response = $this->postJson('api/v1/admin/users', [
-            'first_name' => $sampleUser->first_name,
-            'last_name' => $sampleUser->last_name,
-        ]);
+        $response = $this->postJson('api/v1/admin/users', collect($testData)->except('email')->all());
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
@@ -294,12 +291,22 @@ class V1UsersTest extends TestCase
         $response = $this->postJson('api/v1/admin/users', [
             'email' => $sampleUser->email,
         ]);
-        $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors([
-                'first_name' => 'The first name field is required.',
-                'last_name' => 'The last name field is required.',
-            ]);
+
+        if (Framework::userHasIndividualNameFields()) {
+            $response
+                ->assertStatus(422)
+                ->assertJsonValidationErrors([
+                    'first_name' => 'The first name field is required.',
+                    'last_name' => 'The last name field is required.',
+                ]);
+        } else {
+            $response
+                ->assertStatus(422)
+                ->assertJsonValidationErrors([
+                    'name' => 'The name field is required.',
+                ]);
+
+        }
     }
 
     public function testFetchOneFailAuthorizationAsTeamAdmin(): void
@@ -479,7 +486,7 @@ class V1UsersTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testUpdateAsSuperAdmin(): void
@@ -497,7 +504,6 @@ class V1UsersTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($superAdmin);
-
 
         if (Framework::userHasIndividualNameFields()) {
             $newData = [
@@ -527,7 +533,7 @@ class V1UsersTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testUpdateWithSameEmail(): void
@@ -545,7 +551,6 @@ class V1UsersTest extends TestCase
         $user = User::factory()->create();
 
         Sanctum::actingAs($superAdmin);
-
 
         if (Framework::userHasIndividualNameFields()) {
             $newData = [
@@ -576,7 +581,7 @@ class V1UsersTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
             'email' => $user->email,
-        ]+$newData);
+        ] + $newData);
     }
 
     public function testDeleteFailAuthorizationAsTeamAdmin(): void
