@@ -29,13 +29,14 @@ class Framework
                 Str::of($key)
                     ->title()
                     ->replace('_', '')
-                    ->prepend('vendor/'. trim($packagePath, '/').'/src/OpenApi/')
+                    ->prepend('vendor/'.trim($packagePath, '/').'/src/OpenApi/')
             );
             if (array_search($newPath, $paths)) {
                 return $paths;
             }
 
             $paths[] = $newPath;
+
             return $paths;
         })->toArray();
 

@@ -72,7 +72,6 @@ class DocumentationTest extends TestCase
             ->get('/dashboard/api-documentation')
             ->assertOk();
 
-
         if (class_exists(Inertia::class)) {
             $response->assertInertia(fn (Assert $page) => $page
                 ->component('API/Documentation')

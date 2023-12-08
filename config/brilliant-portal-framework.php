@@ -7,7 +7,7 @@ return [
     ],
 
     'seo' => [
-        'should-index' => env('SEARCH_ENGINES_SHOULD_INDEX', 'production' === env('APP_ENV')),
+        'should-index' => env('SEARCH_ENGINES_SHOULD_INDEX', env('APP_ENV') === 'production'),
         'block-route-patterns' => array_filter(explode(',', env('SEARCH_ENGINES_BLOCK_PATTERNS', ''))),
     ],
 

@@ -14,7 +14,7 @@ use Vyuldashev\LaravelOpenApi\Generator;
  */
 Route::name('api.')
     ->middleware(['api', 'auth:sanctum'])
-    ->prefix('api/' . config('brilliant-portal-framework.api.version'))
+    ->prefix('api/'.config('brilliant-portal-framework.api.version'))
     ->group(function () {
 
         /**

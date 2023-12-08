@@ -28,8 +28,6 @@ class TeamController extends Controller
      * Store the user’s team.
      *
      * @since 1.0.0
-     *
-     * @param \Illuminate\Http\Request $request
      */
     public function store(Request $request): RedirectResponse
     {
