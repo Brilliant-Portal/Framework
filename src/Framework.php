@@ -7,6 +7,9 @@ use BrilliantPortal\Framework\OpenApi\SecuritySchemes\apiKey;
 use BrilliantPortal\Framework\Traits\HasIndividualNameFields;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Laravel\Nova\Nova;
+use Livewire\Livewire;
 
 class Framework
 {
@@ -72,5 +75,29 @@ class Framework
         }
 
         return self::$userHasIndividualNameFields;
+    }
+
+    public static function renderWithInertia(): bool
+    {
+        $wantsInertiaOverride = config('brilliant-portal-framework.stack.inertia', false);
+
+        // If both Nova and Livewire are installed, assume that the app is using Livewire.
+        if (class_exists(Nova::class) && class_exists(Livewire::class)) {
+            return false || $wantsInertiaOverride;
+        }
+
+        return class_exists(Inertia::class) || $wantsInertiaOverride;
+    }
+
+    public static function renderWithLivewire(): bool
+    {
+        $wantsLivewireOverride = config('brilliant-portal-framework.stack.livewire', false);
+
+        // If both Nova and Livewire are installed, assume that the app is using Livewire.
+        if (class_exists(Nova::class)) {
+            $wantsLivewireOverride = true;
+        }
+
+        return class_exists(Livewire::class) || $wantsLivewireOverride;
     }
 }

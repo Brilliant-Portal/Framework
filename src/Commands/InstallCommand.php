@@ -42,6 +42,12 @@ class InstallCommand extends BaseCommand
 
         $this->callSilent('jetstream:install', $jetstreamArgs);
 
+        $this->appendToEnv(match ($this->option('stack')) {
+            'livewire' => 'BPORTAL_FRAMEWORK_STACK_LIVEWIRE=true',
+            'inertia' => 'BPORTAL_FRAMEWORK_STACK_INERTIA=true',
+            default => '',
+        });
+
         copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
 
         if ($this->option('teams')) {

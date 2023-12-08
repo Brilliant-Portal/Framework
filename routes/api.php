@@ -1,5 +1,6 @@
 <?php
 
+use BrilliantPortal\Framework\Framework;
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\TeamController;
 use BrilliantPortal\Framework\Http\Controllers\Api\Admin\UserController;
 use BrilliantPortal\Framework\Http\Controllers\Api\GenericController;
@@ -54,7 +55,7 @@ Route::name('api.')
  */
 Route::middleware(['web', 'auth:sanctum', EnsureHasTeam::class, 'can:see-api-docs'])
     ->get('/dashboard/api-documentation', function (Generator $openApi) {
-        return class_exists(Inertia::class)
+        return Framework::renderWithInertia()
             ? Inertia::render('API/Documentation', ['spec' => $openApi->generate()])
             : view('brilliant-portal-framework::api.documentation', ['spec' => $openApi->generate()]);
     })
