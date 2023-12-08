@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 2.1.1 — 2023-12-08
+
+- Bugfix: improve Inertia vs. Livewire checks
+
 # 2.1.0 — 2023-11-06
 
 - Feature: allow other BrilliantPortal packages to specify project for modified vendor files URL
