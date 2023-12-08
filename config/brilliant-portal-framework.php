@@ -7,8 +7,13 @@ return [
     ],
 
     'seo' => [
-        'should-index' => env('SEARCH_ENGINES_SHOULD_INDEX', 'production' === env('APP_ENV')),
+        'should-index' => env('SEARCH_ENGINES_SHOULD_INDEX', env('APP_ENV') === 'production'),
         'block-route-patterns' => array_filter(explode(',', env('SEARCH_ENGINES_BLOCK_PATTERNS', ''))),
+    ],
+
+    'stack' => [
+        'inertia' => env('BPORTAL_FRAMEWORK_STACK_INERTIA', null),
+        'livewire' => env('BPORTAL_FRAMEWORK_STACK_LIVEWIRE', null),
     ],
 
     'telescope' => [

@@ -8,18 +8,11 @@
 # - https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Composer.gitlab-ci.yml
 
 stages:
+  - solcare
   - test
   - build
   - deploy
   - release
-
-cache:
-  key: $CI_BUILD_REF_NAME
-  paths:
-    - .npm
-    - node_modules
-    - public
-    - vendor
 
 variables:
   PHP_VERSION: "8.0"

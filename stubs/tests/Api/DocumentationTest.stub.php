@@ -6,7 +6,6 @@ use App\Models\Team;
 use App\Models\User;
 use BrilliantPortal\Framework\Framework;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Inertia\Inertia;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Jetstream\Features;
 use Tests\TestCase;
@@ -72,8 +71,7 @@ class DocumentationTest extends TestCase
             ->get('/dashboard/api-documentation')
             ->assertOk();
 
-
-        if (class_exists(Inertia::class)) {
+        if (Framework::renderWithInertia()) {
             $response->assertInertia(fn (Assert $page) => $page
                 ->component('API/Documentation')
                 ->has('spec')

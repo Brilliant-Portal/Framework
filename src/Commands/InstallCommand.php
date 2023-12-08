@@ -42,35 +42,41 @@ class InstallCommand extends BaseCommand
 
         $this->callSilent('jetstream:install', $jetstreamArgs);
 
-        copy(__DIR__ . '/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
+        $this->appendToEnv(match ($this->option('stack')) {
+            'livewire' => 'BPORTAL_FRAMEWORK_STACK_LIVEWIRE=true',
+            'inertia' => 'BPORTAL_FRAMEWORK_STACK_INERTIA=true',
+            default => '',
+        });
+
+        copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
 
         if ($this->option('teams')) {
             // Actions.
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Actions/Fortify/CreateNewUser.php', 'de57e52100d4f356a8d98c9e5c56a7c93bcba0e20f8e9b782a2d5574e7249347');
-            copy(__DIR__ . '/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
+            copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
 
             // Migrations and Models.
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'e7aafa6757545b8e757e952e528d03b577395bff2f979452defdd7fbb332a2b7');
-            copy(__DIR__ . '/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
+            copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
-            copy(__DIR__ . '/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
+            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
 
             // Views.
-            if ('livewire' === $this->option('stack')) {
+            if ($this->option('stack') === 'livewire') {
                 $this->replaceInFile('@if (Laravel\Jetstream\Jetstream::hasTeamFeatures())', '@if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->isMemberOfATeam())', resource_path('views/navigation-menu.blade.php'));
-            } elseif ('inertia' === $this->option('stack')) {
-                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/AlreadyInvited.vue', base_path('resources/js/Pages/Teams/AlreadyInvited.vue'));
-                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/CreateFirst.vue', base_path('resources/js/Pages/Teams/CreateFirst.vue'));
-                copy(__DIR__ . '/../../stubs/resources/js/Pages/Teams/Partials/CreateTeamForm.vue', base_path('resources/js/Pages/Teams/Partials/CreateTeamForm.vue'));
+            } elseif ($this->option('stack') === 'inertia') {
+                copy(__DIR__.'/../../stubs/resources/js/Pages/Teams/AlreadyInvited.vue', base_path('resources/js/Pages/Teams/AlreadyInvited.vue'));
+                copy(__DIR__.'/../../stubs/resources/js/Pages/Teams/CreateFirst.vue', base_path('resources/js/Pages/Teams/CreateFirst.vue'));
+                copy(__DIR__.'/../../stubs/resources/js/Pages/Teams/Partials/CreateTeamForm.vue', base_path('resources/js/Pages/Teams/Partials/CreateTeamForm.vue'));
             }
         }
 
         if ($this->option('api')) {
             $this->replaceInFile('// Features::api(),', 'Features::api(),', config_path('jetstream.php'));
 
-            if ('inertia' === $this->option('stack')) {
-                copy(__DIR__ . '/../../stubs/resources/js/Pages/API/Documentation.vue', base_path('resources/js/Pages/API/Documentation.vue'));
+            if ($this->option('stack') === 'inertia') {
+                copy(__DIR__.'/../../stubs/resources/js/Pages/API/Documentation.vue', base_path('resources/js/Pages/API/Documentation.vue'));
             }
         }
 
@@ -79,7 +85,7 @@ class InstallCommand extends BaseCommand
          */
         $this->replaceInFile(
             search: "'./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',",
-            replace: "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php'," . PHP_EOL . "        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',",
+            replace: "'./vendor/brilliant-portal/framework/resources/views/**/*.blade.php',".PHP_EOL."        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',",
             path: base_path('tailwind.config.js'),
         );
 
@@ -117,7 +123,7 @@ class InstallCommand extends BaseCommand
         /**
          * Code style and quality.
          */
-        copy(__DIR__ . '/../../stubs/phpcs.xml.dist', base_path('phpcs.xml.dist'));
+        copy(__DIR__.'/../../stubs/phpcs.xml.dist', base_path('phpcs.xml.dist'));
 
         /**
          * OpenAPI docs.
@@ -129,7 +135,7 @@ class InstallCommand extends BaseCommand
             try {
                 mkdir(base_path('tests/Feature/Api'), 0755);
             } catch (ErrorException $e) {
-                if ('mkdir(): File exists' !== $e->getMessage()) {
+                if ($e->getMessage() !== 'mkdir(): File exists') {
                     throw $e;
                 }
             }
@@ -170,17 +176,17 @@ class InstallCommand extends BaseCommand
                 $this->info($composer->getOutput());
 
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
-                    $this->appendToEnv(PHP_EOL.'BETTER_UPTIME_HEARTBEAT_URL='.PHP_EOL);
+                    $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
-                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')).PHP_EOL);
+                    $this->appendToEnv('AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')));
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
-                    copy(__DIR__ . '/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
-                    copy(__DIR__ . '/../../stubs/config/services.stub.php', base_path('config/services.php'));
-                    $this->appendToEnv(PHP_EOL.'MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL);
+                    copy(__DIR__.'/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
+                    copy(__DIR__.'/../../stubs/config/services.stub.php', base_path('config/services.php'));
+                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET=');
 
                     $this->replaceInFile(
                         search: 'MAIL_MAILER=smtp'.PHP_EOL.'MAIL_HOST=mailhog'.PHP_EOL.'MAIL_PORT=1025'.PHP_EOL.'MAIL_USERNAME=null'.PHP_EOL.'MAIL_PASSWORD=null'.PHP_EOL.'MAIL_ENCRYPTION=null'.PHP_EOL.'MAIL_FROM_ADDRESS="hello@example.com"'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"',
@@ -224,7 +230,7 @@ class InstallCommand extends BaseCommand
                     $this->appendToEnv('DEBUGBAR_EDITOR=vscode');
                 }
                 if (Arr::has(array_flip($devDependencies), 'nunomaduro/larastan')) {
-                    copy(__DIR__ . '/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));
+                    copy(__DIR__.'/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));
                 }
             } else {
                 $this->error($composer->getErrorOutput());
@@ -239,8 +245,8 @@ class InstallCommand extends BaseCommand
             array_filter(array_merge([
                 'None',
             ],
-                'livewire' === $this->option('stack') ? ['@defstudio/vite-livewire-plugin'] : [],
-                'inertia' === $this->option('stack') ? ['@headlessui/vue', '@heroicons/vue'] : [],
+                $this->option('stack') === 'livewire' ? ['@defstudio/vite-livewire-plugin'] : [],
+                $this->option('stack') === 'inertia' ? ['@headlessui/vue', '@heroicons/vue'] : [],
             )),
             null,
             null,
@@ -263,16 +269,16 @@ class InstallCommand extends BaseCommand
          */
         if ($this->option('with-airdrop') && file_exists('vendor/hammerstone/airdrop/config/airdrop.php')) {
             $this->checkFileHash('vendor/hammerstone/airdrop/config/airdrop.php', 'd69661927e3dfb37fcad0895afff56d76b02c8e222f213e3f9df7a0c6e108416');
-            copy(__DIR__ . '/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
-            copy(__DIR__ . '/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
+            copy(__DIR__.'/../../stubs/config/airdrop.stub.php', base_path('config/airdrop.php'));
+            copy(__DIR__.'/../../stubs/config/filesystems.stub.php', base_path('config/filesystems.php'));
         }
-        if ('livewire' === $this->option('stack')) {
-            copy(__DIR__ . '/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
-        } elseif ('inertia' === $this->option('stack')) {
-            copy(__DIR__ . '/../../stubs/vite-inertia.config.js', base_path('vite.config.js'));
-            copy(__DIR__ . '/../../stubs/jsconfig.json', base_path('jsconfig.json'));
+        if ($this->option('stack') === 'livewire') {
+            copy(__DIR__.'/../../stubs/vite-livewire.config.js', base_path('vite.config.js'));
+        } elseif ($this->option('stack') === 'inertia') {
+            copy(__DIR__.'/../../stubs/vite-inertia.config.js', base_path('vite.config.js'));
+            copy(__DIR__.'/../../stubs/jsconfig.json', base_path('jsconfig.json'));
         } else {
-            copy(__DIR__ . '/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
+            copy(__DIR__.'/../../stubs/vite-standard.config.js', base_path('vite.config.js'));
         }
         $this->replaceInFile(
             search: 'localhost.test',
