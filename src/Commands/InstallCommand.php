@@ -170,17 +170,17 @@ class InstallCommand extends BaseCommand
                 $this->info($composer->getOutput());
 
                 if (Arr::has(array_flip($recommendedDependencies), 'brilliant-packages/betteruptime-laravel')) {
-                    $this->appendToEnv(PHP_EOL.'BETTER_UPTIME_HEARTBEAT_URL='.PHP_EOL);
+                    $this->appendToEnv('BETTER_UPTIME_HEARTBEAT_URL=');
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'hammerstone/airdrop')) {
-                    $this->appendToEnv(PHP_EOL.'AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')).PHP_EOL);
+                    $this->appendToEnv('AIRDROP_AWS_ACCESS_KEY_ID='.PHP_EOL.'AIRDROP_AWS_SECRET_ACCESS_KEY='.PHP_EOL.'AIRDROP_REMOTE_DIR='.basename(config('app.url')));
                 }
 
                 if (Arr::has(array_flip($recommendedDependencies), 'vemcogroup/laravel-sparkpost-driver')) {
                     copy(__DIR__.'/../../stubs/config/mail.stub.php', base_path('config/mail.php'));
                     copy(__DIR__.'/../../stubs/config/services.stub.php', base_path('config/services.php'));
-                    $this->appendToEnv(PHP_EOL.'MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET='.PHP_EOL);
+                    $this->appendToEnv('MAIL_MAILER=sparkpost'.PHP_EOL.'SPARKPOST_SECRET=');
 
                     $this->replaceInFile(
                         search: 'MAIL_MAILER=smtp'.PHP_EOL.'MAIL_HOST=mailhog'.PHP_EOL.'MAIL_PORT=1025'.PHP_EOL.'MAIL_USERNAME=null'.PHP_EOL.'MAIL_PASSWORD=null'.PHP_EOL.'MAIL_ENCRYPTION=null'.PHP_EOL.'MAIL_FROM_ADDRESS="hello@example.com"'.PHP_EOL.'MAIL_FROM_NAME="${APP_NAME}"',
