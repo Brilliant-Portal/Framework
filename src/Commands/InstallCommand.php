@@ -210,7 +210,7 @@ class InstallCommand extends BaseCommand
                 'barryvdh/laravel-debugbar',
                 'brianium/paratest',
                 'laravel/pint',
-                'nunomaduro/larastan',
+                'larastan/larastan',
                 'spatie/invade',
             ],
             null,
@@ -229,7 +229,7 @@ class InstallCommand extends BaseCommand
                 if (Arr::has(array_flip($devDependencies), 'barryvdh/laravel-debugbar')) {
                     $this->appendToEnv('DEBUGBAR_EDITOR=vscode');
                 }
-                if (Arr::has(array_flip($devDependencies), 'nunomaduro/larastan')) {
+                if (Arr::has(array_flip($devDependencies), 'larastan/larastan')) {
                     copy(__DIR__.'/../../stubs/phpstan.neon.dist', base_path('phpstan.neon.dist'));
                 }
             } else {
