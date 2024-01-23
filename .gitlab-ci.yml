@@ -20,13 +20,11 @@ variables:
 include:
   - project: 'templates/gitlab/ci-templates'
     file:
-      - 'generic/composer.yml'
+      - 'presets/php.yml'
       - 'test/phpunit.yml'
       - 'build/composer-package.yml'
 
 test:unit-tests:
   before_script:
-    - echo -e "\\e[0Ksection_start:`date +%s`:setup[collapsed=true]\r\\e[0KInstalling dependencies and configuring app"
     - composer config http-basic.git.luminfire.net ___token___ "$PERSONAL_ACCESS_TOKEN"
-    - if [ ! -f "vendor/autoload.php" ]; then composer install --prefer-dist --no-ansi --no-interaction --no-progress; fi;
-    - echo -e "\\e[0Ksection_end:`date +%s`:setup\r\\e[0K"
+    - !reference [.composer-base, script]
