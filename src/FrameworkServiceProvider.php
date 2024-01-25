@@ -97,14 +97,16 @@ class FrameworkServiceProvider extends PackageServiceProvider
                 Framework::addApiAuthMechanism();
             }
 
-            Framework::addOpenApiTag(
-                name: 'Admin: Teams',
-                description: 'A team is owned by a single user; zero or more additional users can be part of a team.',
-            );
-            Framework::addOpenApiTag(
-                name: 'Admin: Team Management',
-                description: 'Users can be invited or removed from teams.',
-            );
+            if (Features::hasTeamFeatures()) {
+                Framework::addOpenApiTag(
+                    name: 'Admin: Teams',
+                    description: 'A team is owned by a single user; zero or more additional users can be part of a team.',
+                );
+                Framework::addOpenApiTag(
+                    name: 'Admin: Team Management',
+                    description: 'Users can be invited or removed from teams.',
+                );
+            }
             Framework::addOpenApiTag(
                 name: 'Admin: Users',
                 description: 'Users can belong to zero or more teams. A user may have different roles in different teams determining what capabilities they should have.',
