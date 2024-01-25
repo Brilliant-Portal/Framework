@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 2.1.2 — 2024-01-24
+
+- Bugfix: update Larastan package namespace
+- Bugfix: don’t include team API documentation for apps without teams
+
 # 2.1.1 — 2023-12-08
 
 - Bugfix: improve Inertia vs. Livewire checks
