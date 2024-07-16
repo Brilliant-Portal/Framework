@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 2.1.3 — 2024-07-16
+
+- Feature: add Laravel 11 support
+
 # 2.1.2 — 2024-01-24
 
 - Bugfix: update Larastan package namespace
