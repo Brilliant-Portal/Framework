@@ -12,6 +12,7 @@ class InstallCommand extends BaseCommand
     public $signature = 'brilliant-portal:install
                                         {--stack=livewire : The development stack that should be installed}
                                         {--api : Indicates if API support should be installed};
+                                        {--dark : Indicates if dark mode should be enabled};
                                         {--teams : Indicates if team support should be installed}
                                         {--with-airdrop=true : Indicates if the Airdrop package should be installed (recommended when using Vite)}';
 
@@ -34,6 +35,7 @@ class InstallCommand extends BaseCommand
          */
         $jetstreamArgs = [
             'stack' => $this->option('stack'),
+            'dark' => $this->option('dark'),
         ];
 
         if ($this->option('teams')) {
@@ -51,16 +53,12 @@ class InstallCommand extends BaseCommand
         copy(__DIR__.'/../../stubs/database/migrations/2015_01_01_000000_add_super_admins.stub.php', base_path('database/migrations/2015_01_01_000000_add_super_admins.php'));
 
         if ($this->option('teams')) {
-            // Actions.
-            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Actions/Fortify/CreateNewUser.php', 'de57e52100d4f356a8d98c9e5c56a7c93bcba0e20f8e9b782a2d5574e7249347');
-            copy(__DIR__.'/../../stubs/app/Actions/Fortify/CreateNewUser.stub.php', app_path('Actions/Fortify/CreateNewUser.php'));
-
             // Migrations and Models.
             $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/UserWithTeams.php', 'e7aafa6757545b8e757e952e528d03b577395bff2f979452defdd7fbb332a2b7');
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
-            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
+            copy(__DIR__.'/../../stubs/app/Providers/AppServiceProvider.stub.php', app_path('Providers/AppServiceProvider.php'));
 
             // Views.
             if ($this->option('stack') === 'livewire') {
@@ -70,6 +68,10 @@ class InstallCommand extends BaseCommand
                 copy(__DIR__.'/../../stubs/resources/js/Pages/Teams/CreateFirst.vue', base_path('resources/js/Pages/Teams/CreateFirst.vue'));
                 copy(__DIR__.'/../../stubs/resources/js/Pages/Teams/Partials/CreateTeamForm.vue', base_path('resources/js/Pages/Teams/Partials/CreateTeamForm.vue'));
             }
+        } else {
+            // Migrations and Models.
+            $this->checkFileHash('vendor/laravel/jetstream/stubs/app/Models/User.php', 'e7aafa6757545b8e757e952e528d03b577395bff2f979452defdd7fbb332a2b7');
+            copy(__DIR__.'/../../stubs/app/Models/User.stub.php', app_path('Models/User.php'));
         }
 
         if ($this->option('api')) {
