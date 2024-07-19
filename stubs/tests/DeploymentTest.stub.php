@@ -12,7 +12,7 @@ class DeploymentTest extends TestCase
         try {
             $this
                 ->artisan('route:cache')
-                ->assertExitCode(Command::SUCCESS);
+                ->assertSuccessful();
         } finally {
             $this->artisan('route:clear');
         }
@@ -23,7 +23,7 @@ class DeploymentTest extends TestCase
         try {
             $this
                 ->artisan('config:cache')
-                ->assertExitCode(Command::SUCCESS);
+                ->assertSuccessful();
         } finally {
             $this->artisan('config:clear');
         }
