@@ -12,6 +12,7 @@ class InstallCommand extends BaseCommand
     public $signature = 'brilliant-portal:install
                                         {--stack=livewire : The development stack that should be installed}
                                         {--api : Indicates if API support should be installed};
+                                        {--dark : Indicates if dark mode should be enabled};
                                         {--teams : Indicates if team support should be installed}
                                         {--with-airdrop=true : Indicates if the Airdrop package should be installed (recommended when using Vite)}';
 
@@ -34,6 +35,7 @@ class InstallCommand extends BaseCommand
          */
         $jetstreamArgs = [
             'stack' => $this->option('stack'),
+            'dark' => $this->option('dark'),
         ];
 
         if ($this->option('teams')) {
