@@ -10,12 +10,20 @@ Out of the box, Jetstream assumes that every user will have a personal team and 
 
 BrilliantPortal Framework also installs a set of tests for features it provides.
 
+## Laravel Support Matrix
+
+| Laravel Version |             Version |
+| --------------: | ------------------: |
+|              11 |               3.x.x |
+|              10 |     ^1.13.0, ^2.x.x |
+|             <10 | 0.x.x, up to 1.12.3 |
+
 ## PHP Support Matrix
 
-| PHP Version | Version |
-|------------:|--------:|
-|       > 8.0 |  1.x.x  |
-|         7.4 |  0.1.x  |
+| PHP Version |             Version |
+| ----------: | ------------------: |
+|       > 8.0 | 1.x.x, 2.x.x, 3.x.x |
+|         7.4 |               0.1.x |
 
 ## Installation
 
