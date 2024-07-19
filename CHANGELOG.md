@@ -2,6 +2,11 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 3.0.1 — 2024-07-19
+
+- Bugfix: add missing authorization methods
+- Bugfix: fix tests and middleware for removed RouteServiceProvider
+
 # 3.0.0 — 2024-07-19
 
 - Breaking change: require Laravel 11
