@@ -2,6 +2,10 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 2.1.5 — 2024-07-19
+
+- Chore: remove partial Laravel 11 support
+
 # 2.1.4 — 2024-07-19
 
 - Chore: replace abandoned Laravel OpenAPI package
