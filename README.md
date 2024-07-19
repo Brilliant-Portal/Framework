@@ -13,9 +13,9 @@ BrilliantPortal Framework also installs a set of tests for features it provides.
 ## PHP Support Matrix
 
 | PHP Version | Version |
-|------------:|--------:|
-|       > 8.0 |  1.x.x  |
-|         7.4 |  0.1.x  |
+| ----------: | ------: |
+|       > 8.0 |   1.x.x |
+|         7.4 |   0.1.x |
 
 ## Installation
 
@@ -229,7 +229,16 @@ To customize these, see [publishing views](#views).
 
 This package uses the [Spatie Laravel Robots Middleware package](https://github.com/spatie/laravel-robots-middleware) to prove `x-robots-tag` headers.
 
-To use this, add the `\BrilliantPortal\Framework\Http\Middleware\RobotsMiddleware` class to your app’s `app/Http/Kernel.php` file under the `web` group.
+To use this, add the `\BrilliantPortal\Framework\Http\Middleware\RobotsMiddleware` class to your app’s `bootstrap/app.php` file:
+
+```diff
+    ->withMiddleware(function (Middleware $middleware) {
+-        //
++        $middleware->append([
++            RobotsMiddleware::class,
++        ]);
+    })
+```
 
 You may use the `SEARCH_ENGINES_SHOULD_INDEX` and/or `SEARCH_ENGINES_BLOCK_PATTERNS` env variables to control access, or copy the `vendor/brilliant-portal/framework/src/Http/Middleware/RobotsMiddleware.php` file into your app and tweak the logic.
 
