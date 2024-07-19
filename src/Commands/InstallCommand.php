@@ -58,7 +58,7 @@ class InstallCommand extends BaseCommand
             copy(__DIR__.'/../../stubs/app/Models/UserWithTeams.stub.php', app_path('Models/User.php'));
 
             // Providers.
-            copy(__DIR__.'/../../stubs/app/Providers/AuthServiceProvider.stub.php', app_path('Providers/AuthServiceProvider.php'));
+            copy(__DIR__.'/../../stubs/app/Providers/AppServiceProvider.stub.php', app_path('Providers/AppServiceProvider.php'));
 
             // Views.
             if ($this->option('stack') === 'livewire') {
