@@ -8,6 +8,10 @@ All notable changes to `brilliant-portal/framework` will be documented in this f
 - Feature: add dark mode by default
 - Chore: update some stubs to match Laravel 11
 
+# 2.1.5 — 2024-07-19
+
+- Chore: remove partial Laravel 11 support
+
 # 2.1.4 — 2024-07-19
 
 - Chore: replace abandoned Laravel OpenAPI package
