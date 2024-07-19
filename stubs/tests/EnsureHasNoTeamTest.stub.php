@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use BrilliantPortal\Framework\Framework;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -78,7 +77,7 @@ class EnsureHasNoTeamTest extends TestCase
         $this
             ->actingAs($user)
             ->get(route('brilliant-portal-framework.teams.create-first'))
-            ->assertRedirect(RouteServiceProvider::HOME);
+            ->assertRedirect(route('dashboard'));
     }
 
     public function testUserWithTeamsCantSeeAlreadyInvited(): void
@@ -97,6 +96,6 @@ class EnsureHasNoTeamTest extends TestCase
         $this
             ->actingAs($user)
             ->get(route('brilliant-portal-framework.teams.already-invited'))
-            ->assertRedirect(RouteServiceProvider::HOME);
+            ->assertRedirect(route('dashboard'));
     }
 }
