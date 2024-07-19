@@ -2,11 +2,20 @@
 
 All notable changes to `brilliant-portal/framework` will be documented in this file.
 
+# 3.0.1 — 2024-07-19
+
+- Bugfix: add missing authorization methods
+- Bugfix: fix tests and middleware for removed RouteServiceProvider
+
 # 3.0.0 — 2024-07-19
 
 - Breaking change: require Laravel 11
 - Feature: add dark mode by default
 - Chore: update some stubs to match Laravel 11
+
+# 2.1.5 — 2024-07-19
+
+- Chore: remove partial Laravel 11 support
 
 # 2.1.4 — 2024-07-19
 
